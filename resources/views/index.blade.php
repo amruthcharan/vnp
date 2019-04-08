@@ -1,7 +1,7 @@
 @extends('layouts.main')
 
-@section('profile')
-    @include('includes.profile')
+@section('title')
+    <title>Vet N Pet - Dashboard</title>
 @endsection
 
 @section('content')

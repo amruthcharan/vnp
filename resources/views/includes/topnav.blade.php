@@ -9,7 +9,7 @@
             <!-- ============================================================== -->
             <!-- Logo -->
             <!-- ============================================================== -->
-            <a class="navbar-brand" href="index.html">
+            <a class="navbar-brand" href="{{url('/')}}">
                 <!-- Logo -->
                 <b class="logo-icon p-l-10">
                     <img src="{{asset('assets/images/logo.png')}}" alt="homepage" class="light-logo" />
@@ -42,7 +42,7 @@
                         <span class="d-block d-md-none"><i class="fa fa-plus"></i></span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="#">User</a>
+                        <a class="dropdown-item" href="{{route('users.create')}}">User</a>
                         <a class="dropdown-item" href="#">Another action</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#">Something else here</a>
