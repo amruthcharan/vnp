@@ -26,6 +26,13 @@ Route::group(['middleware'=>'auth'], function (){
     //Users Route
     Route::resource('/users', 'UserController');
 
+    //owners Routes
+    Route::resource('/owners', 'OwnerController');
+
+    //Patients Routes
+    Route::resource('/patients', 'PatientController');
+
+
 });
 
 
