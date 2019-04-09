@@ -17,10 +17,10 @@
                     </ul>
                 </li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="pages-buttons.html" aria-expanded="false"><i class="mdi mdi-relative-scale"></i><span class="hide-menu">Billing</span></a></li>
-                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-face"></i><span class="hide-menu">Appointments</span></a>
+                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark {{ Request::is('/appointments') ? 'active' : '' }}" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-face "></i><span class="hide-menu">Appointments</span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
-                        <li class="sidebar-item"><a href="icon-material.html" class="sidebar-link"><i class="mdi mdi-emoticon"></i><span class="hide-menu"> New Appointment</span></a></li>
-                        <li class="sidebar-item"><a href="icon-fontawesome.html" class="sidebar-link"><i class="mdi mdi-emoticon-cool"></i><span class="hide-menu"> View Appointments </span></a></li>
+                        <li class="sidebar-item"><a href="{{route('appointments.create')}}" class="sidebar-link"><i class="mdi mdi-emoticon"></i><span class="hide-menu"> New Appointment</span></a></li>
+                        <li class="sidebar-item"><a href="{{route('appointments.index')}}" class="sidebar-link"><i class="mdi mdi-emoticon-cool"></i><span class="hide-menu"> View Appointments </span></a></li>
                     </ul>
                 </li>
                 <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-move-resize-variant"></i><span class="hide-menu">Prescription</span></a>
