@@ -25,11 +25,11 @@
                 </li>
                 <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-move-resize-variant"></i><span class="hide-menu">Prescription</span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
-                        <li class="sidebar-item"><a href="index2.html" class="sidebar-link"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu"> New Prescription</span></a></li>
-                        <li class="sidebar-item"><a href="pages-gallery.html" class="sidebar-link"><i class="mdi mdi-multiplication-box"></i><span class="hide-menu">View Prescriptions</span></a></li>
-                        <li class="sidebar-item"><a href="pages-calendar.html" class="sidebar-link"><i class="mdi mdi-calendar-check"></i><span class="hide-menu"> Symptoms List </span></a></li>
-                        <li class="sidebar-item"><a href="pages-invoice.html" class="sidebar-link"><i class="mdi mdi-bulletin-board"></i><span class="hide-menu"> Diagnosis List </span></a></li>
-                        <li class="sidebar-item"><a href="pages-chat.html" class="sidebar-link"><i class="mdi mdi-message-outline"></i><span class="hide-menu"> Prescription List </span></a></li>
+                        <li class="sidebar-item"><a href="{{route('prescriptions.create')}}" class="sidebar-link"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu"> New Prescription</span></a></li>
+                        <li class="sidebar-item"><a href="{{route('prescriptions.index')}}" class="sidebar-link"><i class="mdi mdi-multiplication-box"></i><span class="hide-menu">View Prescriptions</span></a></li>
+                        <li class="sidebar-item"><a href="{{route('symptoms.index')}}" class="sidebar-link"><i class="mdi mdi-calendar-check"></i><span class="hide-menu"> Symptoms List </span></a></li>
+                        <li class="sidebar-item"><a href="{{route('diagnoses.index')}}" class="sidebar-link"><i class="mdi mdi-bulletin-board"></i><span class="hide-menu"> Diagnosis List </span></a></li>
+                        <li class="sidebar-item"><a href="{{route('medicines.index')}}" class="sidebar-link"><i class="mdi mdi-message-outline"></i><span class="hide-menu"> Prescription List </span></a></li>
                     </ul>
                 </li>
                 <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account-key"></i><span class="hide-menu">Reports </span></a>

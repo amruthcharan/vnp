@@ -37,6 +37,12 @@ Route::group(['middleware'=>'auth'], function (){
 
     Route::resource('/prescriptions', 'PrescriptionController');
 
+    Route::resource('/symptoms', 'SymptomController');
+
+    Route::resource('/diagnoses', 'DiagnosisController');
+
+    Route::resource('/medicines', 'MedicineController');
+
 });
 
 
