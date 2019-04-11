@@ -33,6 +33,7 @@ class PatientController extends Controller
         //
         $owners = Owner::lists('name','id');
         $species = Species::lists('name', 'id');
+
         return view('patients.create', compact(['owners','species']));
     }
 
@@ -47,7 +48,7 @@ class PatientController extends Controller
         //
         $input = $request->all();
         $species['name'] = $input['species_id'];
-        if(is_string($species['name'])){
+        if(intval($species['name']) == 0){
             $newspecies = Species::create($species);
             $input['species_id'] = $newspecies->id;
         }
@@ -98,7 +99,7 @@ class PatientController extends Controller
         //
         $input = $request->all();
         $species['name'] = $input['species_id'];
-        if(is_string($species['name'])){
+        if(intval($species['name']) == 0){
             $newspecies = Species::create($species);
             $input['species_id'] = $newspecies->id;
         }

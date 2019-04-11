@@ -35,6 +35,7 @@ Route::group(['middleware'=>'auth'], function (){
     //Appointments
     Route::resource('/appointments', 'AppointmentController');
 
+    Route::resource('/prescriptions', 'PrescriptionController');
 
 });
 
