@@ -32,16 +32,23 @@ Route::group(['middleware'=>'auth'], function (){
     //Patients Routes
     Route::resource('/patients', 'PatientController');
 
-    //Appointments
+    //Appointments routes
     Route::resource('/appointments', 'AppointmentController');
 
+    //Prescription routes
     Route::resource('/prescriptions', 'PrescriptionController');
 
+    //symptom routes
     Route::resource('/symptoms', 'SymptomController');
 
+    //Diagnoses routes
     Route::resource('/diagnoses', 'DiagnosisController');
 
+    //medicine routes
     Route::resource('/medicines', 'MedicineController');
+
+    //billing routes
+    Route::resource('/bills', 'BillingController');
 
 });
 
