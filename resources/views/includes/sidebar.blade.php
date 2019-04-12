@@ -16,7 +16,7 @@
                         <li class="sidebar-item"><a href="{{route('patients.index')}}" class="sidebar-link"><i class="mdi mdi-note-plus"></i><span class="hide-menu"> View Patients </span></a></li>
                     </ul>
                 </li>
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{url('/billing')}}" aria-expanded="false"><i class="mdi mdi-relative-scale"></i><span class="hide-menu">Billing</span></a></li>
+                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{route('bills.index')}}" aria-expanded="false"><i class="mdi mdi-relative-scale"></i><span class="hide-menu">Billing</span></a></li>
                 <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark {{ Request::is('/appointments') ? 'active' : '' }}" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-face "></i><span class="hide-menu">Appointments</span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
                         <li class="sidebar-item"><a href="{{route('appointments.create')}}" class="sidebar-link"><i class="mdi mdi-emoticon"></i><span class="hide-menu"> New Appointment</span></a></li>
@@ -34,8 +34,8 @@
                 </li>
                 <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account-key"></i><span class="hide-menu">Reports </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
-                        <li class="sidebar-item"><a href="authentication-login.html" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> Reminders </span></a></li>
-                        <li class="sidebar-item"><a href="authentication-register.html" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> General Reports </span></a></li>
+                        <li class="sidebar-item"><a href="{{url('/reminders')}}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> Reminders </span></a></li>
+                        <li class="sidebar-item"><a href="{{url('/notifications')}}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> General Reports </span></a></li>
                     </ul>
                 </li>
                 @if(Auth::user()->role_id == 1)

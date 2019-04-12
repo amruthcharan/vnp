@@ -41,6 +41,9 @@
         <div class="container">
             <div class="content">
                 <div class="title">Be right back.</div>
+                <div class="body">
+                    <a href="/">Back to Home</a>
+                </div>
             </div>
         </div>
     </body>
