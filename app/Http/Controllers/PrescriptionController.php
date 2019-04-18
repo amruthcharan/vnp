@@ -12,6 +12,7 @@ use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class PrescriptionController extends Controller
 {
@@ -85,7 +86,7 @@ class PrescriptionController extends Controller
 
         $input['symptoms'] = $symptoms;
         $input['diagnoses'] = $diagnoses;
-
+        $input['created_by'] = Auth::user()->name;
         $prescription = Prescription::create($input);
         $prescription->Diagnosis()->sync($diagnoses, false);
         $prescription->Symptoms()->sync($symptoms,false);
@@ -183,7 +184,7 @@ class PrescriptionController extends Controller
 
         $input['symptoms'] = $symptoms;
         $input['diagnoses'] = $diagnoses;
-
+        $input['updated_by'] = Auth::user()->name;
         $prescription->update($input);
         $prescription->Diagnosis()->sync($diagnoses, true);
         $prescription->Symptoms()->sync($symptoms,true);

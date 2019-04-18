@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Prescription extends Model
 {
     //
-    protected $fillable = ['appointment_id', 'notes', 'reminder'];
+    protected $fillable = ['appointment_id', 'notes', 'reminder', 'created_by', 'updated_by'];
 
     public function appointment() {
         return $this->belongsTo('App\Appointment');

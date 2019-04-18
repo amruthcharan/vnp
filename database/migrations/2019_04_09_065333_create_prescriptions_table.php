@@ -17,6 +17,8 @@ class CreatePrescriptionsTable extends Migration
             $table->integer('appointment_id')->unique();
             $table->longText('notes');
             $table->date('reminder');
+            $table->string('created_by');
+            $table->string('updated_by');
             $table->timestamps();
         });
     }

@@ -37,7 +37,7 @@
                         {!! Form::label('patient_id', 'Patient ID:') !!}
                         {!! Form::select('patient_id', $patients , $bill->patient_id , ['class'=>'form-control', 'disabled'=>'disabled']) !!}
                     </div>
-                    <div id="oomponent">
+                    <div id="component">
                         <h3 class="float-left">Components</h3>
                         <a onclick="addcomponent()" class="btn btn-primary float-right"><i class="fa fa-plus"></i></a>
                         <br>
@@ -71,11 +71,11 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('total', 'Total:') !!}
-                        {!! Form::text('total',$bill->total,['class'=>'form-control total', 'readonly'=>'readonly']) !!}
+                        {!! Form::text('nettotal',$bill->nettotal,['class'=>'form-control total', 'readonly'=>'readonly']) !!}
                     </div>
-                    @php
-                        $t=date('Y-m-d');
-                    @endphp
+                    <div class="form-group">
+                        {!! Form::text('grandtotal',$bill->grandtotal,['class'=>'form-control grandtotal', 'hidden'=>'hidden']) !!}
+                    </div>
                     <div class="form-group">
                         {!! Form::label('date', 'Date:') !!}
                         {!! Form::date('date', $bill->date, ['class'=>'form-control', 'readonly'=>'readonly']) !!}
@@ -94,77 +94,95 @@
 
 @section('scripts')
     <script>
-        var total = parseInt($(".total").val());;
-        total = isZero(total);
-        calcD();
         var dumpVal = 0;
-        var currentValue= 0;
-        function calcD() {
-            var n = $('.discount').val().toString().search('%');
-            //console.log(n);
-            var discount = parseInt($(".discount").val());
-            discount = isZero(discount);
-            totalValue = total;
-            if(n>0){
-                var tot = totalValue + ((totalValue * discount)/100);
-            } else {
-                var tot = totalValue + discount;
-            }
-            //$('.total').val(tot);
-            total = tot;
-        }
-
+        var tot = parseInt($('.grandtotal').val());
+        tot = returnZeroIfNothing(tot);
 
         function addcomponent() {
-            $('#oomponent').append("<div class=\"row align-items-center\"><div class=\"col-md-5\"><div class=\"form-group\"><label for=\"component\">Component:</label><input type='text' name='component[]' class=\"form-control\"></div></div><div class=\"col-md-5\"><div class=\"form-group\"><label for=\"amount\">Amount:</label><input type=\"number\" name='amount[]' class=\"form-control bill billing\"></div></div><div class=\"col-md-1\"><a class='btn btn-warning remove'><i class='fa fa-minus'></i></a></div></div>");
+            $('#component').append("<div class=\"row align-items-center\"><div class=\"col-md-5\"><div class=\"form-group\"><label for=\"component\">Component:</label><input type='text' name='component[]' class=\"form-control\"></div></div><div class=\"col-md-5\"><div class=\"form-group\"><label for=\"amount\">Amount:</label><input type=\"number\" name='amount[]' class=\"form-control billing\"></div></div><div class=\"col-md-1\"><a class='btn btn-warning remove'><i class='fa fa-minus'></i></a></div></div>");
         }
+
         $(document).on('click', '.remove', function (){
+            var deletedNumber = $(this).closest('.row').find("input[name='amount[]']").val();
+            deletedNumber = parseInt(deletedNumber);
+            deletedNumber = returnZeroIfNothing(deletedNumber);
+            tot -= deletedNumber;
+            $('.grandtotal').val(tot);
+            total = calcTotalAfterDiscount(tot);
+            displayTotal(total);
             $(this).closest('.row').remove();
+        });
+
+        //return '0' if no value in the field.
+        function returnZeroIfNothing(value){
+            var res = "";
+            res = res + Number.isInteger(value);
+            if (res == 'false'){
+                value = 0;
+            }
+            return value;
+        }
+
+        function findDiscount() {
+            //find discount
+            var discount = parseInt($(".discount").val());
+
+            //check weather discount presented or not!
+            discount = returnZeroIfNothing(discount);
+            return discount;
+        }
+        function findDiscountType() {
+            //determine the discount type
+            var n = $('.discount').val().toString().search('%');
+            return n;
+        }
+
+        $(document).on('change ', '.billing', function (){
+            $(this).addClass('bill2');
+            var currentValue = parseInt($(".bill2").val());
+            var previousValue = findPreviousValue();
+
+            tot -= previousValue;
+            tot += currentValue;
+            $('.grandtotal').val(tot);
+            $(this).removeClass('bill2');
+            total = calcTotalAfterDiscount(tot);
+            displayTotal(total);
         });
 
         $(document).on('focus', '.billing', function () {
             $(this).addClass('biller');
+            //find any value presented
             dumpVal = parseInt($(".biller").val());
-            //console.log(dumpVal);
-           dumpVal = isZero(dumpVal);
+            dumpVal = returnZeroIfNothing(dumpVal);
             $(this).removeClass('biller');
-            //console.log(dumpVal);
-        });
-        $(document).on('change ', '.billing', function (){
-            $(this).addClass('bill');
-            currentValue = parseInt($(".bill").val());
-
-            total -= dumpVal;
-            total += currentValue;
-            $(this).removeClass('bill');
-            $('.total').val(total);
-            calcDisc();
         });
 
-        $(document).on('change', '.discount', calcDisc);
-        function calcDisc() {
-            var n = $('.discount').val().toString().search('%');
-            //console.log(n);
-            var discount = parseInt($(".discount").val());
-            discount = isZero(discount);
-            totalValue = total;
+        function findPreviousValue() {
+            var previousVal = dumpVal;
+            dumpVal = 0;
+            return previousVal;
+        }
+
+        function calcTotalAfterDiscount(total) {
+            var discount = findDiscount();
+            var n = findDiscountType();
             if(n>0){
-                var tot = totalValue - ((totalValue * discount)/100);
+                total = total - (total * (discount / 100));
             } else {
-                var tot = totalValue - discount;
+                total = total - discount;
             }
-            $('.total').val(tot);
+            return total;
         }
 
-        function isZero(val){
-            var res = "";
-            res = res + Number.isInteger(val);
-            if (res == 'false'){
-                val = 0;
-            }
-            return val;
-            console.log(val);
+        function displayTotal(total) {
+            $('.total').val(total);
         }
+
+        $(document).on('change', '.discount', function () {
+            total = calcTotalAfterDiscount(tot);
+            displayTotal(total);
+        });
     </script>
 
 @endsection

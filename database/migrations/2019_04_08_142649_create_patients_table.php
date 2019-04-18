@@ -21,6 +21,8 @@ class CreatePatientsTable extends Migration
             $table->date('age');
             $table->string('color');
             $table->string('breed');
+            $table->string('created_by');
+            $table->string('updated_by');
             $table->timestamps();
         });
     }

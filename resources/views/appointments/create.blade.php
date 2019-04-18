@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    <title>Vet N Pet - New User</title>
+    <title>Vet N Pet - New Appointment</title>
 @endsection
 @section('breadcrum')
     <!-- ============================================================== -->

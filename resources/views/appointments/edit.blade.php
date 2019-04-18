@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    <title>Vet N Pet - New User</title>
+    <title>Vet N Pet - Edit Appointment</title>
 @endsection
 @section('breadcrum')
     <!-- ============================================================== -->
@@ -9,12 +9,12 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
-                <h4 class="page-title">Edit Owner Details</h4>
+                <h4 class="page-title">Edit Appointment</h4>
                 <div class="ml-auto text-right">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Owners</li>
+                            <li class="breadcrumb-item active" aria-current="page">Appointment</li>
                         </ol>
                     </nav>
                 </div>

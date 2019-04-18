@@ -9,6 +9,7 @@ use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class AppointmentController extends Controller
 {
@@ -54,6 +55,7 @@ class AppointmentController extends Controller
     {
         //
         $input = $request->all();
+        $input['created_by'] = Auth::user()->name;
         Appointment::create($input);
         $notification = array(
             'message' => 'Appointment has been booked!',
@@ -108,6 +110,7 @@ class AppointmentController extends Controller
         //
         $input = $request->all();
         $appointment = Appointment::find($id);
+        $input['updated_by'] = Auth::user()->name;
         $appointment->update($input);
         $notification = array(
             'message' => 'Appointment has been updated!',

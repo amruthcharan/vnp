@@ -8,7 +8,7 @@ class Bill extends Model
 {
     //protected $primaryKey = "VNPI8000";
 
-    protected $fillable = ['date', 'discount', 'total', 'patient_id'];
+    protected $fillable = ['date', 'discount', 'nettotal', 'grandtotal', 'patient_id', 'created_by', 'updated_by'];
 
     public function patient() {
         return $this->belongsTo('App\Patient');

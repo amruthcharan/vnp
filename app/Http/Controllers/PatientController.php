@@ -8,6 +8,7 @@ use App\Species;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class PatientController extends Controller
 {
@@ -52,6 +53,7 @@ class PatientController extends Controller
             $newspecies = Species::create($species);
             $input['species_id'] = $newspecies->id;
         }
+        $input['created_by'] = Auth::user()->name;
         Patient::create($input);
         $notification = array(
             'message' => 'patient has been created!',
@@ -104,6 +106,7 @@ class PatientController extends Controller
             $input['species_id'] = $newspecies->id;
         }
         $patient = Patient::find($id);
+        $input['updated_by'] = Auth::user()->name;
         $patient->update($input);
         $notification = array(
             'message' => 'patient has been updated!',

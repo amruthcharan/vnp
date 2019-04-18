@@ -6,6 +6,7 @@ use App\Owner;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class OwnerController extends Controller
 {
@@ -42,7 +43,7 @@ class OwnerController extends Controller
     {
         //
         $input = $request->all();
-
+        $input['created_by'] = Auth::user()->name;
         Owner::create($input);
         $notification = array(
             'message' => 'Owner has been created!',
@@ -90,6 +91,7 @@ class OwnerController extends Controller
         //
         $owner = Owner::find($id);
         $input = $request->all();
+        $input['updated_by'] = Auth::user()->name;
 
         $owner->update($input);
 

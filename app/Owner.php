@@ -8,7 +8,7 @@ class Owner extends Model
 {
     //
 
-    protected $fillable = ['name', 'address', 'mobile', 'email'];
+    protected $fillable = ['name', 'address', 'mobile', 'email', 'created_by', 'updated_by'];
 
     public function patient(){
         return $this->hasMany('App\Patient');

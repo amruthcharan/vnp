@@ -43,7 +43,7 @@
                             </address>
                         </div>
                         <div class="float-right text-right">
-                            <p class=""><b>Invoice Date :</b> <i class="fa fa-calendar"></i> {{$bill->updated_at}}</p>
+                            <p class=""><b>Invoice Date :</b> <i class="fa fa-calendar"></i> {{$bill->created_at}}</p>
                             <address>
                                 <h4>Invoice is For,</h4>
                                 <p class="m-l-30">{{$bill->patient->name}}
@@ -86,10 +86,17 @@
                     </div>
                     <div class="col-md-12">
                         <div class="pull-right m-t-30 text-right">
-                            <p>Sub - Total amount: ₹ {{$bill->total + $bill->discount}}</p>
-                            <p>discount : ₹ {{$bill->discount}}</p>
+                            <p>Sub - Total amount: ₹ {{$bill->grandtotal}}</p>
+                            @php
+                                if(strchr($bill->discount,"%") == ""){
+                                    $ret = '₹ ' . $bill->discount;
+                                } else {
+                                    $ret = $bill->discount;
+                                }
+                            @endphp
+                            <p>discount : {{$ret}}</p>
                             <hr>
-                            <h3><b>Total :</b> ₹ {{$bill->total}}</h3>
+                            <h3><b>Total :</b> ₹ {{$bill->nettotal}}</h3>
                         </div>
                         <div class="clearfix"></div>
                         <hr>

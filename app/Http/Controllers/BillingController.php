@@ -8,6 +8,7 @@ use App\Patient;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
 
 class BillingController extends Controller
 {
@@ -47,6 +48,7 @@ class BillingController extends Controller
         //
         $input = $request->all();
         //return $input;
+        $input['created_by'] = Auth::user()->name;
         $bill = Bill::create($input);
         $components = $request->component;
         $id = $bill->id;
@@ -59,7 +61,7 @@ class BillingController extends Controller
             }
         }
 
-        return redirect('/billing/'.$id);
+        return redirect('/bills/'.$id);
     }
 
     /**
@@ -102,6 +104,7 @@ class BillingController extends Controller
         //
         $bill = Bill::find($id);
         $input = $request->all();
+        $input['updated_by'] = Auth::user()->name;
         $bill->update($input);
         $components = $request->component;
         $amount = $request->amount;

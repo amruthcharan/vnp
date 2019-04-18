@@ -17,7 +17,10 @@ class CreateBillsTable extends Migration
             $table->integer('patient_id');
             $table->date('date');
             $table->string('discount');
-            $table->integer('total');
+            $table->integer('nettotal');
+            $table->integer('grandtotal');
+            $table->string('created_by');
+            $table->string('updated_by');
             $table->timestamps();
         });
     }
