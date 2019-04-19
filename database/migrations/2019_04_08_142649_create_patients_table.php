@@ -14,13 +14,15 @@ class CreatePatientsTable extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id')->index()->nullable();
-            $table->integer('owner_id')->index()->nullable();
             $table->integer('species_id')->index()->nullable();
-            $table->string('name');
-            $table->date('age');
-            $table->string('color');
-            $table->string('breed');
+            $table->string('ownername')->nullable();
+            $table->string('address')->nullable();
+            $table->string('mobile')->nullable();
+            $table->string('email')->nullable();
+            $table->string('name')->nullable();
+            $table->timestamp('age')->nullable();
+            $table->string('color')->nullable();
+            $table->string('breed')->nullable();
             $table->string('created_by');
             $table->string('updated_by');
             $table->timestamps();

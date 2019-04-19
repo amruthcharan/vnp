@@ -65,9 +65,9 @@
                         <tr>
                             <td>{{$p->name}}</td>
                             <td>{{$p->age}}</td>
-                            <td>{{$p->owner->name}}</td>
-                            <td>{{$p->owner->mobile}}</td>
-                            <td>{{$p->owner->email}}</td>
+                            <td>{{$p->ownername}}</td>
+                            <td>{{$p->mobile}}</td>
+                            <td>{{$p->email}}</td>
                         </tr>
                         @endforeach
                     </table>

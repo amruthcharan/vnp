@@ -7,17 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Patient extends Model
 {
     //
-    protected $fillable = ['species_id', 'name', 'age', 'color', 'breed', 'user_id', 'owner_id', 'created_by', 'updated_by'];
+    protected $fillable = ['species_id','ownername', 'address', 'mobile', 'email', 'name', 'age', 'color', 'breed', 'created_by', 'updated_by'];
 
-    public function owner(){
-        return $this->belongsTo('App\Owner');
-    }
-
-    public function user() {
-        return $this->belongsTo('App\User');
-    }
+    protected $dates = ['age'];
 
     public function species(){
         return $this->belongsTo('App\Species');
+    }
+    public function appointments(){
+        return $this->hasMany('App\Appointment');
+    }
+
+    public function bills(){
+        return $this->hasMany('App\Bill');
     }
 }

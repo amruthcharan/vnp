@@ -34,7 +34,7 @@
                     @include('includes.formerror')
                     {!! Form::open(['method'=>'PATCH', 'action' => ['BillingController@update',$bill->id]]) !!}
                     <div class="form-group">
-                        {!! Form::label('patient_id', 'Patient ID:') !!}
+                        {!! Form::label('patient_id', '* Patient ID:') !!}
                         {!! Form::select('patient_id', $patients , $bill->patient_id , ['class'=>'form-control', 'disabled'=>'disabled']) !!}
                     </div>
                     <div id="component">

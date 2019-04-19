@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Bill;
 use App\BillComponents;
+use App\Http\Requests\BilingRequest;
 use App\Patient;
 use Illuminate\Http\Request;
 
@@ -43,7 +44,7 @@ class BillingController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BilingRequest $request)
     {
         //
         $input = $request->all();
@@ -99,7 +100,7 @@ class BillingController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(BilingRequest $request, $id)
     {
         //
         $bill = Bill::find($id);

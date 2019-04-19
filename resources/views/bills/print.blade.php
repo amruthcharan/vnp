@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('layouts.print')
 @section('title')
     <title>Vet N Pet - Invoice</title>
 @endsection
@@ -49,7 +49,7 @@
                                 <p class="m-l-30">{{$bill->patient->name}}
                                     <br/> {{$bill->patient->address}},
                                     <br/> <b>Invoice Prepared by {{$bill->created_by}}</b>.
-                                    </p>
+                                </p>
                             </address>
                         </div>
                     </div>
@@ -69,17 +69,17 @@
                                 @php
                                     $i = 1;
                                 @endphp
-                               @foreach($bill->billcomponents as $d)
-                                <tr>
-                                    <td class="text-center">{{$i}}</td>
-                                    <td>{{$d->name}}</td>
-                                    <td class="text-right">
-                                        {{$d->amount}}
-                                    </td>
-                                </tr>
-                                @php
-                                    $i++
-                                @endphp
+                                @foreach($bill->billcomponents as $d)
+                                    <tr>
+                                        <td class="text-center">{{$i}}</td>
+                                        <td>{{$d->name}}</td>
+                                        <td class="text-right">
+                                            {{$d->amount}}
+                                        </td>
+                                    </tr>
+                                    @php
+                                        $i++
+                                    @endphp
                                 @endforeach
                                 </tbody>
                             </table>
@@ -101,11 +101,8 @@
                         </div>
                         <div class="clearfix"></div>
                         <hr>
-                        <div class="float-left text-right">
-                           <a class="btn btn-danger" href="{{route('bills.edit',$bill->id)}}" type="submit"> Edit Invoice</a>
-                        </div>
-                        <div class="float-right text-right">
-                            <a class="btn btn-success" href="{{url('bills/'.$bill->id.'/print')}}" target="popup" onclick="window.open('{{url('bills/'.$bill->id.'/print')}}','popup','width=1300,height=700,location=0,scrollbars=no,resizable=no'); return false;"> Print Invoice </a>
+                        <div class="text-center">
+                            <buttton class="btn btnpr btn-info" onclick="printit()"> Print Prescription </buttton>
                         </div>
                     </div>
                 </div>
@@ -114,5 +111,10 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{asset('assets/libs/print/print.min.js')}}"></script>
+    <script>
+        function printit() {
+            $('.btnpr').hide();
+            window.print();
+        }
+    </script>
 @endsection

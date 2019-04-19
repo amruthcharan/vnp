@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    <title>Vet N Pet - New User</title>
+    <title>Vet N Pet - New Patient</title>
 @endsection
 @section('breadcrum')
     <!-- ============================================================== -->
@@ -30,41 +30,70 @@
         <div class="col-md-6"  style="margin: 0 auto">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title" style="text-align: center">Register</h4>
                     @include('includes.formerror')
                     {!! Form::open(['method'=>'POST', 'action' => 'PatientController@store']) !!}
                         <div class="form-group">
-                            {!! Form::label('owner_id', 'Owner:') !!}
-                            {!! Form::select('owner_id', $owners , null , ['class'=>'form-control select22']) !!}
+                            {!! Form::label('ownername', 'Owner Name:') !!}
+                            {!! Form::text('ownername', null, ['class'=>'form-control']) !!}
                         </div>
                         <div class="form-group">
-                            {!! Form::label('name', 'Name:') !!}
-                            {!! Form::text('name', null, ['class'=>'form-control']) !!}
+                            {!! Form::label('address', 'Address:') !!}
+                            {!! Form::textarea('address', null, ['class'=>'form-control', 'rows' => 5, 'cols' => 40]) !!}
                         </div>
                         <div class="form-group">
-                            {!! Form::label('species_id', 'Species:') !!}
-                            {!! Form::select('species_id', $species ,null, ['class'=>'form-control select32']) !!}
+                            {!! Form::label('mobile', 'Mobile Number:') !!}
+                            {!! Form::text('mobile', null, ['class'=>'form-control']) !!}
                         </div>
                         <div class="form-group">
-                            {!! Form::label('age', 'Age:') !!}
-                            {!! Form::date('age', null, ['class'=>'form-control']) !!}
+                            {!! Form::label('email', 'Email Address:') !!}
+                            {!! Form::text('email', null, ['class'=>'form-control']) !!}
                         </div>
-                        <div class="form-group">
-                            {!! Form::label('color', 'Color:') !!}
-                            {!! Form::text('color', null, ['class'=>'form-control']) !!}
-                        </div>
-                            <div class="form-group">
-                                {!! Form::label('breed', 'Breed:') !!}
-                                {!! Form::text('breed', null, ['class'=>'form-control']) !!}
-                            </div>
-                        <div class="border-top">
-                            <div class="card-body">
-                                {!! Form::submit('Register Patient', ['class'=>'btn btn-primary btn-block']) !!}
-                            </div>
-                        </div>
-                    {!! Form::close() !!}
                 </div>
             </div>
+        </div>
+        <div class="col-md-6"  style="margin: 0 auto">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        {!! Form::label('name', 'Name:') !!}
+                        {!! Form::text('name', null, ['class'=>'form-control']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('species_id', 'Species:') !!}
+                        {!! Form::select('species_id', $species ,null, ['class'=>'form-control select32']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('age', 'Age:') !!}
+                        <div class="input-group-prepend">
+                            {!! Form::text('years', null, ['class'=>'form-control']) !!}
+                            <span class="input-group-text">Years</span>
+                            {!! Form::text('months', null, ['class'=>'form-control']) !!}
+                            <span class="input-group-text">Months</span>
+                            {!! Form::text('days', null, ['class'=>'form-control']) !!}
+                            <span class="input-group-text">Days</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        {!! Form::label('color', 'Color:') !!}
+                        {!! Form::text('color', null, ['class'=>'form-control']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('breed', 'Breed:') !!}
+                        {!! Form::text('breed', null, ['class'=>'form-control']) !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="border-top">
+                <div class="card-body">
+                    {!! Form::submit('Register Patient', ['class'=>'btn btn-primary btn-block']) !!}
+                </div>
+            </div>
+            {!! Form::close() !!}
         </div>
     </div>
 @endsection

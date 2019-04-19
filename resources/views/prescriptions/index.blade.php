@@ -61,6 +61,8 @@
                                         <td>
                                             <a class="btn btn-success" href="{{route('prescriptions.show', $prescription->id)}}">View</a>
                                             <a class="btn btn-dribbble" href="{{route('prescriptions.edit', $prescription->id)}}">Edit</a>
+                                            <a class="btn btn-info" href="{{'/patients/'.$prescription->appointment->patient->id}}">Patient Info</a>
+                                            <a class="btn btn-dark" href="{{url('prescriptions/'.$prescription->id.'/print')}}" target="popup" onclick="window.open('{{url('prescriptions/'.$prescription->id.'/print')}}','popup','width=1300,height=700,location=0,scrollbars=no,resizable=no'); return false;"> Print</a>
                                             {{--<a href="javascript:void(0)" data-toggle="modal" data-target="#delete-user" class="btn btn-info waves-effect waves-light">Delete</a>--}}
                                         </td>
                                     </tr>

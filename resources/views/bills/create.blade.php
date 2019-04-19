@@ -34,8 +34,8 @@
                     @include('includes.formerror')
                     {!! Form::open(['method'=>'POST', 'action' => 'BillingController@store']) !!}
                         <div class="form-group">
-                            {!! Form::label('patient_id', 'Patient ID:') !!}
-                            {!! Form::select('patient_id', $patients , null , ['class'=>'form-control select22']) !!}
+                            {!! Form::label('patient_id', '* Patient ID:') !!}
+                            {!! Form::select('patient_id', $patients , app('request')->input('patid') ? app('request')->input('patid') : null , ['class'=>'form-control select22']) !!}
                         </div>
                         <div id="component">
                             <h3 class="float-left">Components</h3>
@@ -163,6 +163,15 @@
         $(document).on('change', '.discount', function () {
             total = calcTotalAfterDiscount(tot);
             displayTotal(total);
+        });
+
+        $(document).ready(function() {
+            $('.select22').select2({
+                placeholder: {
+                    id: '0', // the value of the option
+                    text: 'Select Patient'
+                }
+            });
         });
     </script>
 

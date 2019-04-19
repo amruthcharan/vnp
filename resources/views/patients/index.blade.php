@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    <title>Vet N Pet - Users</title>
+    <title>Vet N Pet - Patients</title>
 @endsection
 
 @section('breadcrum')
@@ -58,12 +58,14 @@
                                         <td>{{$patient->id}}</td>
                                         <td>{{$patient->name}}</td>
                                         <td>{{$patient->species ? $patient->species->name : ""}}</td>
-                                        <td>{{$patient->age}}</td>
+                                        <td>{{$patient->age->diff(\Carbon\Carbon::now())->format('%y years, %m months and %d days')}}</td>
                                         <td>{{$patient->color}}</td>
                                         <td>{{$patient->breed}}</td>
-                                        <td>{{$patient->owner->name}}</td>
+                                        <td>{{$patient->ownername}}</td>
                                         <td>
                                             <a class="btn btn-dribbble" href="{{route('patients.edit', $patient->id)}}">Edit</a>
+                                            <a class="btn btn-info" href="{{route('patients.show', $patient->id)}}">Patient Info</a>
+                                            <a class="btn btn-success" href="{{'/bills/create?patid='.$patient->id}}">Invoice</a>
                                             {{--<a href="javascript:void(0)" data-toggle="modal" data-target="#delete-user" class="btn btn-info waves-effect waves-light">Delete</a>--}}
                                         </td>
                                     </tr>

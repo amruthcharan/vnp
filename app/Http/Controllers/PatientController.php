@@ -31,11 +31,10 @@ class PatientController extends Controller
      */
     public function create()
     {
-        //
-        $owners = Owner::lists('name','id');
+        //$owners = Owner::lists('name','id');
         $species = Species::lists('name', 'id');
 
-        return view('patients.create', compact(['owners','species']));
+        return view('patients.create', compact('species'));
     }
 
     /**
@@ -54,6 +53,11 @@ class PatientController extends Controller
             $input['species_id'] = $newspecies->id;
         }
         $input['created_by'] = Auth::user()->name;
+        $now = \Carbon\Carbon::now();
+        $y = $request->years;
+        $m = $request->months;
+        $d = $request->days;
+        $input['age'] = $now->subYear($y)->subMonths($m)->subDays($d);
         Patient::create($input);
         $notification = array(
             'message' => 'patient has been created!',
@@ -71,7 +75,8 @@ class PatientController extends Controller
      */
     public function show($id)
     {
-        //
+        $patient = Patient::findOrFail($id);
+        return view('patients.show', compact('patient'));
     }
 
     /**
@@ -85,8 +90,7 @@ class PatientController extends Controller
         //
         $patient = Patient::findOrFail($id);
         $species = Species::lists('name','id');
-        $owners = Owner::lists('name','id');
-        return view('patients.edit', compact(['patient','species','owners']));
+        return view('patients.edit', compact(['patient','species']));
     }
 
     /**
@@ -107,6 +111,11 @@ class PatientController extends Controller
         }
         $patient = Patient::find($id);
         $input['updated_by'] = Auth::user()->name;
+        $now = \Carbon\Carbon::now();
+        $y = $request->years;
+        $m = $request->months;
+        $d = $request->days;
+        $input['age'] = $now->subYear($y)->subMonths($m)->subDays($d);
         $patient->update($input);
         $notification = array(
             'message' => 'patient has been updated!',
@@ -114,8 +123,6 @@ class PatientController extends Controller
             'head' => 'Update'
         );
         return redirect('/patients')->with($notification);
-
-
     }
 
     /**

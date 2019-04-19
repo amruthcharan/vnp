@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class AppointmentRequest extends Request
+class BilingRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,7 @@ class AppointmentRequest extends Request
     public function rules()
     {
         return [
-            'patient_id' => 'required',
-            'doctor_id' => 'required',
-            'date'=> 'required|date|after:yesterday'
+            'patient_id' => 'required'
         ];
     }
 }

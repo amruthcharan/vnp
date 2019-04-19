@@ -55,11 +55,13 @@
                                     <tr>
                                         <td>{{$appointment->id}}</td>
                                         <td>{{$appointment->patient->name}}</td>
-                                        <td>{{$appointment->patient ? $appointment->patient->owner->name : ""}}</td>
+                                        <td>{{$appointment->patient ? $appointment->patient->ownername : ""}}</td>
                                         <td>{{$appointment->doctor->name}}</td>
                                         <td>{{$appointment->date}}</td>
                                         <td>
                                             <a class="btn btn-dribbble" href="{{route('appointments.edit', $appointment->id)}}">Edit</a>
+                                            <a class="btn btn-success" href="{{'prescriptions/create?appid='.  $appointment->id}}">Prescription</a>
+                                            <a class="btn btn-info" href="{{'patients/'.  $appointment->patient->id}}">Patient Info</a>
                                             {{--<a href="javascript:void(0)" data-toggle="modal" data-target="#delete-user" class="btn btn-info waves-effect waves-light">Delete</a>--}}
                                         </td>
                                     </tr>

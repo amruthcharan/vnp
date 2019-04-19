@@ -33,7 +33,7 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-title">
-                        <h4 class="float-left">Invoice List</h4>
+                        <h4 class="float-left">Invoice List on {{\Carbon\Carbon::now()->format('d-m-Y')}}</h4>
                         <a class='btn btn-primary btn-sm float-right' href="{{url('/bills/create')}}"><i class="ti-plus"></i><strong> New</strong></a>
                     </div>
 
@@ -54,7 +54,7 @@
                                 @foreach($bills as $bill)
                                     <tr>
                                         <td>{{$bill->id}}</td>
-                                        <td>{{$bill->created_at->format('d/m/Y')}}</td>
+                                        {{--<td>{{$bill->created_at->format('d/m/Y')}}</td>--}}
                                         <td>{{$bill->patient->name}}</td>
                                         <td>{{$bill->patient->ownername}}</td>
                                         <td>{{$bill->nettotal}}</td>
@@ -82,7 +82,7 @@
     <script>
         $('#appointments').DataTable();
 
-        @if(Session::has('message'))
+                @if(Session::has('message'))
         var type = "{{ Session::get('alert-type') }}";
 
         switch(type){

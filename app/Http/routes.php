@@ -16,7 +16,9 @@
 });*/
 
 use App\Appointment;
+use App\Bill;
 use App\Prescription;
+use Carbon\Carbon;
 
 Route::auth();
 
@@ -41,6 +43,13 @@ Route::group(['middleware'=>'auth'], function (){
     //Prescription routes
     Route::resource('/prescriptions', 'PrescriptionController');
 
+    Route::get('/prescriptions/{id}/print', function ($id){
+        $prescription = Prescription::findOrFail($id);
+        return view('prescriptions.print', compact('prescription'));
+    });
+
+
+
     //symptom routes
     Route::resource('/symptoms', 'SymptomController');
 
@@ -52,6 +61,10 @@ Route::group(['middleware'=>'auth'], function (){
 
     //billing routes
     Route::resource('/bills', 'BillingController');
+    Route::get('/bills/{id}/print', function ($id){
+        $bill = Bill::findOrFail($id);
+        return view('bills.print', compact('bill'));
+    });
 
     //notifications route
     Route::get('/notifications', function (){

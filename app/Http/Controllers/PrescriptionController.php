@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Appointment;
 use App\Diagnosis;
+use App\Http\Requests\PrescriptionRequest;
 use App\Medicine;
 use App\MedicineDetails;
 use App\Prescription;
@@ -52,7 +53,7 @@ class PrescriptionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PrescriptionRequest $request)
     {
         //
         //return $request->all();
@@ -149,7 +150,7 @@ class PrescriptionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PrescriptionRequest $request, $id)
     {
         //
         //return $request->all();

@@ -1,29 +1,6 @@
-@extends('layouts.main')
+@extends('layouts.print')
 @section('title')
-    <title>Vet N Pet - View Appointment</title>
-@endsection
-@section('breadcrum')
-    <!-- ============================================================== -->
-    <!-- Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
-    <div class="page-breadcrumb">
-        <div class="row">
-            <div class="col-12 d-flex no-block align-items-center">
-                <h4 class="page-title">View Prescription</h4>
-                <div class="ml-auto text-right">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Prescriptions</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- ============================================================== -->
-    <!-- End Bread crumb and right sidebar toggle -->
-    <!-- ============================================================== -->
+    <title>Vet N Pet - Prescription</title>
 @endsection
 @section('content')
     <div class="row" id="printid">
@@ -45,14 +22,15 @@
                         <div class="float-right text-right">
                             <p class=""><b>Prescription Date :</b> <i class="fa fa-calendar"></i> {{$prescription->updated_at}}</p>
                             <address>
-                                <h4>Prescription is For,</h4>
+                                <h4>Prescription For,</h4>
                                 <p class="m-l-30">{{$prescription->appointment->patient->name}}
                                     <br/> {{$prescription->appointment->patient->address}},
-                                    </p>
+                                    <br/> <b>Prescribed By {{$prescription->appointment->doctor->name}}</b>.
+                                </p>
                             </address>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         <h4 class="m-t-20">Symptoms:</h4>
                         <div class="table-responsive" style="clear: both;">
                             <table class="table table-hover">
@@ -64,7 +42,7 @@
                                 </thead>
                                 <tbody>
                                 @php
-                                $i = 1;
+                                    $i = 1;
                                 @endphp
                                 @foreach($prescription->symptoms as $d)
                                     <tr>
@@ -72,14 +50,14 @@
                                         <td class="text-right"> {{$d->name}} </td>
                                     </tr>
                                     @php
-                                    $i++
+                                        $i++
                                     @endphp
                                 @endforeach
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         <h4 class="m-t-20">Diagnoses:</h4>
                         <div class="table-responsive" style="clear: both;">
                             <table class="table table-hover">
@@ -106,7 +84,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <h4 class="m-t-20">Medicines List:</h4>
                         <div class="table-responsive" style="clear: both;">
                             <table class="table table-hover">
@@ -122,18 +100,18 @@
                                 @php
                                     $i = 1;
                                 @endphp
-                               @foreach($prescription->medicinedets as $d)
-                                <tr>
-                                    <td class="text-center">{{$i}}</td>
-                                    <td>{{$d->medicine->name}}</td>
-                                    <td class="text-right">
-                                        {{$d->timing}}
-                                    </td>
-                                    <td class="text-right"> {{$d->duration}} </td>
-                                </tr>
-                                @php
-                                    $i++
-                                @endphp
+                                @foreach($prescription->medicinedets as $d)
+                                    <tr>
+                                        <td class="text-center">{{$i}}</td>
+                                        <td>{{$d->medicine->name}}</td>
+                                        <td class="text-right">
+                                            {{$d->timing}}
+                                        </td>
+                                        <td class="text-right"> {{$d->duration}} </td>
+                                    </tr>
+                                    @php
+                                        $i++
+                                    @endphp
                                 @endforeach
                                 </tbody>
                             </table>
@@ -141,11 +119,8 @@
                     </div>
                     <div class="col-md-12">
                         <hr>
-                        <div class="float-left text-left">
-                            <a class="btn btn-info" href="{{route('prescriptions.edit',$prescription->id)}}"> Edit Prescription </a>
-                        </div>
-                        <div class="float-right text-right">
-                            <a class="btn btn-success" href="{{url('prescriptions/'.$prescription->id.'/print')}}" target="popup" onclick="window.open('{{url('prescriptions/'.$prescription->id.'/print')}}','popup','width=1300,height=700,location=0,scrollbars=no,resizable=no'); return false;"> Print Prescription </a>
+                        <div class="text-center">
+                            <buttton class="btn btnpr btn-info" onclick="printit()"> Print Prescription </buttton>
                         </div>
                     </div>
                 </div>
@@ -154,5 +129,11 @@
     </div>
 @endsection
 @section('scripts')
-    <script src="{{asset('assets/libs/print/print.min.js')}}"></script>
+    <script>
+        function printit() {
+            $('.btnpr').hide();
+            window.print();
+        }
+    </script>
+
 @endsection

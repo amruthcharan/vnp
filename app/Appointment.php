@@ -17,4 +17,7 @@ class Appointment extends Model
         return $this->belongsTo('App\User');
     }
 
+    public function prescription(){
+        return $this->hasOne('App\Prescription');
+    }
 }

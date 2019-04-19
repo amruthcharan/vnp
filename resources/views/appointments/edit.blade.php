@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    <title>Vet N Pet - Edit Appointment</title>
+    <title>Vet N Pet - Update Appointment</title>
 @endsection
 @section('breadcrum')
     <!-- ============================================================== -->
@@ -34,15 +34,15 @@
                     @include('includes.formerror')
                     {!! Form::open(['method'=>'PATCH', 'action' => ['AppointmentController@update',$appointment->id]]) !!}
                     <div class="form-group">
-                        {!! Form::label('patient_id', 'Patient:') !!}
+                        {!! Form::label('patient_id', '* Patient:') !!}
                         {!! Form::select('patient_id', $patients , $appointment->patient_id , ['class'=>'form-control', 'disabled'=>'disabled']) !!}
                     </div>
                     <div class="form-group">
-                        {!! Form::label('doctor_id', 'Doctors:') !!}
+                        {!! Form::label('doctor_id', '* Doctors:') !!}
                         {!! Form::select('doctor_id', $doctors , $appointment->doctor_id , ['class'=>'form-control']) !!}
                     </div>
                     <div class="form-group">
-                        {!! Form::label('date', 'Date:') !!}
+                        {!! Form::label('date', '* Date:') !!}
                         {!! Form::date('date', $appointment->date, ['class'=>'form-control']) !!}
                     </div>
                     <div class="border-top">

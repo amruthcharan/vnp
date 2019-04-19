@@ -8,10 +8,8 @@
         <nav class="sidebar-nav">
             <ul id="sidebarnav" class="p-t-30">
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{url('/')}}" aria-expanded="false"><i class="mdi mdi-view-dashboard {{ Request::is('/') ? 'active' : '' }}"></i><span class="hide-menu">Dashboard</span></a></li>
-                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark {{ Request::is('/owners') ? 'active' : '' }}" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-receipt"></i><span class="hide-menu">Patients </span></a>
+                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark {{ Request::is('/patients') ? 'active' : '' }}" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-receipt"></i><span class="hide-menu">Patients </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
-                        <li class="sidebar-item"><a href="{{route('owners.create')}}" class="sidebar-link"><i class="mdi mdi-note-outline"></i><span class="hide-menu">New Owner</span></a></li>
-                        <li class="sidebar-item"><a href="{{route('owners.index')}}" class="sidebar-link"><i class="mdi mdi-note-plus"></i><span class="hide-menu"> View Owners </span></a></li>
                         <li class="sidebar-item"><a href="{{route('patients.create')}}" class="sidebar-link"><i class="mdi mdi-note-outline"></i><span class="hide-menu">New Patient</span></a></li>
                         <li class="sidebar-item"><a href="{{route('patients.index')}}" class="sidebar-link"><i class="mdi mdi-note-plus"></i><span class="hide-menu"> View Patients </span></a></li>
                     </ul>

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    <title>Vet N Pet - New User</title>
+    <title>Vet N Pet - New Prescription</title>
 @endsection
 @section('breadcrum')
     <!-- ============================================================== -->
@@ -35,7 +35,8 @@
                     {!! Form::open(['method'=>'POST', 'action' => 'PrescriptionController@store']) !!}
                         <div class="form-group">
                             {!! Form::label('appointment_id', 'Appointment:') !!}
-                            {!! Form::select('appointment_id', $appointments , null , ['class'=>'form-control select22']) !!}
+                            {{ csrf_field() }}
+                            {!! Form::select('appointment_id', $appointments , app('request')->input('appid') ? app('request')->input('appid') : null , ['class'=>'form-control select22']) !!}
                         </div>
                         <div class="form-group">
                             {!! Form::label('symptoms', 'Symptoms:') !!}
@@ -46,13 +47,24 @@
                             {!! Form::select('diagnoses[]', $diagnoses , null , ['class'=>'form-control select32','multiple'=>'multiple']) !!}
                         </div>
 
+                        {{--<div id="medicine">
+                            <h4 class="float-left">Previous Records</h4>
+                            @php
+                                $prescription = \App\Prescription::find(1);
+                            @endphp
+                            @foreach($prescription->appointment->patient->appointments as $appointment)
+                            <span>&nbsp;</span>
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#pre"  class="btn btn-dark btn-xs">1</a>
+                            @endforeach
+                                <br>
+                            <br>
+                        </div>--}}
                         <div id="medicine">
                             <h3 class="float-left">Medicines</h3>
                             <a onclick="addmedicine()" class="btn btn-primary float-right"><i class="fa fa-plus"></i></a>
                             <br>
                             <br>
                         </div>
-
 
                         <div class="form-group">
                             {!! Form::label('notes', 'Notes:') !!}
@@ -62,8 +74,6 @@
                             {!! Form::label('reminder', 'Reminder:') !!}
                             {!! Form::date('reminder', null, ['class'=>'form-control']) !!}
                         </div>
-
-
                         <div class="border-top">
                             <div class="card-body">
                                 {!! Form::submit('Add Prescription', ['class'=>'btn btn-primary btn-block']) !!}
@@ -74,6 +84,7 @@
             </div>
         </div>
     </div>
+    @include('includes.premodal')
 @endsection
 
 @section('scripts')

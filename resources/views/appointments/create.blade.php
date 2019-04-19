@@ -34,15 +34,15 @@
                     @include('includes.formerror')
                     {!! Form::open(['method'=>'POST', 'action' => 'AppointmentController@store']) !!}
                         <div class="form-group">
-                            {!! Form::label('patient_id', 'Patient:') !!}
-                            {!! Form::select('patient_id', $patients , null , ['class'=>'form-control select22']) !!}
+                            {!! Form::label('patient_id', '* Patient:') !!}
+                            {!! Form::select('patient_id', $patients , app('request')->input('patid') ? app('request')->input('patid') : null , ['class'=>'form-control select22']) !!}
                         </div>
                         <div class="form-group">
-                            {!! Form::label('doctor_id', 'Doctors:') !!}
+                            {!! Form::label('doctor_id', '* Doctor:') !!}
                             {!! Form::select('doctor_id', $doctors , null , ['class'=>'form-control']) !!}
                         </div>
                         <div class="form-group">
-                            {!! Form::label('date', 'Date:') !!}
+                            {!! Form::label('date', '* Date:') !!}
                             {!! Form::date('date', null, ['class'=>'form-control']) !!}
                         </div>
                         <div class="border-top">

@@ -42,10 +42,13 @@
                         <span class="d-block d-md-none"><i class="fa fa-plus"></i></span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="{{route('users.create')}}">User</a>
+                        @if(Auth::user()->role_id == 1)
+                            <a class="dropdown-item" href="{{route('users.create')}}">User</a>
+                        @endif
                         <a class="dropdown-item" href="{{route('patients.create')}}">Patient</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                        {{--<div class="dropdown-divider"></div>--}}
+                        <a class="dropdown-item" href="{{route('appointments.create')}}">Appointment</a>
+                        <a class="dropdown-item" href="{{route('bills.create')}}">Invoice</a>
                     </div>
                 </li>
                 <!-- ============================================================== -->
