@@ -64,14 +64,15 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('age', 'Age:') !!}
-                        <div class="input-group-prepend">
-                            {!! Form::text('years', null, ['class'=>'form-control']) !!}
-                            <span class="input-group-text">Years</span>
-                            {!! Form::text('months', null, ['class'=>'form-control']) !!}
-                            <span class="input-group-text">Months</span>
-                            {!! Form::text('days', null, ['class'=>'form-control']) !!}
-                            <span class="input-group-text">Days</span>
-                        </div>
+                        {!! Form::date('age', null, ['class'=>'form-control']) !!}
+                        {{--<div class="input-group-prepend">--}}
+                            {{--{!! Form::text('years', null, ['class'=>'form-control']) !!}--}}
+                            {{--<span class="input-group-text">Years</span>--}}
+                            {{--{!! Form::text('months', null, ['class'=>'form-control']) !!}--}}
+                            {{--<span class="input-group-text">Months</span>--}}
+                            {{--{!! Form::text('days', null, ['class'=>'form-control']) !!}--}}
+                            {{--<span class="input-group-text">Days</span>--}}
+                        {{--</div>--}}
                     </div>
 
                     <div class="form-group">

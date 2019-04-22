@@ -53,11 +53,11 @@ class PatientController extends Controller
             $input['species_id'] = $newspecies->id;
         }
         $input['created_by'] = Auth::user()->name;
-        $now = \Carbon\Carbon::now();
+        /*$now = \Carbon\Carbon::now();
         $y = $request->years;
         $m = $request->months;
         $d = $request->days;
-        $input['age'] = $now->subYear($y)->subMonths($m)->subDays($d);
+        $input['age'] = $now->subYear($y)->subMonths($m)->subDays($d);*/
         Patient::create($input);
         $notification = array(
             'message' => 'patient has been created!',
@@ -111,11 +111,11 @@ class PatientController extends Controller
         }
         $patient = Patient::find($id);
         $input['updated_by'] = Auth::user()->name;
-        $now = \Carbon\Carbon::now();
+        /*$now = \Carbon\Carbon::now();
         $y = $request->years;
         $m = $request->months;
         $d = $request->days;
-        $input['age'] = $now->subYear($y)->subMonths($m)->subDays($d);
+        $input['age'] = $now->subYear($y)->subMonths($m)->subDays($d);*/
         $patient->update($input);
         $notification = array(
             'message' => 'patient has been updated!',

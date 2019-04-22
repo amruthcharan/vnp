@@ -64,7 +64,7 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('age', 'Age:') !!}
-                        {!! Form::text('age', $patient->age, ['class'=>'form-control']) !!}
+                        {!! Form::date('age', $patient->age, ['class'=>'form-control']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('color', 'Color:') !!}
@@ -82,7 +82,7 @@
         <div class="col-md-12">
             <div class="border-top">
                 <div class="card-body">
-                    {!! Form::submit('Register Patient', ['class'=>'btn btn-primary btn-block']) !!}
+                    {!! Form::submit('Update Patient', ['class'=>'btn btn-primary btn-block']) !!}
                 </div>
             </div>
             {!! Form::close() !!}
