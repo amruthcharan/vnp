@@ -7,6 +7,7 @@ use App\Diagnosis;
 use App\Http\Requests\PrescriptionRequest;
 use App\Medicine;
 use App\MedicineDetails;
+use App\Patient;
 use App\Prescription;
 use App\Symptom;
 use App\User;
@@ -56,8 +57,8 @@ class PrescriptionController extends Controller
     public function store(PrescriptionRequest $request)
     {
         //
-        //return $request->all();
         $input = $request->all();
+
         $symptoms= $request->symptoms;
         if($symptoms <> "") {
             for ($i = 0; $i < count($symptoms); $i++) {

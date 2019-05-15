@@ -35,7 +35,8 @@
                     {!! Form::open(['method'=>'PATCH', 'action' => ['PrescriptionController@update', $prescription->id]]) !!}
                     <div class="form-group">
                         {!! Form::label('appointment_id', 'Appointment:') !!}
-                        {!! Form::select('appointment_id', $prescription , $prescription->appointment->id , ['class'=>'form-control', 'disabled'=>'disabled']) !!}
+                        {!! Form::select('appointment', $prescription , $prescription->appointment->id , ['class'=>'form-control', 'disabled'=>'disabled']) !!}
+                        {!! Form::text('appointment_id', $prescription->appointment->id , ['class'=>'form-control', 'hidden'=>'hidden']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('symptoms', 'Symptoms:') !!}

@@ -27,7 +27,47 @@
 @endsection
 @section('content')
     <div class="row" style="margin: 0 auto">
-        <div class="col-md-9"  style="margin: 0 auto">
+        <div class="col-md-4 appdet" style="margin: 0 auto">
+            <div class="card sticky-top">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <td class="text-left">Owners Name</td>
+                            <td>:</td>
+                            <td class="text-left ownername"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Name</td>
+                            <td>:</td>
+                            <td class="text-left name"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Spicies</td>
+                            <td>:</td>
+                            <td class="text-left species"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Age</td>
+                            <td>:</td>
+                            <td class="text-left age"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Breed</td>
+                            <td>:</td>
+                            <td class="text-left breed"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Color</td>
+                            <td>:</td>
+                            <td class="text-left color"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8"  style="margin: 0 auto">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title" style="text-align: center">New Invoice</h4>
@@ -35,7 +75,7 @@
                     {!! Form::open(['method'=>'POST', 'action' => 'BillingController@store']) !!}
                         <div class="form-group">
                             {!! Form::label('patient_id', '* Patient ID:') !!}
-                            {!! Form::select('patient_id', $patients , app('request')->input('patid') ? app('request')->input('patid') : null , ['class'=>'form-control select22']) !!}
+                            {!! Form::select('patient_id', $patients , app('request')->input('patid') ? app('request')->input('patid') : null , ['class'=>'form-control patid select22']) !!}
                         </div>
                         <div id="component">
                             <h3 class="float-left">Components</h3>
@@ -75,6 +115,10 @@
 
 @section('scripts')
     <script>
+        $(document).ready(function() {
+            $('.select22').select2();
+            $('.appdet').hide();
+        });
         var dumpVal = 0;
         var tot = parseInt($('.grandtotal').val());
         tot = returnZeroIfNothing(tot);
@@ -173,6 +217,36 @@
                 }
             });
         });
+
+        $('.patid').on('change', function () {
+            /*$('#pres').hide();
+            $('#pres').html("<h4 class='float-left'>Previous Records</h4>");*/
+            getpd();
+        });
+        if($('.patid')){
+            getpd();
+        }
+        function getpd() {
+            $('.appdet').hide();
+            var token = '{{ Session::token() }}';
+            var id = parseInt($('.patid').val());
+            var url = '/getpd' ;
+            $.ajax({
+                method: 'POST',
+                url: url,
+                data:{id : id, _token : token},
+                success: function (res) {
+                    $('.ownername').text(res.name);
+                    $('.name').text(res.ownername);
+                    $('.species').text(res.species);
+                    $('.age').text(res.age);
+                    $('.color').text(res.color);
+                    $('.breed').text(res.breed);
+                    $('.appdet').show();
+                }
+            });
+        }
+
     </script>
 
 @endsection

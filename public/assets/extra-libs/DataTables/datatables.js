@@ -945,7 +945,8 @@
 				/* If the element we are initialising has the same ID as a table which was previously
 				 * initialised, but the table nodes don't match (from before) then we destroy the old
 				 * instance by simply deleting it. This is under the assumption that the table has been
-				 * destroyed by other methods. Anyone using non-id selectors will need to do this manually
+				 * destroyed by other methods. Anyone using non-id selectors will neSearch:
+ed to do this manually
 				 */
 				if ( s.sTableId == this.id )
 				{

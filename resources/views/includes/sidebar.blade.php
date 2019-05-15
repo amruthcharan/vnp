@@ -33,7 +33,7 @@
                 <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account-key"></i><span class="hide-menu">Reports </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
                         <li class="sidebar-item"><a href="{{url('/reminders')}}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> Reminders </span></a></li>
-                        <li class="sidebar-item"><a href="{{url('/notifications')}}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> General Reports </span></a></li>
+                        <li class="sidebar-item"><a href="{{url('/reports')}}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> General Reports </span></a></li>
                     </ul>
                 </li>
                 @if(Auth::user()->role_id == 1)

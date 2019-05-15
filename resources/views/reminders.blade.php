@@ -25,15 +25,12 @@
                         </thead>
                         <tbody>
                         @foreach($reminders as $rem)
-                            @php
-                               $app = App\Appointment::find($rem->appointment_id);
-                            @endphp
                             <tr>
-                                <td>{{$app->id}}</td>
-                                <td>{{$app->patient->name}}</td>
-                                <td>{{$app->patient->owner->id}}</td>
-                                <td>{{$app->patient->owner->mobile}}</td>
-                                <td>{{$app->patient->owner->email ? $app->patient->owner->email : ""}}</td>
+                                <td>{{$rem->appointment->id}}</td>
+                                <td>{{$rem->appointment->patient->name}}</td>
+                                <td>{{$rem->appointment->patient->ownername}}</td>
+                                <td>{{$rem->appointment->patient->mobile}}</td>
+                                <td>{{$rem->appointment->patient->email ? $rem->appointment->patient->email : ""}}</td>
                                 <td>{{$rem->reminder}}</td>
                             </tr>
                         @endforeach
@@ -47,5 +44,7 @@
 @section('scripts')
     <script>
         $('#zero_config').DataTable();
+
+        
     </script>
 @endsection

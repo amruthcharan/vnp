@@ -35,19 +35,23 @@
                     <div class="col-md-12">
                         <div class="float-left">
                             <address>
-                                <h3> &nbsp;<b class="text-danger">Vet N Pet</b></h3>
+                                <img src="{{asset('assets/images/vnplogo.jpg')}}" width="120px">
                                 <p class=" m-l-5">Plot No 369/1,
                                     <br/> Phase 3, Film Nagar
                                     <br/> Jubilee Hills
-                                    <br/> Hyderabad - 500096</p>
+                                    <br/> Hyderabad - 500096
+                                    <br/> 8885000588
+                                    <br/> 040 - 23336111
+                                </p>
                             </address>
                         </div>
                         <div class="float-right text-right">
                             <p class=""><b>Invoice Date :</b> <i class="fa fa-calendar"></i> {{$bill->created_at}}</p>
                             <address>
                                 <h4>Invoice is For,</h4>
-                                <p class="m-l-30">{{$bill->patient->name}}
+                                <p class="m-l-30"><b>Name</b> - {{$bill->patient->name}}
                                     <br/> {{$bill->patient->address}},
+                                    <br/> <b>Breed</b> - {{$bill->patient->breed}},
                                     <br/> <b>Invoice Prepared by {{$bill->created_by}}</b>.
                                     </p>
                             </address>
@@ -55,13 +59,13 @@
                     </div>
 
                     <div class="col-md-12">
-                        <h4 class="m-t-20">Medicines List:</h4>
+                        <h4 class="m-t-20">Particulars List:</h4>
                         <div class="table-responsive" style="clear: both;">
                             <table class="table table-hover">
                                 <thead>
                                 <tr>
                                     <th class="text-center">#</th>
-                                    <th>Component</th>
+                                    <th>Particulars</th>
                                     <th class="text-right">Amount</th>
                                 </tr>
                                 </thead>

@@ -27,7 +27,52 @@
 @endsection
 @section('content')
     <div class="row" style="margin: 0 auto">
-        <div class="col-md-9"  style="margin: 0 auto">
+        <div class="col-md-4 appdet" style="margin: 0 auto">
+            <div class="card sticky-top">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <td class="text-left">Owners Name</td>
+                            <td>:</td>
+                            <td class="text-left ownername"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Name</td>
+                            <td>:</td>
+                            <td class="text-left name"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Spicies</td>
+                            <td>:</td>
+                            <td class="text-left species"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Age</td>
+                            <td>:</td>
+                            <td class="text-left age"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Breed</td>
+                            <td>:</td>
+                            <td class="text-left breed"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Color</td>
+                            <td>:</td>
+                            <td class="text-left color"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Appointment Date</td>
+                            <td>:</td>
+                            <td class="text-left date"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8"  style="margin: 0 auto">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title" style="text-align: center">New Prescription</h4>
@@ -36,7 +81,7 @@
                         <div class="form-group">
                             {!! Form::label('appointment_id', 'Appointment:') !!}
                             {{ csrf_field() }}
-                            {!! Form::select('appointment_id', $appointments , app('request')->input('appid') ? app('request')->input('appid') : null , ['class'=>'form-control select22']) !!}
+                            {!! Form::select('appointment_id', $appointments , app('request')->input('appid') ? app('request')->input('appid') : null , ['class'=>'form-control appid select22']) !!}
                         </div>
                         <div class="form-group">
                             {!! Form::label('symptoms', 'Symptoms:') !!}
@@ -47,19 +92,13 @@
                             {!! Form::select('diagnoses[]', $diagnoses , null , ['class'=>'form-control select32','multiple'=>'multiple']) !!}
                         </div>
 
-                        {{--<div id="medicine">
-                            <h4 class="float-left">Previous Records</h4>
-                            @php
-                                $prescription = \App\Prescription::find(1);
-                            @endphp
-                            @foreach($prescription->appointment->patient->appointments as $appointment)
-                            <span>&nbsp;</span>
-                            <a href="javascript:void(0)" data-toggle="modal" data-target="#pre"  class="btn btn-dark btn-xs">1</a>
-                            @endforeach
-                                <br>
-                            <br>
-                        </div>--}}
+                        <div id="pres">
+
+
+
+                        </div>
                         <div id="medicine">
+                            <br>
                             <h3 class="float-left">Medicines</h3>
                             <a onclick="addmedicine()" class="btn btn-primary float-right"><i class="fa fa-plus"></i></a>
                             <br>
@@ -84,13 +123,85 @@
             </div>
         </div>
     </div>
-    @include('includes.premodal')
+    <!-- Modal  -->
+    <div class="modal fade none-border" id="pre">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title"><strong></strong></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                @php
+                    $prescription = \App\Prescription::find(1);
+                @endphp
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="table-responsive m-t-40" style="clear: both;">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Symptoms</th>
+                                    </tr>
+                                    </thead>
+                                    {{--@foreach($prescription->symptoms as $symptom)--}}
+                                        <tbody class="sym">
+
+                                        </tbody>
+{{--                                    @endforeach--}}
+                                </table>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="table-responsive m-t-40" style="clear: both;">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Diagnoses</th>
+                                    </tr>
+                                    </thead>
+                                        <tbody class="dia">
+
+                                        </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="table-responsive m-t-40" style="clear: both;">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th class="text-left">Medicine</th>
+                                <th>Timing</th>
+                                <th class="text-right">Duration</th>
+                            </tr>
+                            </thead>
+                                <tbody class="med">
+                               {{-- <tr>
+                                    <td class="text-left">{{$medicine->medicine->name}}</td>
+                                    <td>{{$medicine->timing}}</td>
+                                    <td class="text-right">{{$medicine->duration}}</td>
+                                </tr>--}}
+                                </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-12 notes"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END MODAL -->
 @endsection
 
 @section('scripts')
 <script>
     $(document).ready(function() {
         $('.select22').select2();
+        $('.appdet').hide();
+        $('#pres').hide();
     });
 
     $('.select32').select2({
@@ -122,6 +233,85 @@
     $(document).on('click', '.remove', function (){
         $(this).closest('.row').remove();
     });
+
+    $('.appid').on('change', function () {
+        getpdd();
+    });
+
+    if($('.appid')){
+        getpdd();
+    }
+
+    function getpdd(){
+        $('#pres').hide();
+        $('#pres').html("<h4 class='float-left'>Previous Records</h4>");
+        $('.appdet').hide();
+        var token = '{{ Session::token() }}';
+        var id = parseInt($('.appid').val());
+        var url = '/getad' ;
+        $.ajax({
+            method: 'POST',
+            url: url,
+            data:{id : id, _token : token},
+            success: function (res) {
+                $('.ownername').text(res.name);
+                $('.name').text(res.ownername);
+                $('.species').text(res.species);
+                $('.age').text(res.age);
+                $('.color').text(res.color);
+                $('.breed').text(res.breed);
+                $('.date').text(res.date);
+                $('.appdet').show();
+                res.pre.forEach(function (preapp) {
+                    $("<span>&nbsp;</span><span class='btn btn-dark btn-xs apppre'>" + preapp.id +"</span>").appendTo('#pres');
+                });
+                $('#pres').show();
+            }
+        });
+    }
+
+    $(document).on('click','.apppre',function () {
+        var id = $(this).text();
+        var token = '{{ Session::token() }}';
+        var url = '/getped';
+        $.ajax({
+            method: 'POST',
+            url: url,
+            data: {id: id, _token: token},
+            success: function (d) {
+                $('.modal-title').text("Prescription #" + d.pres);
+                $('.sym').empty();
+
+                d.symptoms.forEach(function (s) {
+                    $("<tr><td class='text-left'>" + s.name +"</td></tr>").appendTo('.sym');
+                });
+                $('.dia').empty();
+                d.diagnoses.forEach(function (s) {
+                    $("<tr><td class='text-left'>" + s.name +"</td></tr>").appendTo('.dia');
+                });
+                $('.med').empty();
+
+                d.medicinedets.forEach(function (s) {
+                    var id = s.medicine_id;
+                    var token = '{{ Session::token() }}';
+                    var url = '/getmn/' +id ;
+                    $.ajax({
+                        method: 'GET',
+                        url: url,
+                        /*data:{id : id, _token : token},*/
+                        success: function (res) {
+                           var medname = res.name;
+                            $("<tr><td class='text-left'>" + medname +"</td><td>"+s.timing+"</td><td class='text-right'>"+s.duration+"</td></tr>").appendTo('.med');
+                        }
+                    });
+                });
+                $('.notes').empty();
+                $('.notes').append('Notes - <span>'+ d.notes +'</span>');
+                $('#pre').modal();
+            }
+        });
+    });
+
 </script>
 
 @endsection

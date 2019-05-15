@@ -12,7 +12,7 @@
                     <div class="col-md-12">
                         <div class="float-left">
                             <address>
-                                <h3> &nbsp;<b class="text-danger">Vet N Pet</b></h3>
+                                <img src="{{asset('assets/images/vnplogo.jpg')}}" width="120px">
                                 <p class=" m-l-5">Plot No 369/1,
                                     <br/> Phase 3, Film Nagar
                                     <br/> Jubilee Hills
@@ -133,6 +133,7 @@
         function printit() {
             $('.btnpr').hide();
             window.print();
+            window.close();
         }
     </script>
 
