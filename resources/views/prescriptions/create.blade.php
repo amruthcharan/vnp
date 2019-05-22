@@ -131,9 +131,6 @@
                     <h4 class="modal-title"><strong></strong></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                 </div>
-                @php
-                    $prescription = \App\Prescription::find(1);
-                @endphp
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-6">
@@ -144,11 +141,9 @@
                                         <th>Symptoms</th>
                                     </tr>
                                     </thead>
-                                    {{--@foreach($prescription->symptoms as $symptom)--}}
                                         <tbody class="sym">
 
                                         </tbody>
-{{--                                    @endforeach--}}
                                 </table>
                             </div>
                         </div>
@@ -177,11 +172,7 @@
                             </tr>
                             </thead>
                                 <tbody class="med">
-                               {{-- <tr>
-                                    <td class="text-left">{{$medicine->medicine->name}}</td>
-                                    <td>{{$medicine->timing}}</td>
-                                    <td class="text-right">{{$medicine->duration}}</td>
-                                </tr>--}}
+
                                 </tbody>
                         </table>
                     </div>

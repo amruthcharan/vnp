@@ -63,6 +63,10 @@
                         {!! Form::select('species_id', $species ,$patient->species, ['class'=>'form-control select32']) !!}
                     </div>
                     <div class="form-group">
+                        {!! Form::label('gender', 'Gender:') !!}
+                        {!! Form::select('gender', $gender = array(''=>'Select An Option', 'male'=>'Male', 'female'=>'Female') ,$patient->gender, ['class'=>'form-control']) !!}
+                    </div>
+                    <div class="form-group">
                         {!! Form::label('age', 'Age:') !!}
                         {!! Form::date('age', $patient->age, ['class'=>'form-control']) !!}
                     </div>

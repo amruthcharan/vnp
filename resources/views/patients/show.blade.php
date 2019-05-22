@@ -70,7 +70,10 @@
             <!-- Card -->
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Appointments</h4>
+                    <div class="card-title">
+                        <h4 class="float-left">Appointments</h4>
+                        <a class='float-right' href="{{route('appointments.create','patid='.$patient->id)}}"><b><i class="ti-plus"></i></b></a>
+                    </div>
                     <div class="table-responsive m-t-40" style="clear: both;">
                         <table class="table table-hover">
                             <thead>
@@ -120,9 +123,14 @@
                                 <td class="text-left">{{$patient->name}}</td>
                             </tr>
                             <tr>
-                                <td class="text-left">Spicies</td>
+                                <td class="text-left">Species</td>
                                 <td>:</td>
                                 <td class="text-left">{{$patient->species->name}}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">Gender</td>
+                                <td>:</td>
+                                <td class="text-left">{{$patient->gender}}</td>
                             </tr>
                             <tr>
                                 <td class="text-left">Age</td>
@@ -147,7 +155,10 @@
             <!-- Card -->
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Invoices</h4>
+                    <div class="card-title">
+                        <h4 class="float-left">Invoices</h4>
+                        <a class='float-right' href="{{route('bills.create','patid='.$patient->id)}}"><b><i class="ti-plus"></i></b></a>
+                    </div>
                     <div class="table-responsive m-t-40" style="clear: both;">
                         <table class="table table-hover">
                             <thead>

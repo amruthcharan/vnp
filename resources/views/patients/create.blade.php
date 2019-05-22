@@ -63,6 +63,10 @@
                         {!! Form::select('species_id', $species ,null, ['class'=>'form-control select32']) !!}
                     </div>
                     <div class="form-group">
+                        {!! Form::label('gender', 'Gender:') !!}
+                        {!! Form::select('gender', $gender = array(''=>'Select An Option', 'Male'=>'Male', 'Female'=>'Female') ,null, ['class'=>'form-control']) !!}
+                    </div>
+                    <div class="form-group">
                         {!! Form::label('age', 'Age:') !!}
                         {!! Form::date('age', null, ['class'=>'form-control']) !!}
                         {{--<div class="input-group-prepend">--}}

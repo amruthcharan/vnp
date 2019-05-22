@@ -80,7 +80,9 @@
 
 @section('scripts')
     <script>
-        $('#appointments').DataTable();
+        $('#appointments').DataTable({
+            "order": [0,'desc']
+        });
 
         @if(Session::has('message'))
         var type = "{{ Session::get('alert-type') }}";

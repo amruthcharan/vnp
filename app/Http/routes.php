@@ -214,12 +214,12 @@ Route::group(['middleware'=>'auth'], function (){
 
         $res = array(
             'status' => 'success',
-            'ownername' => $patient->ownername,
-            'name' => $patient->name,
-            'species' => $patient->species->name,
-            'age' => $patient->age->diff(Carbon::now())->format('%y years, %m months and %d days'),
-            'breed' => $patient->breed,
-            'color' => $patient->color,
+            'ownername' => $patient->ownername ? $patient->ownername: '',
+            'name' => $patient->name ? $patient->name : '',
+            'species' => $patient->species ? $patient->species->name : '',
+            'age' => $patient->age ? $patient->age->diff(Carbon::now())->format('%y years, %m months and %d days') : '',
+            'breed' => $patient->breed ? $patient->breed : '',
+            'color' => $patient->color ? $patient->color : '',
         );
         return Response::json($res);
     });
@@ -232,5 +232,13 @@ Route::group(['middleware'=>'auth'], function (){
         $pat = Patient::create($input);
         return Response::json($pat);
     });
+    Route::post('/createapp', function (\App\Http\Requests\AppointmentRequest $request){
+        $input = $request->all();
+        $input['created_by'] = 'Created by API';
+        $app = Appointment::create($input);
+        return Response::json($app);
+    });
+
+
 
 });

@@ -91,7 +91,7 @@
             window.location.href = "/appointments";
         });
         $(document).on('click','.reminders', function () {
-            window.location.href = "/reminders";
+            window.location.href = "/reports";
         });
 
     </script>

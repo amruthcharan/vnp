@@ -79,7 +79,9 @@
 
 @section('scripts')
     <script>
-        $('#users').DataTable();
+        $('#users').DataTable({
+            "order": [0,'desc']
+        });
 
         @if(Session::has('message'))
         var type = "{{ Session::get('alert-type') }}";

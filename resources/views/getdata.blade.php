@@ -50,7 +50,7 @@
                                 <th>Action</th>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody class="tbody">
 
                             </tbody>
                         </table>
@@ -60,6 +60,74 @@
             </div>
         </div>
     </div>
+    <!-- Modal  -->
+    <div class="modal fade none-border" id="appmodal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Create Appointment</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                @php
+                    use App\User;
+                    $doctors = User::all('name','id','role_id')->where('role_id',2);
+                    /*$doctors=[];
+                    foreach($docs as $doc){
+                        $key = $doc->id;
+                        $value = $doc->name;
+                        $doctors = $doctors + array($key=>$value);
+                    }*/
+                @endphp
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="patiid">Patient ID:</label>
+                                    <input type="text" class="form-control" id="patiid" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="patidate">Date:</label>
+                                    <input type="date" class="form-control" id="patidate">
+                                </div>
+                                <div class="form-group">
+                                    <label for="doctor">Doctor:</label>
+                                    <select class="form-control" id="doctor_id">
+                                        @foreach($doctors as $doctor)
+                                        <option value="{{$doctor->id}}">{{$doctor->name}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <a class="btn btn-default" id="createapp"> Create Appointment</a>
+                        </div>
+                        {{--<div class="col-md-6">
+                            <table class="table table-hover">
+                                <tr>
+                                    <td>Name</td>
+                                    <td>:</td>
+                                    <td>Charan</td>
+                                </tr>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>:</td>
+                                    <td>Charan</td>
+                                </tr>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>:</td>
+                                    <td>Charan</td>
+                                </tr>
+                            </table>
+                        </div>--}}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- END MODAL -->
 @endsection
 
 
@@ -67,7 +135,7 @@
     <script>
         $('#appointments').DataTable();
 
-        $('.getrequests').on('click',function(){
+        function getdetails(){
             var actionbtn;
             var url = 'http://vnpapi.aresol.in/apps/read.php';
             $(document).ajaxStart(function(){
@@ -79,23 +147,27 @@
             $.ajax({
                 url: url,
                 success:function(d){
-                    $('tbody').empty();
+                    $('.tbody').empty();
                     $('error').empty();
                     $.each(d.records, function(k,v){
                         if(v.patid==0){
-                            actionbtn = "<a class='btn btn-danger crepat'>Create Patient</a>";
+                            actionbtn = "<button class='btn btn-danger crepat'>Create Patient</button>";
                         } else {
-                            actionbtn = "<a class='btn btn-dribbble creapp'>Create Appointment</a>";
+                            actionbtn = "<button class='btn btn-dribbble creapp'>Create Appointment</button>";
                         }
-                        $('tbody').append("<tr><td>" + v.patid + "</td><td>" + v.name + "</td><td>" + v.ownername + "</td><td>" + v.mobile + "</td><td>" + v.email + "</td><td>" + v.date + "</td><td>" + actionbtn + "</td><td class='id' style='display: none;'>" + v.id + "</td></tr>");
+                        $('.tbody').append("<tr><td>" + v.patid + "</td><td>" + v.name + "</td><td>" + v.ownername + "</td><td>" + v.mobile + "</td><td>" + v.email + "</td><td>" + v.date + "</td><td>" + actionbtn + "</td><td class='id' style='display: none;'>" + v.id + "</td></tr>");
 
                     });
                 },
                 error:function (d) {
-                    $('tbody').empty();
+                    $('.tbody').empty();
                     $('.error').append("<h3>"+d.responseJSON.message+"</h3>");
                 }
             });
+        }
+
+        $('.getrequests').on('click',function(){
+            getdetails();
         });
 
         $('table').delegate('.crepat','click', function(){
@@ -129,10 +201,57 @@
                     toastr.success("Patient has been created", "Success");
                 }
             });
-            var actionbtn = "<a class='btn btn-dribbble creapp'>Create Appointment</a>";
+            var actionbtn = "<button class='btn btn-dribbble creapp'>Create Appointment</button>";
             $(this).closest('tr').find('td').eq(0).html(patid);
             $(this).closest('tr').find('td').eq(6).html(actionbtn);
         });
+        var apiid;
+        $('table').delegate('.creapp','click', function(){
+            var pid = $(this).closest('tr').find('td').eq(0).html();
+            var date = $(this).closest('tr').find('td').eq(5).html();
+            apiid = $(this).closest('tr').find('.id').html();
+            $('#patiid').val(pid);
+            $('#patidate').val(date);
+            $('#appmodal').modal();
+        });
+
+        $('#createapp').on('click', function () {
+            var token = '{{ Session::token() }}';
+            var pid = $('#patiid').val();
+            var date = $('#patidate').val();
+            var doctorid = $('#doctor_id').val();
+
+            $('#appmodal').modal('toggle');
+
+            //console.log(pid, date, doctorid);
+
+            var app = {patient_id:pid,doctor_id:doctorid,date:date,_token:token};
+            $.ajax({
+                url:'/createapp',
+                async:false,
+                type:"POST",
+                data: app,
+                success:function (d) {
+                    patid = d.patient_id;
+                    date=d.date;
+                    appid=d.id;
+                }
+            });
+            var det = {patid:patid,status:'Appointment Booked',appid:appid,date:date,id:apiid};
+            var json = JSON.stringify(det);
+            console.log(json);
+            $.ajax({
+                url:'http://vnpapi.aresol.in/apps/update.php',
+                async:false,
+                type:"POST",
+                data: json,
+                dataType: "json",
+                success:function (d) {
+                    toastr.success("Appointment has been created", "Success");
+                }
+            });
+            getdetails();
+        })
 
     </script>
 @endsection

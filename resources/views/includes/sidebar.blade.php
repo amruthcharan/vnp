@@ -36,6 +36,7 @@
                         <li class="sidebar-item"><a href="{{url('/reports')}}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> General Reports </span></a></li>
                     </ul>
                 </li>
+                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link {{ Request::is('/getdata') ? 'active' : '' }}" href="{{url('/getdata')}}" aria-expanded="false"><i class="mdi mdi-relative-scale"></i><span class="hide-menu">Get Online Data</span></a></li>
                 @if(Auth::user()->role_id == 1)
                     <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark {{ Request::is('/users') ? 'active' : '' }}" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account-key"></i><span class="hide-menu">Users </span></a>
                         <ul aria-expanded="false" class="collapse  first-level">

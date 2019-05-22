@@ -237,7 +237,7 @@
                             });
                             break;
                         case 'appointments':
-                            var head = '<tr><th>ID</th><th>Patient Name</th><th>Owner name</th><th>Doctor Name</th><th>Date</th><th>Actions</th></tr>';
+                            var head = '<tr><th>ID</th><th>Patient Name</th><th>Owner name</th><th>Doctor Name</th><th>Date</th></tr>';
                             $.each(array, function (i, d) {
                                 var row = $('<tr/>');
                                 var link = '/appointments/' + d.id;
@@ -251,8 +251,6 @@
                                     text: d.doc.name,
                                 })).append($('<td/>',{
                                     text: d.date,
-                                })).append($('<td/>',{
-                                    html: "<a class='btn btn-info btn-sm' href=" + link + ">View</a>",
                                 }));
                                 $('tbody').append(row);
                             });

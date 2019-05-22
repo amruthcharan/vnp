@@ -36,17 +36,17 @@
                         <div class="float-left">
                             <address>
                                 <img src="{{asset('assets/images/vnplogo.jpg')}}" width="120px">
-                                <p class=" m-l-5">Plot No 369/1,
+                                <p class="m-l-5" style="font-size:16px;">Plot No 369/1,
                                     <br/> Phase 3, Film Nagar
                                     <br/> Jubilee Hills
                                     <br/> Hyderabad - 500096</p>
                             </address>
                         </div>
                         <div class="float-right text-right">
-                            <p class=""><b>Invoice Date :</b> <i class="fa fa-calendar"></i> {{$bill->created_at}}</p>
+                            <p style="font-size:16px;"><b>Invoice Date :</b> <i class="fa fa-calendar"></i> {{$bill->created_at}}</p>
                             <address>
                                 <h4>Invoice is For,</h4>
-                                <p class="m-l-30"><b>Name</b> - {{$bill->patient->name}}
+                                <p class="m-l-30" style="font-size:16px;"><b>Name</b> - {{$bill->patient->name}}
                                     <br/> {{$bill->patient->address}},
                                     <br/> <b>Breed</b> - {{$bill->patient->breed}},
                                     <br/> <b>Invoice Prepared by {{$bill->created_by}}</b>.
@@ -57,8 +57,8 @@
 
                     <div class="col-md-12">
                         <h4 class="m-t-20">Medicines List:</h4>
-                        <div class="table-responsive" style="clear: both;">
-                            <table class="table table-hover">
+                        <div class="table-responsive" style="clear: both;" style="font-size:16px;">
+                            <table class="table table-hover" style="font-size:16px;">
                                 <thead>
                                 <tr>
                                     <th class="text-center">#</th>
@@ -86,7 +86,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-12" style="font-size:13px;">
                         <div class="pull-right m-t-30 text-right">
                             <p>Sub - Total amount: ₹ {{$bill->grandtotal}}</p>
                             @php
