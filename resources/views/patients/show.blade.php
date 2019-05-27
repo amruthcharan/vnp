@@ -14,8 +14,7 @@
                 <div class="ml-auto text-right">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{url('/')}}">Home</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Patients</li>
+                            <span class="text-right"><a class="btn btn-sm btn-success" onclick="window.history.back();">back</a></span>
                         </ol>
                     </nav>
                 </div>
@@ -125,7 +124,7 @@
                             <tr>
                                 <td class="text-left">Species</td>
                                 <td>:</td>
-                                <td class="text-left">{{$patient->species->name}}</td>
+                                <td class="text-left">{{$patient->species ? $patient->species->name : ''}}</td>
                             </tr>
                             <tr>
                                 <td class="text-left">Gender</td>
@@ -135,7 +134,7 @@
                             <tr>
                                 <td class="text-left">Age</td>
                                 <td>:</td>
-                                <td class="text-left">{{$patient->age->diff(\Carbon\Carbon::now())->format('%y years, %m months and %d days')}}</td>
+                                <td class="text-left">{{$patient->age ? $patient->age->diff(\Carbon\Carbon::now())->format('%y years, %m months and %d days'):''}}</td>
                             </tr>
                             <tr>
                                 <td class="text-left">Breed</td>

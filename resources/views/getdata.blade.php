@@ -86,9 +86,12 @@
                                     <label for="patiid">Patient ID:</label>
                                     <input type="text" class="form-control" id="patiid" readonly>
                                 </div>
+                            @php
+                                $d = \Carbon\Carbon::now();
+                            @endphp
                                 <div class="form-group">
                                     <label for="patidate">Date:</label>
-                                    <input type="date" class="form-control" id="patidate">
+                                    <input type="date" class="form-control" min="{{$d->toDateString()}}" id="patidate">
                                 </div>
                                 <div class="form-group">
                                     <label for="doctor">Doctor:</label>
@@ -98,32 +101,14 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <a class="btn btn-default" id="createapp"> Create Appointment</a>
+                            <div style="text-align:center;">
+
+                                <a class="btn btn-default" style="color:white;" id="createapp"> Create Appointment</a>
+                                <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
+                            </div>
                         </div>
-                        {{--<div class="col-md-6">
-                            <table class="table table-hover">
-                                <tr>
-                                    <td>Name</td>
-                                    <td>:</td>
-                                    <td>Charan</td>
-                                </tr>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>:</td>
-                                    <td>Charan</td>
-                                </tr>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>:</td>
-                                    <td>Charan</td>
-                                </tr>
-                            </table>
-                        </div>--}}
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -235,9 +220,13 @@
                     patid = d.patient_id;
                     date=d.date;
                     appid=d.id;
+                    doctor=d.doctor.name;
+                    petname=d.patient.name;
+                    mobile=d.patient.mobile;
+                    console.log(d);
                 }
             });
-            var det = {patid:patid,status:'Appointment Booked',appid:appid,date:date,id:apiid};
+            var det = {patid:patid,status:'Appointment Booked',appid:appid,doctor:doctor,petname:petname,date:date,id:apiid};
             var json = JSON.stringify(det);
             console.log(json);
             $.ajax({

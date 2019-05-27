@@ -81,9 +81,12 @@
                             {!! Form::label('doctor_id', '* Doctor:') !!}
                             {!! Form::select('doctor_id', $doctors , null , ['class'=>'form-control']) !!}
                         </div>
+                    @php
+                        $date = \Carbon\Carbon::now();
+                    @endphp
                         <div class="form-group">
                             {!! Form::label('date', '* Date:') !!}
-                            {!! Form::date('date', null, ['class'=>'form-control']) !!}
+                            {!! Form::date('date', null, ['class'=>'form-control', 'min'=>$date->toDateString()]) !!}
                         </div>
                         <div class="border-top">
                             <div class="card-body">
@@ -100,6 +103,7 @@
 @section('scripts')
 <script>
     $(document).ready(function() {
+
         $('.select22').select2();
         $('.appdet').hide();
     });

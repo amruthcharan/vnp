@@ -35,15 +35,18 @@
                     {!! Form::open(['method'=>'PATCH', 'action' => ['AppointmentController@update',$appointment->id]]) !!}
                     <div class="form-group">
                         {!! Form::label('patient_id', '* Patient:') !!}
-                        {!! Form::select('patient_id', $patients , $appointment->patient_id , ['class'=>'form-control', 'disabled'=>'disabled']) !!}
+                        {!! Form::text('patient_id', $appointment->patient->name , ['class'=>'form-control', 'readonly'=>'readonly ']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('doctor_id', '* Doctors:') !!}
                         {!! Form::select('doctor_id', $doctors , $appointment->doctor_id , ['class'=>'form-control']) !!}
                     </div>
+                    @php
+                        $date = \Carbon\Carbon::now();
+                    @endphp
                     <div class="form-group">
                         {!! Form::label('date', '* Date:') !!}
-                        {!! Form::date('date', $appointment->date, ['class'=>'form-control']) !!}
+                        {!! Form::date('date', $appointment->date, ['class'=>'form-control', 'min'=>$date->toDateString()]) !!}
                     </div>
                     <div class="border-top">
                         <div class="card-body">

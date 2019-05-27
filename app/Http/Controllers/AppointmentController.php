@@ -56,12 +56,39 @@ class AppointmentController extends Controller
         //
         $input = $request->all();
         $input['created_by'] = Auth::user()->name;
-        Appointment::create($input);
+        $app=Appointment::create($input);
         $notification = array(
             'message' => 'Appointment has been booked!',
             'alert-type' => 'success',
             'head' => 'Success'
         );
+
+        $username="vetnpet";
+
+        $password="8215427";
+
+        $d = date_create($app->date);
+
+        $date = date_format($d,'d/m/Y');
+
+        $message="Dear Customer, Appointment has been successfully booked for your pet, " . $app->patient->name . " on " . $date . " with Dr." . $app->doctor->name . ". Your Appointment id is " . $app->id . ".";
+
+        $sender="VetPet"; //ex:INVITE
+
+        $mobile_number=$app->patient->mobile;
+
+
+        $url = "login.bulksmsgateway.in/sendmessage.php?user=".urlencode($username)."&password=".urlencode($password)."&mobile=".urlencode($mobile_number)."&message=".urlencode($message)."&sender=".urlencode($sender)."&type=".urlencode('3');
+
+        $ch = curl_init($url);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $output = curl_exec($ch);
+
+        curl_close($ch);
+
+
 
         //redirecting back to users
         return redirect('/appointments')->with($notification);

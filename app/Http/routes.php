@@ -236,6 +236,10 @@ Route::group(['middleware'=>'auth'], function (){
         $input = $request->all();
         $input['created_by'] = 'Created by API';
         $app = Appointment::create($input);
+        $res = $app;
+        $res->doctor = $app->doctor->name;
+        $res->doctor = $app->patient->name;
+
         return Response::json($app);
     });
 
