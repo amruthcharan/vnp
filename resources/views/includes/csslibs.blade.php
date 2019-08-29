@@ -8,3 +8,4 @@
 <link rel="stylesheet" type="text/css" href="{{asset('assets/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('assets/libs/print/print.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('dist/css/jquery-ui.min.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('dist/css/st.css')}}">

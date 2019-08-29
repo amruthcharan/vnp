@@ -21,7 +21,8 @@ class AppointmentController extends Controller
     public function index()
     {
         //
-        $appointments = Appointment::all();
+        $appointments = Appointment::all()->load('prescription');
+        //return $appointments;
         return view('appointments.index', compact('appointments'));
     }
 
@@ -114,7 +115,6 @@ class AppointmentController extends Controller
     public function edit($id)
     {
         $appointment = Appointment::findOrFail($id);
-        $patients = Patient::lists('name','id');
         $docs = User::all('name','id','role_id')->where('role_id',2);
         $doctors=[];
         foreach($docs as $doc){
@@ -122,7 +122,7 @@ class AppointmentController extends Controller
             $value = $doc->name;
             $doctors = $doctors + array($key=>$value);
         }
-        return view('appointments.edit', compact(['appointment','patients','doctors']));
+        return view('appointments.edit', compact(['appointment','doctors']));
     }
 
     /**
@@ -137,6 +137,7 @@ class AppointmentController extends Controller
         //
         $input = $request->all();
         $appointment = Appointment::find($id);
+        $input['patient_id'] = $request->patient_id;
         $input['updated_by'] = Auth::user()->name;
         $appointment->update($input);
         $notification = array(

@@ -27,6 +27,47 @@
 @endsection
 @section('content')
     <div class="row" style="margin: 0 auto">
+        <div class="col-md-6 appdet" style="margin: 0 auto">
+            <div class="card sticky-top">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tbody>
+
+                        <tr>
+                            <td class="text-left">Name</td>
+                            <td>:</td>
+                            <td class="text-left name"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Owners Name</td>
+                            <td>:</td>
+                            <td class="text-left ownername"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Spicies</td>
+                            <td>:</td>
+                            <td class="text-left species"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Age</td>
+                            <td>:</td>
+                            <td class="text-left age"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Breed</td>
+                            <td>:</td>
+                            <td class="text-left breed"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Color</td>
+                            <td>:</td>
+                            <td class="text-left color"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
         <div class="col-md-6"  style="margin: 0 auto">
             <div class="card">
                 <div class="card-body">
@@ -35,7 +76,7 @@
                     {!! Form::open(['method'=>'PATCH', 'action' => ['AppointmentController@update',$appointment->id]]) !!}
                     <div class="form-group">
                         {!! Form::label('patient_id', '* Patient:') !!}
-                        {!! Form::text('patient_id', $appointment->patient->name , ['class'=>'form-control', 'readonly'=>'readonly ']) !!}
+                        {!! Form::text('patient_id', $appointment->patient->id , ['class'=>'form-control pat_id', 'readonly'=>'readonly']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('doctor_id', '* Doctors:') !!}
@@ -64,6 +105,7 @@
     <script>
         $(document).ready(function() {
             $('.select22').select2();
+            getpd();
         });
         $('.select32').select2({
             placeholder: "Select an Option",
@@ -76,5 +118,27 @@
                 };
             }
         });
+
+        function getpd(){
+            $('.appdet').hide();
+            var token = '{{ Session::token() }}';
+            var id = parseInt($('#patient_id').val());
+            //console.log(id);
+            var url = '/getpd' ;
+            $.ajax({
+                method: 'POST',
+                url: url,
+                data:{id : id, _token : token},
+                success: function (res) {
+                    $('.ownername').text(res.ownername);
+                    $('.name').text(res.name);
+                    $('.species').text(res.species);
+                    $('.age').text(res.age);
+                    $('.color').text(res.color);
+                    $('.breed').text(res.breed);
+                    $('.appdet').show();
+                }
+            });
+        }
     </script>
 @endsection

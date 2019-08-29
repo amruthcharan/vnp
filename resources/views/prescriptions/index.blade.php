@@ -56,7 +56,7 @@
                                         <td>{{$prescription->id}}</td>
                                         <td>{{$prescription->appointment->patient->name}}</td>
                                         <td>{{$prescription->appointment->id}}</td>
-                                        <td>{{$prescription->appointment->date}}</td>
+                                        <td>{{date('d-m-Y', strtotime($prescription->appointment->date))}}</td>
                                         <td>{{$prescription->appointment->doctor->name}}</td>
                                         <td>
                                             <a class="btn btn-success" href="{{route('prescriptions.show', $prescription->id)}}">View</a>

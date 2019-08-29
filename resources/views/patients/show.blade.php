@@ -134,17 +134,12 @@
                             <tr>
                                 <td class="text-left">Age</td>
                                 <td>:</td>
-                                <td class="text-left">{{$patient->age ? $patient->age->diff(\Carbon\Carbon::now())->format('%y years, %m months and %d days'):''}}</td>
+                                <td class="text-left">{{$patient->age ? $patient->age->format('d-m-Y'):''}}</td>
                             </tr>
                             <tr>
                                 <td class="text-left">Breed</td>
                                 <td>:</td>
                                 <td class="text-left">{{$patient->breed}}</td>
-                            </tr>
-                            <tr>
-                                <td class="text-left">Color</td>
-                                <td>:</td>
-                                <td class="text-left">{{$patient->color}}</td>
                             </tr>
                             </tbody>
                         </table>

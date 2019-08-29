@@ -79,10 +79,7 @@
                         {{--</div>--}}
                     </div>
 
-                    <div class="form-group">
-                        {!! Form::label('color', 'Color:') !!}
-                        {!! Form::text('color', null, ['class'=>'form-control']) !!}
-                    </div>
+
                     <div class="form-group">
                         {!! Form::label('breed', 'Breed:') !!}
                         {!! Form::text('breed', null, ['class'=>'form-control']) !!}

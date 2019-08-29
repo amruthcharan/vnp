@@ -57,10 +57,13 @@
                                         <td>{{$appointment->patient->name}}</td>
                                         <td>{{$appointment->patient ? $appointment->patient->ownername : ""}}</td>
                                         <td>{{$appointment->doctor->name}}</td>
-                                        <td>{{$appointment->date}}</td>
+                                        <td>{{date('d-m-Y', strtotime($appointment->date))}}</td>
                                         <td>
                                             <a class="btn btn-dribbble" href="{{route('appointments.edit', $appointment->id)}}">Edit</a>
-                                            <a class="btn btn-success" href="{{'prescriptions/create?appid='.  $appointment->id}}">Prescription</a>
+                                            @php
+                                                $t = date('Y-m-d');
+                                            @endphp
+                                            <a class="btn {{$appointment->date == $t || $appointment->prescription <> null ? 'btn-success': "disabled btn-secondary"}}"  href="{{$appointment->prescription <> null ? 'prescriptions/'.$appointment->prescription->id : 'prescriptions/create?appid='. $appointment->id}}">Prescription</a>
                                             <a class="btn btn-info" href="{{'patients/'.  $appointment->patient->id}}">Patient Info</a>
                                             {{--<a href="javascript:void(0)" data-toggle="modal" data-target="#delete-user" class="btn btn-info waves-effect waves-light">Delete</a>--}}
                                         </td>
@@ -85,7 +88,6 @@
 
         @if(Session::has('message'))
         var type = "{{ Session::get('alert-type') }}";
-
         switch(type){
             case 'info':
                 toastr.info("{{session('message')}}", "{{session('head')}}");

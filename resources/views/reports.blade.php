@@ -95,7 +95,7 @@
         });
         var start = new Date();
         var end = new Date();
-        end.setDate(end.getDate()+1);
+        start.setDate(end.getDate()-1);
         start = start.toISOString().slice(0,10);
         end = end.toISOString().slice(0,10);
         var title2=" Invoices", title="Today's", type = 'bills', link;
@@ -111,19 +111,20 @@
             end = new Date();
             switch (valu) {
                 case 'today':
-                    start.setDate(end.getDate());
+                    start.setDate(end.getDate()-1);
                     title = "Today's";
                     break;
                 case 'yesterday':
-                    start.setDate( end.getDate() - 1 );
+                    start.setDate( end.getDate() - 2 );
+                    end.setDate(end.getDate() - 1)
                     title = "Yesterday's";
                     break;
                 case 'week':
-                    start.setDate( end.getDate() - 7 );
+                    start.setDate( end.getDate() - 8 );
                     title = "This week";
                     break;
                 case 'month':
-                    start.setDate( end.getDate() - 30 );
+                    start.setDate( end.getDate() - 31 );
                     title = "This Month";
                     break;
                 case 'year':
@@ -131,9 +132,11 @@
                     title = "This Year";
                     break;
             }
-            end.setDate(end.getDate()+1);
+
+
             start = start.toISOString().slice(0,10);
             end = end.toISOString().slice(0,10);
+            console.log(end,start);
             findval(start, end, title, title2, type);
         });
         $('.start').on('change', function () {
@@ -212,24 +215,26 @@
                             });
                             break;
                         case 'patients':
-                            var head = "<tr><th>ID</th><th>Name</th><th>Species</th><th>Age</th><th>Color</th><th>Breed</th><th>Owner's Name</th><th>Actions</th></tr>";
+                            var head = "<tr><th>ID</th><th>Name</th><th>Species</th><th>Age</th><th>Breed</th><th>Owner's Name</th><th>Actions</th></tr>";
                             $.each(array, function (i, d) {
+                                //console.log(array);
+                                //options = { day: 'numeric' ,month: 'numeric', year: 'numeric'};
+                                var age = new Date(d.age).toLocaleDateString("en-IN");
+                                //console.log(age);
                                 var row = $('<tr/>');
-                                var link = '/patients/' + d.id;
+                                var link = '/patients/' + d.id ? d.id : '';
                                 row.append($('<td/>',{
-                                    text: d.id,
+                                    text: d.id ? d.id : '',
                                 })).append($('<td/>',{
-                                    text: d.name,
+                                    text: d.name ? d.name : '',
                                 })).append($('<td/>',{
-                                    text: d.spe.name,
+                                    text: d.species ? d.species.name : '',
                                 })).append($('<td/>',{
-                                    text: d.age,
+                                    text: d.age ? age : '',
                                 })).append($('<td/>',{
-                                    text: d.color,
+                                    text: d.breed ? d.breed : '',
                                 })).append($('<td/>',{
-                                    text: d.breed,
-                                })).append($('<td/>',{
-                                    text: d.ownername,
+                                    text: d.ownername ? d.ownername : '',
                                 })).append($('<td/>',{
                                     html: "<a class='btn btn-info btn-sm' href=" + link + ">View</a>",
                                 }));

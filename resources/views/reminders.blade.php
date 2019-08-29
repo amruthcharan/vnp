@@ -21,18 +21,22 @@
                             <th>Mobile Number</th>
                             <th>Email</th>
                             <th>Reminder Date</th>
+                            <th>Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($reminders as $rem)
-                            <tr>
-                                <td>{{$rem->appointment->id}}</td>
-                                <td>{{$rem->appointment->patient->name}}</td>
-                                <td>{{$rem->appointment->patient->ownername}}</td>
-                                <td>{{$rem->appointment->patient->mobile}}</td>
-                                <td>{{$rem->appointment->patient->email ? $rem->appointment->patient->email : ""}}</td>
-                                <td>{{$rem->reminder}}</td>
-                            </tr>
+                            @if($rem->prescription == null)
+                                <tr>
+                                    <td>{{$rem->id}}</td>
+                                    <td>{{$rem->patient->name}}</td>
+                                    <td>{{$rem->patient->ownername}}</td>
+                                    <td>{{$rem->patient->mobile}}</td>
+                                    <td>{{$rem->patient->email ? $rem->patient->email : ""}}</td>
+                                    <td>{{date('d-m-Y', strtotime($rem->date))}}</td>
+                                    <td><button class="btn btn-danger sendsms">Send SMS</button></td>
+                                </tr>
+                            @endif
                         @endforeach
                     </table>
                     </div>
@@ -43,8 +47,24 @@
     @endsection
 @section('scripts')
     <script>
-        $('#zero_config').DataTable();
+        $('#zero_config').DataTable({"order": [5,'asc']});
 
-        
+        $('table').delegate('.sendsms','click', function(){
+            var aid = $(this).closest('tr').find('td').eq(0).html();
+            $(document).ajaxStart(function(){
+                $(".preloader").show();
+            }).ajaxStop(function(){
+                $(".preloader").fadeOut();
+            });
+            $.ajax({
+                url : "/sendsms/"+aid,
+                success:function(d){
+                    console.log(d);
+                },
+                error:function (e) {
+                    console.log(JSON.stringify(e));
+                }
+            });
+        });
     </script>
 @endsection

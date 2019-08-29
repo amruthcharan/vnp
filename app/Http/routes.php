@@ -86,12 +86,12 @@ Route::group(['middleware'=>'auth'], function (){
                     $d = Bill::all()->filter(function ($bill){
                         $start = Input::get('start');
                         $end = Input::get('end');
-                        return $bill->created_at >= $start and $bill->created_at <= $end;
+                        return $bill->created_at->format('Y-m-d') > $start and $bill->created_at->format('Y-m-d') <= $end;
                     });
                     $total = Bill::all()->filter(function ($bill){
                         $start = Input::get('start');
                         $end = Input::get('end');
-                        return $bill->created_at >= $start and $bill->created_at <= $end;
+                        return $bill->created_at->format('Y-m-d') > $start and $bill->created_at->format('Y-m-d') <= $end;
                     })->sum('nettotal');
                     foreach ($d as $bill) {
                         $bill->pat = $bill->patient;
@@ -102,17 +102,14 @@ Route::group(['middleware'=>'auth'], function (){
                     $d = Patient::all()->filter(function ($patient){
                         $start = Input::get('start');
                         $end = Input::get('end');
-                        return $patient->created_at >= $start and $patient->created_at <= $end;
-                    });
-                    foreach ($d as $pat) {
-                        $pat->spe = $pat->species;
-                    }
+                        return $patient->created_at->format('Y-m-d') > $start and $patient->created_at->format('Y-m-d') <= $end;
+                    })->load('species');
                     break;
                 case 'appointments':
                     $d = Appointment::all()->filter(function ($app){
                         $start = Input::get('start');
                         $end = Input::get('end');
-                        return $app->date >= $start and $app->date < $end;
+                        return $app->date > $start and $app->date <= $end;
                     });
                     foreach ($d as $app) {
                         $app->pat = $app->patient;
@@ -123,7 +120,7 @@ Route::group(['middleware'=>'auth'], function (){
                     $d = Prescription::all()->filter(function ($pre){
                         $start = Input::get('start');
                         $end = Input::get('end');
-                        return $pre->created_at >= $start and $pre->created_at <= $end;
+                        return $pre->created_at->format('Y-m-d') > $start and $pre->created_at->format('Y-m-d') <= $end;
                     });
                     foreach ($d as $pre) {
                         $pre->pat = $pre->appointment->patient;
@@ -152,12 +149,9 @@ Route::group(['middleware'=>'auth'], function (){
     //reminders route
 
     Route::get('/reminders', function (){
-
-        $reminders = Prescription::all()->filter(function ($pre){
-            $t = date('Y-m-d');
-            $ti = Carbon::now()->addDays(7)->format('Y-m-d');
-            return $pre->reminder >= $t and $pre->reminder < $ti;
-        });
+        $t = date('Y-m-d');
+        $reminders = Appointment::where('date', '>=', $t)->get()->load('prescription')->all();
+        //return $reminders;
         return view('reminders', compact('reminders'));
     });
 
@@ -166,15 +160,17 @@ Route::group(['middleware'=>'auth'], function (){
         $id = $input['id'];
         $app = Appointment::findOrFail($id);
 
+
+
         $res = array(
             'status' => 'success',
-            'ownername' => $app->patient->ownername,
-            'name' => $app->patient->name,
-            'species' => $app->patient->species->name,
-            'age' => $app->patient->age->diff(Carbon::now())->format('%y years, %m months and %d days'),
-            'breed' => $app->patient->breed,
-            'color' => $app->patient->color,
-            'date' => $app->date,
+            'ownername' => $app->patient->ownername ? $app->patient->ownername : "",
+            'name' => $app->patient->name ? $app->patient->name : '',
+            'species' => $app->patient->species ? $app->patient->species->name : '',
+            'age' => $app->patient->age ? $app->patient->age->format('d-m-Y') : '',
+            'breed' => $app->patient->breed ? $app->patient->breed : '',
+            'color' => $app->patient->color ? $app->patient->color : '',
+            'date' => $app->date ? $app->date : '',
             'pre' => $app->patient->appointments,
         );
         return Response::json($res);
@@ -185,14 +181,14 @@ Route::group(['middleware'=>'auth'], function (){
         $id = $input['id'];
         $app = Appointment::findOrFail($id);
 
-        $res = array(
-            'status' => 'success',
-            'pres' => $app->prescription->id,
-            'symptoms' => $app->prescription->symptoms,
-            'diagnoses' => $app->prescription->diagnosis,
-            'medicinedets' => $app->prescription->medicinedets,
-            'notes'=>$app->prescription->notes,
-        );
+            $res = array(
+                'status' => 'success',
+                'pres' => $app->prescription->id,
+                'symptoms' => $app->prescription->symptoms,
+                'diagnoses' => $app->prescription->diagnosis,
+                'medicinedets' => $app->prescription->medicinedets,
+                'notes'=>$app->prescription->notes,
+            );
         return Response::json($res);
     });
 
@@ -217,7 +213,7 @@ Route::group(['middleware'=>'auth'], function (){
             'ownername' => $patient->ownername ? $patient->ownername: '',
             'name' => $patient->name ? $patient->name : '',
             'species' => $patient->species ? $patient->species->name : '',
-            'age' => $patient->age ? $patient->age->diff(Carbon::now())->format('%y years, %m months and %d days') : '',
+            'age' => $patient->age ? $patient->age->format('d-m-Y') : '',
             'breed' => $patient->breed ? $patient->breed : '',
             'color' => $patient->color ? $patient->color : '',
         );
@@ -225,6 +221,9 @@ Route::group(['middleware'=>'auth'], function (){
     });
     Route::get('/getdata', function (){
         return view('getdata');
+    });
+    Route::get('/onlineapps', function (){
+        return view('onlineapps');
     });
     Route::post('/createpat', function(\Illuminate\Http\Request $request){
         $input = $request->all();
@@ -239,10 +238,87 @@ Route::group(['middleware'=>'auth'], function (){
         $res = $app;
         $res->doctor = $app->doctor->name;
         $res->doctor = $app->patient->name;
+        $username="vetnpet";
+
+        $password="8215427";
+
+        $d = date_create($app->date);
+
+        $date = date_format($d,'d/m/Y');
+
+        $message="Dear Customer, Appointment has been successfully booked for your pet, " . $app->patient->name . " on " . $date . " with Dr." . $app->doctor->name . ". Your Appointment id is " . $app->id . ".";
+
+        $sender="VetPet"; //ex:INVITE
+
+        $mobile_number=$app->patient->mobile;
+
+
+        $url = "login.bulksmsgateway.in/sendmessage.php?user=".urlencode($username)."&password=".urlencode($password)."&mobile=".urlencode($mobile_number)."&message=".urlencode($message)."&sender=".urlencode($sender)."&type=".urlencode('3');
+
+        $ch = curl_init($url);
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $output = curl_exec($ch);
+
+        curl_close($ch);
 
         return Response::json($app);
     });
+    Route::get('/getonlineapps', function (){
+        $t = date('Y-m-d');
+        $apps = Appointment::where('created_by', 'Created by API')->where('date', '>=', $t)->orderBy('date')->get()->load('patient')->all();
+        //return $apps;
+        $res =  json_encode($apps);
+        return Response::json($res);
 
+    });
 
+    Route::get('/sendsms/{id}', function ($id){
+        $app = Appointment::findOrFail($id);
+        //sms code
+        $username="vetnpet";
+        $password="8215427";
+        $d = date_create($app->date);
+        $date = date_format($d,'d/m/Y');
+        $message="Dear Customer, Reminder about the appointment for your pet, " . $app->patient->name . " on " . $date . " with Dr." . $app->doctor->name . ". Your Appointment id is " . $app->id . ".";
+        $sender="VetPet"; //ex:INVITE
+        $mobile_number=$app->patient->mobile;
+        $url = "login.bulksmsgateway.in/sendmessage.php?user=".urlencode($username)."&password=".urlencode($password)."&mobile=".urlencode($mobile_number)."&message=".urlencode($message)."&sender=".urlencode($sender)."&type=".urlencode('3');
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $output = curl_exec($ch);
+        curl_close($ch);
+        // sms code
+        $res = array(
+            'status'=>'success'
+        );
+        return Response::json($output);
+    });
+
+    Route::get('/sendreminders', function (){
+        $t = date('Y-m-d');
+        $apps = Appointment::where('date',$t)->get()->all();
+        $res = array('status'=>'sent');
+        foreach($apps as $app){
+            //sms code
+            $username="vetnpet";
+            $password="8215427";
+            $d = date_create($app->date);
+            $date = date_format($d,'d/m/Y');
+            $message="Dear Customer, Reminder about the appointment for your pet, " . $app->patient->name . " on " . $date . " with Dr." . $app->doctor->name . ". Your Appointment id is " . $app->id . ".";
+            $sender="VetPet"; //ex:INVITE
+            $mobile_number=$app->patient->mobile;
+            $url = "login.bulksmsgateway.in/sendmessage.php?user=".urlencode($username)."&password=".urlencode($password)."&mobile=".urlencode($mobile_number)."&message=".urlencode($message)."&sender=".urlencode($sender)."&type=".urlencode('3');
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $output = curl_exec($ch);
+            curl_close($ch);
+            $r = array($output);
+            array_push($res,$r);
+        }
+
+        return Response::json($res);
+    });
 
 });

@@ -33,9 +33,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="card-title">
-                        <h4 class="float-left">Appointment Requests</h4>
+                        <h4 class="float-left">Appointments</h4>
                         {{--<button class='btn btn-primary btn-sm float-right getrequests'><i class="ti-plus"></i><strong> Get Requests</strong></button>--}}
-                    </div>
                     </div>
 
                     <div class="table-responsive">
@@ -123,7 +122,7 @@
         getdetails();
         function getdetails(){
             var actionbtn;
-            var url = 'http://vnpapi.aresol.in/apps/read.php';
+            var url = '/getonlineapps';
             $(document).ajaxStart(function(){
                 $(".preloader").show();
             }).ajaxStop(function(){
@@ -132,18 +131,16 @@
             $('error').empty();
             $.ajax({
                 url: url,
+                dataType: "json",
                 success:function(d){
                     $('.tbody').empty();
                     $('error').empty();
-                    $.each(d.records, function(k,v){
-                        if(v.patid==0){
-                            actionbtn = "<button class='btn btn-danger crepat'>Create Patient</button>";
-                        } else {
-                            actionbtn = "<button class='btn btn-dribbble creapp'>Create Appointment</button>";
-                        }
-                        var nd = new Date(v.date);
-                        nd = nd.toLocaleDateString('en-IN');
-                        $('.tbody').append("<tr><td>" + v.patid + "</td><td>" + v.name + "</td><td>" + v.ownername + "</td><td>" + v.mobile + "</td><td>" + v.email + "</td><td>" + nd + "</td><td>" + actionbtn + "</td><td class='id' style='display: none;'>" + v.id + "</td></tr>");
+                    //console.log(d);
+                    $.each(JSON.parse(d), function(k,v){
+                        console.log(v);
+                        actionbtn = "<a href='/patients/" + v.patient_id + "' class='btn btn-info'>Patient Details</a>";
+                        console.log(actionbtn);
+                        $('.tbody').append("<tr><td>" + v.patient_id + "</td><td>" + v.patient.name + "</td><td>" + v.patient.ownername + "</td><td>" + v.patient.mobile + "</td><td>" + v.patient.email + "</td><td>" + v.date + "</td><td>" + actionbtn + "</td></tr>");
 
                     });
                 },
@@ -153,97 +150,5 @@
                 }
             });
         }
-
-/*        $('.getrequests').on('click',function(){
-            getdetails();
-        });*/
-
-        $('table').delegate('.crepat','click', function(){
-            var name = $(this).closest('tr').find('td').eq(1).html();
-            var oname = $(this).closest('tr').find('td').eq(2).html();
-            var mobile = $(this).closest('tr').find('td').eq(3).html();
-            var email = $(this).closest('tr').find('td').eq(4).html();
-            var id = $(this).closest('tr').find('.id').html();
-            var token = '{{ Session::token() }}';
-            var patid = null;
-            var pat = {name:name,ownername:oname,mobile:mobile,email:email,_token:token};
-            $.ajax({
-                url:'/createpat',
-                async:false,
-                type:"POST",
-                data: pat,
-                success:function (d) {
-                    patid=d.id;
-                }
-            });
-
-            var det = {patid:patid,status:'created',id:id};
-            var json = JSON.stringify(det);
-            $.ajax({
-                url:'http://vnpapi.aresol.in/apps/update.php',
-                async:false,
-                type:"POST",
-                data: json,
-                dataType: "json",
-                success:function (d) {
-                    toastr.success("Patient has been created", "Success");
-                }
-            });
-            var actionbtn = "<button class='btn btn-dribbble creapp'>Create Appointment</button>";
-            $(this).closest('tr').find('td').eq(0).html(patid);
-            $(this).closest('tr').find('td').eq(6).html(actionbtn);
-        });
-        var apiid;
-        $('table').delegate('.creapp','click', function(){
-            var pid = $(this).closest('tr').find('td').eq(0).html();
-            var date = $(this).closest('tr').find('td').eq(5).html();
-            apiid = $(this).closest('tr').find('.id').html();
-            $('#patiid').val(pid);
-            $('#patidate').val(date);
-            $('#appmodal').modal();
-        });
-
-        $('#createapp').on('click', function () {
-            var token = '{{ Session::token() }}';
-            var pid = $('#patiid').val();
-            var date = $('#patidate').val();
-            var doctorid = $('#doctor_id').val();
-
-            $('#appmodal').modal('toggle');
-
-            //console.log(pid, date, doctorid);
-
-            var app = {patient_id:pid,doctor_id:doctorid,date:date,_token:token};
-            $.ajax({
-                url:'/createapp',
-                async:false,
-                type:"POST",
-                data: app,
-                success:function (d) {
-                    patid = d.patient_id;
-                    date=d.date;
-                    appid=d.id;
-                    doctor=d.doctor.name;
-                    petname=d.patient.name;
-                    mobile=d.patient.mobile;
-                    console.log(d);
-                }
-            });
-            var det = {patid:patid,status:'Appointment Booked',appid:appid,doctor:doctor,petname:petname,date:date,id:apiid};
-            var json = JSON.stringify(det);
-            console.log(json);
-            $.ajax({
-                url:'http://vnpapi.aresol.in/apps/update.php',
-                async:false,
-                type:"POST",
-                data: json,
-                dataType: "json",
-                success:function (d) {
-                    toastr.success("Appointment has been created", "Success");
-                }
-            });
-            getdetails();
-        })
-
     </script>
 @endsection

@@ -272,7 +272,6 @@
             success: function (d) {
                 $('.modal-title').text("Prescription #" + d.pres);
                 $('.sym').empty();
-
                 d.symptoms.forEach(function (s) {
                     $("<tr><td class='text-left'>" + s.name +"</td></tr>").appendTo('.sym');
                 });
@@ -299,6 +298,9 @@
                 $('.notes').empty();
                 $('.notes').append('Notes - <span>'+ d.notes +'</span>');
                 $('#pre').modal();
+            },
+            error: function(){
+                alert('No prescription found');
             }
         });
     });

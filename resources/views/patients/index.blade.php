@@ -45,8 +45,6 @@
                                 <th>Name</th>
                                 <th>Species</th>
                                 <th>Age</th>
-                                <th>Color</th>
-                                <th>Breed</th>
                                 <th>Owner Details</th>
                                 <th>Created On</th>
                                 <th>Actions</th>
@@ -59,9 +57,7 @@
                                         <td>{{$patient->id}}</td>
                                         <td>{{$patient->name}}</td>
                                         <td>{{$patient->species ? $patient->species->name : ""}}</td>
-                                        <td>{{$patient->age ? $patient->age->diff(\Carbon\Carbon::now())->format('%y years, %m months and %d days') : ''}}</td>
-                                        <td>{{$patient->color}}</td>
-                                        <td>{{$patient->breed}}</td>
+                                        <td>{{$patient->age ? $patient->age->format('d-m-Y') : ''}}</td>
                                         <td>{{$patient->ownername}}</td>
                                         <td>{{$patient->created_at->format('d-m-Y')}}</td>
                                         <td>
