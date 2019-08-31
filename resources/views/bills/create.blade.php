@@ -43,7 +43,7 @@
                             <td class="text-left name"></td>
                         </tr>
                         <tr>
-                            <td class="text-left">Spicies</td>
+                            <td class="text-left">Species</td>
                             <td>:</td>
                             <td class="text-left species"></td>
                         </tr>
@@ -103,7 +103,7 @@
                         </div>
                         <div class="border-top">
                             <div class="card-body">
-                                {!! Form::submit('Generate Invoice', ['class'=>'btn btn-primary btn-block']) !!}
+                                {!! Form::submit('Generate Invoice', ['class'=>'btn btn-primary btn-block genbill']) !!}
                             </div>
                         </div>
                     {!! Form::close() !!}
@@ -136,6 +136,9 @@
             total = calcTotalAfterDiscount(tot);
             displayTotal(total);
             $(this).closest('.row').remove();
+        });
+        $(document).on('click', '.genbill', function(){
+            $(".preloader").show();
         });
 
         //return '0' if no value in the field.

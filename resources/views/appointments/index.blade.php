@@ -54,7 +54,7 @@
                                 @foreach($appointments as $appointment)
                                     <tr>
                                         <td>{{$appointment->id}}</td>
-                                        <td>{{$appointment->patient->name}}</td>
+                                        <td>{{$appointment->patient->name ? $appointment->patient->name : ''}}</td>
                                         <td>{{$appointment->patient ? $appointment->patient->ownername : ""}}</td>
                                         <td>{{$appointment->doctor->name}}</td>
                                         <td>{{date('d-m-Y', strtotime($appointment->date))}}</td>
