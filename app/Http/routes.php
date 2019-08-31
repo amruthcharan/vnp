@@ -164,6 +164,7 @@ Route::group(['middleware'=>'auth'], function (){
 
         $res = array(
             'status' => 'success',
+            'id' => $app->patient->id? $app->patient->id : "",
             'ownername' => $app->patient->ownername ? $app->patient->ownername : "",
             'name' => $app->patient->name ? $app->patient->name : '',
             'species' => $app->patient->species ? $app->patient->species->name : '',
@@ -210,6 +211,7 @@ Route::group(['middleware'=>'auth'], function (){
 
         $res = array(
             'status' => 'success',
+            'id'=> $patient->id ? $patient->id: '',
             'ownername' => $patient->ownername ? $patient->ownername: '',
             'name' => $patient->name ? $patient->name : '',
             'species' => $patient->species ? $patient->species->name : '',

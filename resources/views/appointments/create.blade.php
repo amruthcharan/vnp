@@ -33,6 +33,11 @@
                     <table class="table table-hover">
                         <tbody>
                         <tr>
+                            <td class="text-left">Patient ID</td>
+                            <td>:</td>
+                            <td class="text-left patttid"></td>
+                        </tr>
+                        <tr>
                             <td class="text-left">Owners Name</td>
                             <td>:</td>
                             <td class="text-left ownername"></td>
@@ -136,6 +141,7 @@
             url: url,
             data:{id : id, _token : token},
             success: function (res) {
+                $('.patttid').text(res.id);
                 $('.ownername').text(res.name);
                 $('.name').text(res.ownername);
                 $('.species').text(res.species);

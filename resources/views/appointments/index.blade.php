@@ -52,10 +52,11 @@
                             <tbody>
                             @if(isset($appointments))
                                 @foreach($appointments as $appointment)
+                                    @if($appointment->patient)
                                     <tr>
                                         <td>{{$appointment->id}}</td>
                                         <td>{{$appointment->patient->name ? $appointment->patient->name : ''}}</td>
-                                        <td>{{$appointment->patient ? $appointment->patient->ownername : ""}}</td>
+                                        <td>{{$appointment->patient->ownername ? $appointment->patient->ownername : ""}}</td>
                                         <td>{{$appointment->doctor->name}}</td>
                                         <td>{{date('d-m-Y', strtotime($appointment->date))}}</td>
                                         <td>
@@ -68,6 +69,7 @@
                                             {{--<a href="javascript:void(0)" data-toggle="modal" data-target="#delete-user" class="btn btn-info waves-effect waves-light">Delete</a>--}}
                                         </td>
                                     </tr>
+                                    @endif
                                 @endforeach
                             @endif
                             </tbody>

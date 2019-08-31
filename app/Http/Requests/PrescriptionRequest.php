@@ -25,7 +25,7 @@ class PrescriptionRequest extends Request
     {
         return [
                 'appointment_id' => 'required',
-                'reminder'=> 'required|date|after:yesterday',
+                'reminder'=> 'date|after:yesterday',
         ];
     }
 }

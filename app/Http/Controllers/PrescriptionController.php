@@ -93,28 +93,32 @@ class PrescriptionController extends Controller
         $prescription->Diagnosis()->sync($diagnoses, false);
         $prescription->Symptoms()->sync($symptoms,false);
 
-        $app = array(
-            'doctor_id'=>$prescription->appointment()->get()->all()[0]->doctor_id,
-            'patient_id'=>$prescription->appointment()->get()->all()[0]->patient_id,
-            'date'=>$prescription->reminder,
-            'created_by' => "Added Automatically by System Reminders"
-        );
+        if($prescription->reminder){
+            $app = array(
+                'doctor_id'=>$prescription->appointment()->get()->all()[0]->doctor_id,
+                'patient_id'=>$prescription->appointment()->get()->all()[0]->patient_id,
+                'date'=>$prescription->reminder,
+                'created_by' => "Added Automatically by System Reminders"
+            );
 
-        $appl = Appointment::create($app);
-        //sms code
-        $username="vetnpet";
-        $password="8215427";
-        $d = date_create($appl->date);
-        $date = date_format($d,'d/m/Y');
-        $message="Dear Customer, Appointment has been successfully booked for your pet, " . $appl->patient->name . " on " . $date . " with Dr." . $appl->doctor->name . ". Your Appointment id is " . $appl->id . ".";
-        $sender="VetPet"; //ex:INVITE
-        $mobile_number=$appl->patient->mobile;
-        $url = "login.bulksmsgateway.in/sendmessage.php?user=".urlencode($username)."&password=".urlencode($password)."&mobile=".urlencode($mobile_number)."&message=".urlencode($message)."&sender=".urlencode($sender)."&type=".urlencode('3');
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $output = curl_exec($ch);
-        curl_close($ch);
-        // sms code
+            $appl = Appointment::create($app);
+            if($appl){
+                //sms code
+                $username="vetnpet";
+                $password="8215427";
+                $d = date_create($appl->date);
+                $date = date_format($d,'d/m/Y');
+                $message="Dear Customer, Appointment has been successfully booked for your pet, " . $appl->patient->name . " on " . $date . " with Dr." . $appl->doctor->name . ". Your Appointment id is " . $appl->id . ".";
+                $sender="VetPet"; //ex:INVITE
+                $mobile_number=$appl->patient->mobile;
+                $url = "login.bulksmsgateway.in/sendmessage.php?user=".urlencode($username)."&password=".urlencode($password)."&mobile=".urlencode($mobile_number)."&message=".urlencode($message)."&sender=".urlencode($sender)."&type=".urlencode('3');
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $output = curl_exec($ch);
+                curl_close($ch);
+                // sms code
+            }
+        }
         $medicines = $request->medicines;
         $timing = $request->timing;
         $duration = $request->duration;

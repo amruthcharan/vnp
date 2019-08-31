@@ -43,6 +43,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Patient Name</th>
+                                <th>Patient ID</th>
                                 <th>Appointment ID</th>
                                 <th>Appointment Date</th>
                                 <th>Doctor Name</th>
@@ -55,6 +56,7 @@
                                     <tr>
                                         <td>{{$prescription->id}}</td>
                                         <td>{{$prescription->appointment->patient->name}}</td>
+                                        <td>{{$prescription->appointment->patient->id}}</td>
                                         <td>{{$prescription->appointment->id}}</td>
                                         <td>{{date('d-m-Y', strtotime($prescription->appointment->date))}}</td>
                                         <td>{{$prescription->appointment->doctor->name}}</td>

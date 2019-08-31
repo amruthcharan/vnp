@@ -33,6 +33,11 @@
                     <table class="table table-hover">
                         <tbody>
                         <tr>
+                            <td class="text-left">Patient's ID</td>
+                            <td>:</td>
+                            <td class="text-left patttid"></td>
+                        </tr>
+                        <tr>
                             <td class="text-left">Owners Name</td>
                             <td>:</td>
                             <td class="text-left ownername"></td>
@@ -111,7 +116,7 @@
                         </div>
                         <div class="form-group">
                             {!! Form::label('reminder', 'Reminder:') !!}
-                            {!! Form::date('reminder', null, ['class'=>'form-control']) !!}
+                            {!! Form::date('reminder', null, ['class'=>'form-control remdate']) !!}
                         </div>
                         <div class="border-top">
                             <div class="card-body">
@@ -193,6 +198,16 @@
         $('.select22').select2();
         $('.appdet').hide();
         $('#pres').hide();
+
+        var today = new Date();
+        var dd = today.getDate()+1;
+        var mm = today.getMonth()+1;
+        var yyyy = today.getFullYear();
+
+        var today = mm + '/' + dd + '/' + yyyy;
+        $('remdate').datepicker({
+            minDate: today,
+        });
     });
 
     $('.select32').select2({
@@ -245,6 +260,7 @@
             url: url,
             data:{id : id, _token : token},
             success: function (res) {
+                $('.patttid').text(res.id);
                 $('.ownername').text(res.name);
                 $('.name').text(res.ownername);
                 $('.species').text(res.species);
