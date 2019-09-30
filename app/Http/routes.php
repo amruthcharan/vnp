@@ -20,7 +20,10 @@ use App\Bill;
 use App\Medicine;
 use App\Patient;
 use App\Prescription;
+use App\Vaccination;
+use App\Vaccine;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 
@@ -47,9 +50,13 @@ Route::group(['middleware'=>'auth'], function (){
     //Prescription routes
     Route::resource('/prescriptions', 'PrescriptionController');
 
+    //Vaccination Routes
+    Route::resource('/vaccinations', 'VaccinationController');
+
     Route::get('/prescriptions/{id}/print', function ($id){
         $prescription = Prescription::findOrFail($id);
-        return view('prescriptions.print', compact('prescription'));
+        $vaccines = Vaccine::all();
+        return view('prescriptions.print', compact(['prescription', 'vaccines']));
     });
 
 
@@ -62,6 +69,9 @@ Route::group(['middleware'=>'auth'], function (){
 
     //medicine routes
     Route::resource('/medicines', 'MedicineController');
+
+    //vaccines routes
+    Route::resource('/vaccines', 'VaccineController');
 
     //billing routes
     Route::resource('/bills', 'BillingController');
@@ -154,14 +164,26 @@ Route::group(['middleware'=>'auth'], function (){
         //return $reminders;
         return view('reminders', compact('reminders'));
     });
+    Route::get('/getvac/{id}', function($id){
+        $vaccination = Vaccination::where('patient_id',$id)
+            ->select(DB::raw('*, max(expiry) as expiry'))
+            ->orderBy('expiry', 'desc')
+            ->groupBy('vaccine_id')
+            ->get()->toArray();
+        return Response::json($vaccination);
+    });
 
     Route::post('/getad', function (\Illuminate\Http\Request $request){
         $input = $request->all();
         $id = $input['id'];
         $app = Appointment::findOrFail($id);
-
-
-
+        $vaccines = Vaccine::all();
+        //$vaccinations = Vaccination::where('patient_id',$app->patient_id)->groupBy('vaccine_id')->latest('expiry')->get();
+        $vaccinations = Vaccination::where('patient_id',$app->patient_id)
+            ->select(DB::raw('*, max(expiry) as expiry'))
+            ->orderBy('expiry', 'desc')
+            ->groupBy('vaccine_id')
+            ->get();
         $res = array(
             'status' => 'success',
             'id' => $app->patient->id? $app->patient->id : "",
@@ -170,9 +192,11 @@ Route::group(['middleware'=>'auth'], function (){
             'species' => $app->patient->species ? $app->patient->species->name : '',
             'age' => $app->patient->age ? $app->patient->age->format('d-m-Y') : '',
             'breed' => $app->patient->breed ? $app->patient->breed : '',
-            'color' => $app->patient->color ? $app->patient->color : '',
+            'feeding_pattern' => $app->patient->feeding_pattern ? $app->patient->feeding_pattern : '',
             'date' => $app->date ? $app->date : '',
             'pre' => $app->patient->appointments,
+            'vaccinations' => $vaccinations,
+            'vaccines' => $vaccines,
         );
         return Response::json($res);
     });
@@ -191,6 +215,16 @@ Route::group(['middleware'=>'auth'], function (){
                 'notes'=>$app->prescription->notes,
             );
         return Response::json($res);
+    });
+    Route::get('/getpreid/{id}',function($id){
+        $app = Appointment::findOrFail($id)->load('prescription');
+        $res = array(
+            'status'=>'success',
+            'preid'=> $app->prescription->id
+        );
+        //return $app;
+        return Response::json($res);
+
     });
 
     Route::get('/getmn/{id}', function ($id){
@@ -248,7 +282,7 @@ Route::group(['middleware'=>'auth'], function (){
 
         $date = date_format($d,'d/m/Y');
 
-        $message="Dear Customer, Appointment has been successfully booked for your pet, " . $app->patient->name . " on " . $date . " with Dr." . $app->doctor->name . ". Your Appointment id is " . $app->id . ".";
+        $message="Dear Customer, Appointment has been successfully booked for your pet, " . $app->patient->name ? $app->patient->name : ''. " on " . $date . ". Your Appointment id is " . $app->id . ". @ VetnPet Hoptial Film Nagar";
 
         $sender="VetPet"; //ex:INVITE
 
@@ -283,7 +317,7 @@ Route::group(['middleware'=>'auth'], function (){
         $password="8215427";
         $d = date_create($app->date);
         $date = date_format($d,'d/m/Y');
-        $message="Dear Customer, Reminder about the appointment for your pet, " . $app->patient->name . " on " . $date . " with Dr." . $app->doctor->name . ". Your Appointment id is " . $app->id . ".";
+        $message="Dear Customer, Reminder about the appointment for your pet, " . $app->patient->name ? $app->patient->name : '' . " on " . $date . ". Your Appointment id is " . $app->id . ". @ VetnPet Hoptial Film Nagar";
         $sender="VetPet"; //ex:INVITE
         $mobile_number=$app->patient->mobile;
         $url = "login.bulksmsgateway.in/sendmessage.php?user=".urlencode($username)."&password=".urlencode($password)."&mobile=".urlencode($mobile_number)."&message=".urlencode($message)."&sender=".urlencode($sender)."&type=".urlencode('3');
@@ -300,15 +334,16 @@ Route::group(['middleware'=>'auth'], function (){
 
     Route::get('/sendreminders', function (){
         $t = date('Y-m-d');
+        Appointment::whereDate('date','<',$t)->where('status','=','Scheduled')->update(['status'=>'Expired']);
         $apps = Appointment::where('date',$t)->get()->all();
-        $res = array('status'=>'sent');
+        $res = [];
         foreach($apps as $app){
             //sms code
             $username="vetnpet";
             $password="8215427";
             $d = date_create($app->date);
             $date = date_format($d,'d/m/Y');
-            $message="Dear Customer, Reminder about the appointment for your pet, " . $app->patient->name . " on " . $date . " with Dr." . $app->doctor->name . ". Your Appointment id is " . $app->id . ".";
+            $message="Dear Customer, Reminder about the appointment for your pet, " . $app->patient->name ? $app->patient->name : '' . " on " . $date . ". Your Appointment id is " . $app->id . ". @ VetnPet Hoptial Film Nagar";
             $sender="VetPet"; //ex:INVITE
             $mobile_number=$app->patient->mobile;
             $url = "login.bulksmsgateway.in/sendmessage.php?user=".urlencode($username)."&password=".urlencode($password)."&mobile=".urlencode($mobile_number)."&message=".urlencode($message)."&sender=".urlencode($sender)."&type=".urlencode('3');
@@ -321,6 +356,21 @@ Route::group(['middleware'=>'auth'], function (){
         }
 
         return Response::json($res);
+    });
+
+    Route::get('/quickapp/{id}', function($id){
+        $input['patient_id'] = $id;
+        $authUser = auth()->user();
+        //return $authUser;
+        if($authUser->role_id == 2){
+            $input['doctor_id'] = $authUser->id;
+        } else {
+            $input['doctor_id'] = 2;
+        }
+        $input['date'] = date('Y-m-d');
+        $input['created_by']= "Created via QuickApp";
+        $app=Appointment::create($input);
+        return Response::json($app);
     });
 
 });

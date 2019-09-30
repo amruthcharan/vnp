@@ -23,6 +23,12 @@
         .fa-btn {
             margin-right: 6px;
         }
+        .red{
+            color: red;
+        }
+        .green {
+            color: green;
+        }
     </style>
 </head>
 <body id="app-layout">

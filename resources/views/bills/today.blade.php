@@ -54,7 +54,7 @@
                                 @foreach($bills as $bill)
                                     <tr>
                                         <td>{{$bill->id}}</td>
-                                        {{--<td>{{$bill->created_at->format('d/m/Y')}}</td>--}}
+                                        <td>{{$bill->created_at->format('d/m/Y')}}</td>
                                         <td>{{$bill->patient->name}}</td>
                                         <td>{{$bill->patient->ownername}}</td>
                                         <td>{{$bill->nettotal}}</td>

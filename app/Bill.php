@@ -10,6 +10,8 @@ class Bill extends Model
 
     protected $fillable = ['date', 'discount', 'nettotal', 'grandtotal', 'patient_id', 'created_by', 'updated_by'];
 
+    protected $dates = ['date'];
+
     public function patient() {
         return $this->belongsTo('App\Patient');
     }

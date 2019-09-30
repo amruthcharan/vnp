@@ -72,7 +72,7 @@ class AppointmentController extends Controller
 
         $date = date_format($d,'d/m/Y');
 
-        $message="Dear Customer, Appointment has been successfully booked for your pet, " . $app->patient->name . " on " . $date . " with Dr." . $app->doctor->name . ". Your Appointment id is " . $app->id . ".";
+        $message="Dear Customer, Appointment has been successfully booked for your pet, " . $app->patient->name ? $app->patient->name : '' . " on " . $date . ". Your Appointment id is " . $app->id . ". @ VetnPet Hoptial Film Nagar";
 
         $sender="VetPet"; //ex:INVITE
 
@@ -137,9 +137,13 @@ class AppointmentController extends Controller
         //
         $input = $request->all();
         $appointment = Appointment::find($id);
+        //return $appointment;
         $input['patient_id'] = $request->patient_id;
         $input['updated_by'] = Auth::user()->name;
+        $input['status'] = "Scheduled";
+        //return $input;
         $appointment->update($input);
+        //return $appointment;
         $notification = array(
             'message' => 'Appointment has been updated!',
             'alert-type' => 'info',

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    <title>Vet N Pet - New User</title>
+    <title>Vet N Pet - Edit Prescription</title>
 @endsection
 @section('breadcrum')
     <!-- ============================================================== -->
@@ -9,7 +9,7 @@
     <div class="page-breadcrumb">
         <div class="row">
             <div class="col-12 d-flex no-block align-items-center">
-                <h4 class="page-title">Edit Prescription {{$prescription->id}}</h4>
+                <h4 class="page-title">Edit Prescription #{{$prescription->id}}</h4>
                 <div class="ml-auto text-right">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb">
@@ -27,16 +27,66 @@
 @endsection
 @section('content')
     <div class="row" style="margin: 0 auto">
-        <div class="col-md-9"  style="margin: 0 auto">
+        <div class="col-md-4 appdet" style="margin: 0 auto">
+            <div class="card sticky-top">
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr>
+                            <td class="text-left">Patient's ID</td>
+                            <td>:</td>
+                            <td class="text-left patttid">{{$prescription->appointment->patient->id}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Patinet's Name</td>
+                            <td>:</td>
+                            <td class="text-left ownername">{{$prescription->appointment->patient->name ? $prescription->appointment->patient->name : ''}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Owners Name</td>
+                            <td>:</td>
+                            <td class="text-left name">{{$prescription->appointment->patient->ownername ? $prescription->appointment->patient->ownername : ''}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Spicies</td>
+                            <td>:</td>
+                            <td class="text-left species">{{$prescription->appointment->patient->species ? $prescription->appointment->patient->species->name : ''}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Age</td>
+                            <td>:</td>
+                            <td class="text-left age">{{$prescription->appointment->patient->age ? $prescription->appointment->patient->age->format('d-m-Y') : ''}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Breed</td>
+                            <td>:</td>
+                            <td class="text-left breed">{{$prescription->appointment->patient->breed ? $prescription->appointment->patient->breed : ''}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Feeding Pattern</td>
+                            <td>:</td>
+                            <td class="text-left feeding_pattern">{{$prescription->appointment->patient->feeding_pattern}}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left">Appointment Date</td>
+                            <td>:</td>
+                            <td class="text-left date">{{$prescription->appointment->date->format('d-m-Y')}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8"  style="margin: 0 auto">
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title" style="text-align: center">Edit Prescription</h4>
                     @include('includes.formerror')
                     {!! Form::open(['method'=>'PATCH', 'action' => ['PrescriptionController@update', $prescription->id]]) !!}
                     <div class="form-group">
-                        {!! Form::label('appointment_id', 'Appointment:') !!}
-                        {!! Form::select('appointment', $prescription , $prescription->appointment->id , ['class'=>'form-control', 'disabled'=>'disabled']) !!}
-                        {!! Form::text('appointment_id', $prescription->appointment->id , ['class'=>'form-control', 'hidden'=>'hidden']) !!}
+                        {!! Form::label('appointment_id', 'Appointment ID:') !!}
+                        {!! Form::select('appointment', $prescription , $prescription->appointment->id , ['class'=>'form-control', 'hidden'=>'hidden']) !!}
+                        {!! Form::text('appointment_id', $prescription->appointment->id , ['class'=>'form-control', 'readonly'=>'readonly']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('symptoms', 'Symptoms:') !!}
@@ -46,6 +96,18 @@
                         {!! Form::label('diagnoses', 'Diagnoses:') !!}
                         {!! Form::select('diagnoses[]', $diagnoses , $prescription->diagnosis->lists('id')->all() , ['class'=>'form-control select32','multiple'=>'multiple']) !!}
                     </div>
+
+                    <br>
+                    <div id="vaccines">
+                        <h4>Vaccination Details:</h4>
+                        @foreach($vaccines as $v)
+                            <div class='form-check form-check-inline'>
+                                <input name='vaccines[]' class='form-check-input' type='checkbox' value='{{$v->id}}' id='vac{{$v->id}}'>
+                                <label class='form-check-label' for='vac{{$v->id}}'>{{$v->name}}</label>
+                            </div>
+                        @endforeach
+                    </div>
+
 
                     <div id="medicine">
                         <h3 class="float-left">Medicines</h3>
@@ -84,6 +146,8 @@
                             </div>
                         @endforeach
                     </div>
+                    {{--Previous Vaccination details--}}
+
 
 
                     <div class="form-group">
@@ -111,6 +175,40 @@
     <script>
         $(document).ready(function() {
             $('.select22').select2();
+            id = $('.patttid').text();
+            var url = '/getvac/' + id ;
+            $.ajax({
+                url: url,
+                success: function (res) {
+                    //console.log(res);
+                    res.forEach(function (v) {
+                        //console.log(v.expiry);
+                        let id = '#vac' + v.vaccine_id;
+                        $(id).prop('checked', true);
+                        $(id).attr("disabled", true);
+                        let date = new Date(v.expiry);
+                        let fdate = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+                        let today = new Date();
+                        let next_month = new Date();
+                        next_month.setDate(today.getDate() + 30);
+                        //console.log(next_month);
+
+                        if(date > next_month){
+                            $(id).parent().children('label').attr('style', 'color: green;font-weight:bold');
+                            $(id).parent().children('label').append(' expires on ' + fdate);
+                        } else if(date > today){
+                            $(id).parent().children('label').attr('style', 'color: orange;font-weight:bold');
+                            $(id).parent().children('label').append(' expiring on ' + fdate);
+                        }else {
+                            $(id).parent().children('label').attr('style', 'color: red;font-weight:bold');
+                            $(id).parent().children('label').append(' expired on ' + fdate);
+                            $(id).prop('checked', false);
+                            $(id).attr("disabled", false);
+                        }
+
+                    });
+                }
+            });
         });
 
         $('.select32').select2({

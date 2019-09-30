@@ -43,10 +43,14 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>Species</th>
                                 <th>Age</th>
                                 <th>Owner Details</th>
+                                <th>Breed</th>
+                                <th>Gender</th>
                                 <th>Created On</th>
+                                @foreach($vaccines as $vac)
+                                    <th>{{$vac->name}}</th>
+                                @endforeach
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -56,13 +60,29 @@
                                     <tr>
                                         <td>{{$patient->id}}</td>
                                         <td>{{$patient->name}}</td>
-                                        <td>{{$patient->species ? $patient->species->name : ""}}</td>
                                         <td>{{$patient->age ? $patient->age->format('d-m-Y') : ''}}</td>
-                                        <td>{{$patient->ownername}}</td>
-                                        <td>{{$patient->created_at->format('d-m-Y')}}</td>
+                                        <td>{{$patient->ownername ? $patient->ownername : ""}}</td>
+                                        <td>{{$patient->breed ? $patient->breed : ""}}</td>
+                                        <td>{{$patient->gender ? $patient->gender : ""}}</td>
+                                        <td>{{$patient->created_at ? $patient->created_at->format('d-m-Y') : ''}}</td>
+                                        @foreach($vaccines as $vac)
+                                            @php $j = true; @endphp
+                                            @for($i=0;$i < count($patient->vaccinations); $i++)
+                                                @if($patient->vaccinations[$i]->vaccine_id   == $vac->id)
+                                                <td>
+                                                    <div style='font-weight: bold; {{$patient->vaccinations[$i]->expiry > \Carbon\Carbon::today() ? 'color:green;' : 'color:red;'}}'>{{$patient->vaccinations[$i]->expiry->format('d-m-Y')}}</div>
+                                                </td>
+                                                    @php $j = false @endphp
+                                                @endif
+                                            @endfor
+                                            @if($j)
+                                                <td>Not Found</td>
+                                            @endif
+                                        @endforeach
                                         <td>
                                             <a class="btn btn-dribbble" href="{{route('patients.edit', $patient->id)}}">Edit</a>
                                             <a class="btn btn-info" href="{{route('patients.show', $patient->id)}}">Patient Info</a>
+                                            <button class="btn btn-warning" onclick="quickAppointment({{$patient->id}})">Quick Appointment</button>
                                             <a class="btn btn-success" href="{{'/bills/create?patid='.$patient->id}}">Invoice</a>
                                             {{--<a href="javascript:void(0)" data-toggle="modal" data-target="#delete-user" class="btn btn-info waves-effect waves-light">Delete</a>--}}
                                         </td>
@@ -84,6 +104,7 @@
         $('#owners').DataTable({
             "order": [0,'desc']
         });
+        $('[data-toggle="tooltip"]').tooltip();
 
         @if(Session::has('message'))
         var type = "{{ Session::get('alert-type') }}";
@@ -103,5 +124,20 @@
                 break;
         }
         @endif
+        function quickAppointment(pid) {
+            var url = '/quickapp/' + pid;
+            $(document).ajaxStart(function(){
+                $(".preloader").show();
+            }).ajaxStop(function(){
+                $(".preloader").fadeOut();
+            });
+            $.ajax({
+                method: 'GET',
+                url: url,
+                success: function (res) {
+                    window.location.assign('/prescriptions/create?appid='+res.id);
+                }
+            });
+        }
     </script>
 @endsection

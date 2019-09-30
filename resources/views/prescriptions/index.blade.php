@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('title')
-    <title>Vet N Pet - Users</title>
+    <title>Vet N Pet - Prescriptions</title>
 @endsection
 
 @section('breadcrum')
@@ -53,9 +53,10 @@
                             <tbody>
                             @if(isset($prescriptions))
                                 @foreach($prescriptions as $prescription)
+                                    @if($prescription->appointment && $prescription->appointment->patient)
                                     <tr>
                                         <td>{{$prescription->id}}</td>
-                                        <td>{{$prescription->appointment->patient->name}}</td>
+                                        <td>{{$prescription->appointment->patient->name ? $prescription->appointment->patient->name : ''}}</td>
                                         <td>{{$prescription->appointment->patient->id}}</td>
                                         <td>{{$prescription->appointment->id}}</td>
                                         <td>{{date('d-m-Y', strtotime($prescription->appointment->date))}}</td>
@@ -68,6 +69,7 @@
                                             {{--<a href="javascript:void(0)" data-toggle="modal" data-target="#delete-user" class="btn btn-info waves-effect waves-light">Delete</a>--}}
                                         </td>
                                     </tr>
+                                    @endif
                                 @endforeach
                             @endif
                             </tbody>

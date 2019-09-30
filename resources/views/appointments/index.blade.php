@@ -46,6 +46,7 @@
                                 <th>Owner Name</th>
                                 <th>Doctor Name</th>
                                 <th>Date</th>
+                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>
@@ -59,12 +60,12 @@
                                         <td>{{$appointment->patient->ownername ? $appointment->patient->ownername : ""}}</td>
                                         <td>{{$appointment->doctor->name}}</td>
                                         <td>{{date('d-m-Y', strtotime($appointment->date))}}</td>
+                                        <td>{{$appointment->status}}</td>
                                         <td>
-                                            <a class="btn btn-dribbble" href="{{route('appointments.edit', $appointment->id)}}">Edit</a>
-                                            @php
-                                                $t = date('Y-m-d');
-                                            @endphp
-                                            <a class="btn {{$appointment->date == $t || $appointment->prescription <> null ? 'btn-success': "disabled btn-secondary"}}"  href="{{$appointment->prescription <> null ? 'prescriptions/'.$appointment->prescription->id : 'prescriptions/create?appid='. $appointment->id}}">Prescription</a>
+                                            @if($appointment->status <> 'Expired')
+                                                <a class="btn btn-dribbble" href="{{route('appointments.edit', $appointment->id)}}">Edit</a>
+                                                <a class="btn {{$appointment->status == 'Scheduled' ? 'btn-warning': "btn-success"}}"  href="{{$appointment->prescription <> null ? 'prescriptions/'.$appointment->prescription->id : 'prescriptions/create?appid='. $appointment->id}}">Prescription</a>
+                                            @endif
                                             <a class="btn btn-info" href="{{'patients/'.  $appointment->patient->id}}">Patient Info</a>
                                             {{--<a href="javascript:void(0)" data-toggle="modal" data-target="#delete-user" class="btn btn-info waves-effect waves-light">Delete</a>--}}
                                         </td>

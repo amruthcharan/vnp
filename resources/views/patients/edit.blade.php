@@ -38,7 +38,7 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('address', 'Address:') !!}
-                        {!! Form::textarea('address', $patient->address, ['class'=>'form-control', 'rows' => 5, 'cols' => 40]) !!}
+                        {!! Form::textarea('address', $patient->address, ['class'=>'form-control', 'rows' => 8, 'cols' => 40]) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('mobile', 'Mobile Number:') !!}
@@ -64,19 +64,19 @@
                     </div>
                     <div class="form-group">
                         {!! Form::label('gender', 'Gender:') !!}
-                        {!! Form::select('gender', $gender = array(''=>'Select An Option', 'male'=>'Male', 'female'=>'Female') ,$patient->gender, ['class'=>'form-control']) !!}
+                        {!! Form::select('gender', $gender = array(''=>'Select An Option', 'Male'=>'Male', 'Female'=>'Female') ,$patient->gender, ['class'=>'form-control']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::label('age', 'Age:') !!}
                         {!! Form::date('age', $patient->age, ['class'=>'form-control']) !!}
                     </div>
                     <div class="form-group">
-                        {!! Form::label('color', 'Color:') !!}
-                        {!! Form::text('color', $patient->color, ['class'=>'form-control']) !!}
-                    </div>
-                    <div class="form-group">
                         {!! Form::label('breed', 'Breed:') !!}
                         {!! Form::text('breed', $patient->breed, ['class'=>'form-control']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('feeding_pattern', 'Feeding Pattern:') !!}
+                        {!! Form::select('feeding_pattern', $feeding_pattern = array(''=>'Select An Option', 'Homemade Food'=>'Homemade Food', 'Pet Food'=>'Pet Food', 'Mixed'=>'Mixed Food') ,$patient->feeding_pattern, ['class'=>'form-control select22']) !!}
                     </div>
                 </div>
             </div>

@@ -26,13 +26,13 @@
                         </thead>
                         <tbody>
                         @foreach($reminders as $rem)
-                            @if($rem->prescription == null)
+                            @if($rem->prescription == null && $rem->patient)
                                 <tr>
                                     <td>{{$rem->id}}</td>
-                                    <td>{{$rem->patient->name}}</td>
-                                    <td>{{$rem->patient->ownername}}</td>
-                                    <td>{{$rem->patient->mobile}}</td>
-                                    <td>{{$rem->patient->email ? $rem->patient->email : ""}}</td>
+                                    <td>{{$rem->patient->name ? $rem->patient->name : ''}}</td>
+                                    <td>{{$rem->patient->ownername ? $rem->patient->ownername : ''}}</td>
+                                    <td>{{$rem->patient->mobile ? $rem->patient->mobile : ''}}</td>
+                                    <td>{{$rem->patient->email ? $rem->patient->email : ''}}</td>
                                     <td>{{date('d-m-Y', strtotime($rem->date))}}</td>
                                     <td><button class="btn btn-danger sendsms">Send SMS</button></td>
                                 </tr>
@@ -59,7 +59,10 @@
             $.ajax({
                 url : "/sendsms/"+aid,
                 success:function(d){
-                    console.log(d);
+                    var obj = JSON.parse(d);
+                    toastr.success("SMS sent! Remaining balance is: " + obj.remainingcredits);
+                    //console.log(obj);
+
                 },
                 error:function (e) {
                     console.log(JSON.stringify(e));

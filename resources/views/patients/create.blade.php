@@ -38,7 +38,7 @@
                         </div>
                         <div class="form-group">
                             {!! Form::label('address', 'Address:') !!}
-                            {!! Form::textarea('address', null, ['class'=>'form-control', 'rows' => 5, 'cols' => 40]) !!}
+                            {!! Form::textarea('address', null, ['class'=>'form-control', 'rows' => 8, 'cols' => 40]) !!}
                         </div>
                         <div class="form-group">
                             {!! Form::label('mobile', 'Mobile Number:') !!}
@@ -78,11 +78,13 @@
                             {{--<span class="input-group-text">Days</span>--}}
                         {{--</div>--}}
                     </div>
-
-
                     <div class="form-group">
                         {!! Form::label('breed', 'Breed:') !!}
                         {!! Form::text('breed', null, ['class'=>'form-control']) !!}
+                    </div>
+                    <div class="form-group">
+                        {!! Form::label('feeding_pattern', 'Feeding Pattern:') !!}
+                        {!! Form::select('feeding_pattern', $feeding_pattern = array(''=>'Select An Option', 'Homemade Food'=>'Homemade Food', 'Pet Food'=>'Pet Food', 'Mixed'=>'Mixed Food') ,null, ['class'=>'form-control select22']) !!}
                     </div>
                 </div>
             </div>

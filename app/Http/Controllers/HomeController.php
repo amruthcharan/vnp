@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Appointment;
 use App\Http\Requests;
 use App\Patient;
 use App\User;
@@ -28,7 +29,10 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $patients = Patient::all();
-        return view('index', compact(['user','patients']));
+        $patients = Patient::all()->count();
+        $t = Date('Y-m-d');
+/*        $r = date('Y-m-d',strtotime($t) + (24*3600*7));*/
+        $apps = Appointment::whereDate('date','=',$t)->count();
+        return view('index', compact(['user','patients','apps']));
     }
 }

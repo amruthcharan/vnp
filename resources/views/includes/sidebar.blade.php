@@ -8,32 +8,33 @@
         <nav class="sidebar-nav">
             <ul id="sidebarnav" class="p-t-30">
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{url('/')}}" aria-expanded="false"><i class="mdi mdi-view-dashboard {{ Request::is('/') ? 'active' : '' }}"></i><span class="hide-menu">Dashboard</span></a></li>
-                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark {{ Request::is('/patients') ? 'active' : '' }}" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-receipt"></i><span class="hide-menu">Patients </span></a>
+                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark {{ Request::is('/patients') ? 'active' : '' }}" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account-switch"></i><span class="hide-menu">Patients </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
-                        <li class="sidebar-item"><a href="{{route('patients.create')}}" class="sidebar-link"><i class="mdi mdi-note-outline"></i><span class="hide-menu">New Patient</span></a></li>
-                        <li class="sidebar-item"><a href="{{route('patients.index')}}" class="sidebar-link"><i class="mdi mdi-note-plus"></i><span class="hide-menu"> View Patients </span></a></li>
+                        <li class="sidebar-item"><a href="{{route('patients.create')}}" class="sidebar-link"><i class="mdi mdi-account-edit"></i><span class="hide-menu">New Patient</span></a></li>
+                        <li class="sidebar-item"><a href="{{route('patients.index')}}" class="sidebar-link"><i class="mdi mdi-account-convert"></i><span class="hide-menu"> View Patients </span></a></li>
                     </ul>
                 </li>
-                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{route('bills.index')}}" aria-expanded="false"><i class="mdi mdi-relative-scale"></i><span class="hide-menu">Billing</span></a></li>
-                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark {{ Request::is('/appointments') ? 'active' : '' }}" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-face "></i><span class="hide-menu">Appointments</span></a>
+                <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="{{route('bills.index')}}" aria-expanded="false"><i class="mdi mdi-printer"></i><span class="hide-menu">Billing</span></a></li>
+                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark {{ Request::is('/appointments') ? 'active' : '' }}" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account-box "></i><span class="hide-menu">Appointments</span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
-                        <li class="sidebar-item"><a href="{{route('appointments.create')}}" class="sidebar-link"><i class="mdi mdi-emoticon"></i><span class="hide-menu"> New Appointment</span></a></li>
-                        <li class="sidebar-item"><a href="{{route('appointments.index')}}" class="sidebar-link"><i class="mdi mdi-emoticon-cool"></i><span class="hide-menu"> View Appointments </span></a></li>
+                        <li class="sidebar-item"><a href="{{route('appointments.create')}}" class="sidebar-link"><i class="mdi mdi-near-me"></i><span class="hide-menu"> New Appointment</span></a></li>
+                        <li class="sidebar-item"><a href="{{route('appointments.index')}}" class="sidebar-link"><i class="mdi mdi-view-list"></i><span class="hide-menu"> View Appointments </span></a></li>
                     </ul>
                 </li>
-                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-move-resize-variant"></i><span class="hide-menu">Prescription</span></a>
+                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark {{ Request::is('/prescriptions') ? 'active' : '' }}" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-newspaper"></i><span class="hide-menu">Prescription</span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
-                        <li class="sidebar-item"><a href="{{route('prescriptions.create')}}" class="sidebar-link"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu"> New Prescription</span></a></li>
-                        <li class="sidebar-item"><a href="{{route('prescriptions.index')}}" class="sidebar-link"><i class="mdi mdi-multiplication-box"></i><span class="hide-menu">View Prescriptions</span></a></li>
+                        <li class="sidebar-item"><a href="{{route('prescriptions.create')}}" class="sidebar-link"><i class="mdi mdi-open-in-new"></i><span class="hide-menu"> New Prescription</span></a></li>
+                        <li class="sidebar-item"><a href="{{route('prescriptions.index')}}" class="sidebar-link"><i class="mdi mdi-view-agenda"></i><span class="hide-menu">View Prescriptions</span></a></li>
                         <li class="sidebar-item"><a href="{{route('symptoms.index')}}" class="sidebar-link"><i class="mdi mdi-calendar-check"></i><span class="hide-menu"> Symptoms List </span></a></li>
                         <li class="sidebar-item"><a href="{{route('diagnoses.index')}}" class="sidebar-link"><i class="mdi mdi-bulletin-board"></i><span class="hide-menu"> Diagnosis List </span></a></li>
-                        <li class="sidebar-item"><a href="{{route('medicines.index')}}" class="sidebar-link"><i class="mdi mdi-message-outline"></i><span class="hide-menu"> Prescription List </span></a></li>
+                        <li class="sidebar-item"><a href="{{route('medicines.index')}}" class="sidebar-link"><i class="mdi mdi-medical-bag"></i><span class="hide-menu"> Medicines List </span></a></li>
+                        <li class="sidebar-item"><a href="{{route('vaccines.index')}}" class="sidebar-link"><i class="mdi mdi-package-variant-closed"></i><span class="hide-menu"> Vaccines List </span></a></li>
                     </ul>
                 </li>
-                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account-key"></i><span class="hide-menu">Reports </span></a>
+                <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-repeat"></i><span class="hide-menu">Reports </span></a>
                     <ul aria-expanded="false" class="collapse  first-level">
-                        <li class="sidebar-item"><a href="{{url('/reminders')}}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> Reminders </span></a></li>
-                        <li class="sidebar-item"><a href="{{url('/reports')}}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> General Reports </span></a></li>
+                        <li class="sidebar-item"><a href="{{url('/reminders')}}" class="sidebar-link"><i class="mdi mdi-fast-forward"></i><span class="hide-menu"> Reminders </span></a></li>
+                        <li class="sidebar-item"><a href="{{url('/reports')}}" class="sidebar-link"><i class="mdi mdi-sync"></i><span class="hide-menu"> General Reports </span></a></li>
                     </ul>
                 </li>
                 <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link {{ Request::is('/getdata') ? 'active' : '' }}" href="{{url('/getdata')}}" aria-expanded="false"><i class="mdi mdi-relative-scale"></i><span class="hide-menu">Get Online Requests</span></a></li>
@@ -41,8 +42,8 @@
                 @if(Auth::user()->role_id == 1)
                     <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark {{ Request::is('/users') ? 'active' : '' }}" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-account-key"></i><span class="hide-menu">Users </span></a>
                         <ul aria-expanded="false" class="collapse  first-level">
-                            <li class="sidebar-item"><a href="{{url('/users')}}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> View Users </span></a></li>
-                            <li class="sidebar-item"><a href="{{url('/users/create')}}" class="sidebar-link"><i class="mdi mdi-all-inclusive"></i><span class="hide-menu"> Add User </span></a></li>
+                            <li class="sidebar-item"><a href="{{url('/users')}}" class="sidebar-link"><i class="mdi mdi-nature-people"></i><span class="hide-menu"> View Users </span></a></li>
+                            <li class="sidebar-item"><a href="{{url('/users/create')}}" class="sidebar-link"><i class="mdi mdi-arrow-right-drop-circle"></i><span class="hide-menu"> Add User </span></a></li>
                         </ul>
                     </li>
                 @endif

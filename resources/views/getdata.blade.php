@@ -121,15 +121,18 @@
     <script>
         $('#appointments').DataTable();
         getdetails();
+
         function getdetails(){
-            var actionbtn;
-            var url = 'http://vnpapi.aresol.in/apps/read.php';
+            /*var actionbtn;*/
+            var url = 'http://app.vetnpet.in/apps/read.php';
             $(document).ajaxStart(function(){
                 $(".preloader").show();
             }).ajaxStop(function(){
                 $(".preloader").fadeOut();
             });
             $('error').empty();
+            let pcount=0;
+            let acount=0;
             $.ajax({
                 url: url,
                 success:function(d){
@@ -137,6 +140,44 @@
                     $('error').empty();
                     $.each(d.records, function(k,v){
                         if(v.patid==0){
+                            var name = v.name;
+                            var oname = v.ownername;
+                            var mobile = v.mobile;
+                            var email = v.email;
+                            var id = $(this).closest('tr').find('.id').html();
+                            var token = '{{ Session::token() }}';
+                            var patid = null;
+                            var pat = {name:name,ownername:oname,mobile:mobile,email:email,_token:token};
+                            $.ajax({
+                                url:'/createpat',
+                                async:false,
+                                type:"POST",
+                                data: pat,
+                                success:function (d) {
+                                    patid=d.id;
+                                    pcount++;
+                                    createAjaxApp(patid,v);
+                                }
+                            });
+                            /*var det = {patid:patid,status:'created',id:id};
+                            var json = JSON.stringify(det);
+                            $.ajax({
+                                url:'http://vnpapi.aresol.in/apps/update.php',
+                                async:false,
+                                type:"POST",
+                                data: json,
+                                dataType: "json",
+                                success:function (d) {
+                                    toastr.success("Patient has been created", "Success");
+                                }
+                            });*/
+
+                        } else {
+                            patid = v.patid;
+                            createAjaxApp(patid,v);
+                        }
+
+                        /*if(v.patid==0){
                             actionbtn = "<button class='btn btn-danger crepat'>Create Patient</button>";
                         } else {
                             actionbtn = "<button class='btn btn-dribbble creapp'>Create Appointment</button>";
@@ -144,27 +185,26 @@
                         var nd = new Date(v.date);
                         nd = nd.toLocaleDateString('en-IN');
                         $('.tbody').append("<tr><td>" + v.patid + "</td><td>" + v.name + "</td><td>" + v.ownername + "</td><td>" + v.mobile + "</td><td>" + v.email + "</td><td>" + nd + "</td><td>" + actionbtn + "</td><td class='id' style='display: none;'>" + v.id + "</td></tr>");
-
+*/
                     });
                 },
-                error:function (d) {
-                    $('.tbody').empty();
-                    $('.error').append("<h3>"+d.responseJSON.message+"</h3>");
+                error:function () {
+                    toastr.warning("No new requests from server!", "OOPS!");
                 }
             });
+
+            toastr.success(pcount + " Patients created and " + acount + " Appointments added!");
+
         }
 
-/*        $('.getrequests').on('click',function(){
-            getdetails();
-        });*/
 
-        $('table').delegate('.crepat','click', function(){
+        /*$('table').delegate('.crepat','click', function(){
             var name = $(this).closest('tr').find('td').eq(1).html();
             var oname = $(this).closest('tr').find('td').eq(2).html();
             var mobile = $(this).closest('tr').find('td').eq(3).html();
             var email = $(this).closest('tr').find('td').eq(4).html();
             var id = $(this).closest('tr').find('.id').html();
-            var token = '{{ Session::token() }}';
+            var token = token here
             var patid = null;
             var pat = {name:name,ownername:oname,mobile:mobile,email:email,_token:token};
             $.ajax({
@@ -192,8 +232,10 @@
             var actionbtn = "<button class='btn btn-dribbble creapp'>Create Appointment</button>";
             $(this).closest('tr').find('td').eq(0).html(patid);
             $(this).closest('tr').find('td').eq(6).html(actionbtn);
-        });
-        var apiid;
+        });*/
+
+       /*var apiid;
+
         $('table').delegate('.creapp','click', function(){
             var pid = $(this).closest('tr').find('td').eq(0).html();
             var date = $(this).closest('tr').find('td').eq(5).html();
@@ -201,10 +243,10 @@
             $('#patiid').val(pid);
             $('#patidate').val(date);
             $('#appmodal').modal();
-        });
+        });*/
 
-        $('#createapp').on('click', function () {
-            var token = '{{ Session::token() }}';
+        /*$('#createapp').on('click', function () {
+            var token = token here
             var pid = $('#patiid').val();
             var date = $('#patidate').val();
             var doctorid = $('#doctor_id').val();
@@ -243,7 +285,44 @@
                 }
             });
             getdetails();
-        })
+        }*/
+        function createAjaxApp(pid,v){
+            //var pid = patid;
+            var token = '{{csrf_token()}}';
+            var date = v.date;
+            var doctorid = 2;
+            var apiid = v.id;
+            var app = {patient_id:pid,doctor_id:doctorid,date:date,_token:token};
+            $.ajax({
+                url:'/createapp',
+                async:false,
+                type:"POST",
+                data: app,
+                success:function (d) {
+                    patid = d.patient_id;
+                    date=d.date;
+                    appid=d.id;
+                    doctor=d.doctor.name;
+                    petname=d.patient.name;
+                    mobile=d.patient.mobile;
+                    acount++;
+                    //console.log(d);
+                }
+            });
+            var det = {patid:patid,status:'Appointment Booked',appid:appid,doctor:doctor,petname:petname,date:date,id:apiid};
+            var json = JSON.stringify(det);
+            //console.log(json);
+            $.ajax({
+                url: 'http://app.vetnpet.in/apps/update.php',
+                async: false,
+                type: "POST",
+                data: json,
+                dataType: "json",
+                success: function (d) {
+                    //toastr.success("Appointment has been created", "Success");
+                }
+            });
+        }
 
     </script>
 @endsection

@@ -66,7 +66,7 @@
                     </div>
                 </div>
             </div>
-            <!-- Card -->
+            <!-- Appointments Card -->
             <div class="card">
                 <div class="card-body">
                     <div class="card-title">
@@ -88,12 +88,12 @@
                                 <tr>
                                     <td class="text-left">{{$appointment->id}}</td>
                                     <td>{{$appointment->doctor->name}}</td>
-                                    <td class="text-left">{{$appointment->date}}</td>
+                                    <td class="text-left">{{$appointment->date->format('d-m-Y')}}</td>
                                     <td class="text-left">
                                         @if($appointment->prescription)
                                             <a href='{{url('/prescriptions/'.$appointment->prescription->id.'/print')}}' target="popup" onclick="window.open('{{url('prescriptions/'.$appointment->prescription->id.'/print')}}','popup','width=1300,height=700,location=0,scrollbars=no,resizable=no'); return false;">View Prescription</a>
                                         @else
-                                            Prescription Not Found.
+                                            {{$appointment->status}}
                                         @endif
                                     </td>
                                 </tr>
@@ -103,6 +103,46 @@
                     </div>
                 </div>
             </div>
+            @if(!$patient->vaccinations->isEmpty())
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            <h4 class="float-left">Vaccination Details</h4>
+                            <a class='float-right' href="{{route('vaccinations.create','patid='.$patient->id)}}"><i class="ti-plus"></i></a>
+                        </div>
+                        <div class="table-responsive m-t-40" style="clear: both;">
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Vaccine Name</th>
+                                    <th>Date</th>
+                                    <th>Expiry</th>
+                                    <th>Action</th>
+                                </tr>
+                                </thead>
+
+
+                                @foreach($patient->vaccinations as $v)
+                                    <tbody>
+                                    <tr style="{{$v->expiry < \Carbon\Carbon::today() ?  "color:red;font-weight: bold;" : "color:green; font-weight: bold;"}}">
+                                        <td class="text-left">{{$v->id}}</td>
+                                        <td>{{$v->vaccine->name}}</td>
+                                        <td class="text-left">{{$v->date->format('d-m-Y')}}</td>
+                                        <td class="text-left">{{$v->expiry->format('d-m-Y')}}</td>
+                                        <td class="text-left"><a href="{{route('patients.edit',$v->id)}}" class="btn btn-primary btn-xs">Edit</a></td>
+                                    </tr>
+                                    </tbody>
+                                @endforeach
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                @else
+                <center>
+                    <p>No Vaccination Details Found</p>
+                <a class="btn btn-dribbble btn-sm" href="{{route('vaccinations.create','patid='.$patient->id)}}">Add Vaccination Details</a></center>
+            @endif
         </div>
         <!-- column -->
         <div class="col-md-6">
@@ -134,12 +174,17 @@
                             <tr>
                                 <td class="text-left">Age</td>
                                 <td>:</td>
-                                <td class="text-left">{{$patient->age ? $patient->age->format('d-m-Y'):''}}</td>
+                                <td class="text-left">{{$patient->age ? $patient->age->format('d-m-Y') : ''}}</td>
                             </tr>
                             <tr>
                                 <td class="text-left">Breed</td>
                                 <td>:</td>
                                 <td class="text-left">{{$patient->breed}}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">Feeding Pattern</td>
+                                <td>:</td>
+                                <td class="text-left">{{$patient->feeding_pattern}}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -168,7 +213,7 @@
                                 <tbody>
                                 <tr>
                                     <td class="text-left">{{$bill->id}}</td>
-                                    <td>{{$bill->date}}</td>
+                                    <td>{{$bill->date->format('d-m-Y')}}</td>
                                     <td class="text-left">{{$bill->nettotal}}</td>
                                     <td class="text-left">{{$bill->discount}}</td>
                                     <td class="text-left"><a href="{{url('/bills/'.$bill->id.'/print')}}" target="popup" onclick="window.open('{{url('bills/'.$bill->id.'/print')}}','popup','width=1300,height=700,location=0,scrollbars=no,resizable=no'); return false;">View Invoice</a></td>

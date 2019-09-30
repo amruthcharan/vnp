@@ -63,9 +63,9 @@
                             <td class="text-left breed"></td>
                         </tr>
                         <tr>
-                            <td class="text-left">Color</td>
+                            <td class="text-left">Feeding Pattern</td>
                             <td>:</td>
-                            <td class="text-left color"></td>
+                            <td class="text-left feeding_pattern"></td>
                         </tr>
                         <tr>
                             <td class="text-left">Appointment Date</td>
@@ -96,12 +96,11 @@
                             {!! Form::label('diagnoses', 'Diagnoses:') !!}
                             {!! Form::select('diagnoses[]', $diagnoses , null , ['class'=>'form-control select32','multiple'=>'multiple']) !!}
                         </div>
-
-                        <div id="pres">
-
-
-
-                        </div>
+                        {{--previous prescriptions--}}
+                        <div id="pres"></div>
+                        {{--Previous Vaccination details--}}
+                        <br>
+                        <div id="vaccines"></div>
                         <div id="medicine">
                             <br>
                             <h3 class="float-left">Medicines</h3>
@@ -128,68 +127,6 @@
             </div>
         </div>
     </div>
-    <!-- Modal  -->
-    <div class="modal fade none-border" id="pre">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title"><strong></strong></h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="table-responsive m-t-40" style="clear: both;">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>Symptoms</th>
-                                    </tr>
-                                    </thead>
-                                        <tbody class="sym">
-
-                                        </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="table-responsive m-t-40" style="clear: both;">
-                                <table class="table table-hover">
-                                    <thead>
-                                    <tr>
-                                        <th>Diagnoses</th>
-                                    </tr>
-                                    </thead>
-                                        <tbody class="dia">
-
-                                        </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="table-responsive m-t-40" style="clear: both;">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th class="text-left">Medicine</th>
-                                <th>Timing</th>
-                                <th class="text-right">Duration</th>
-                            </tr>
-                            </thead>
-                                <tbody class="med">
-
-                                </tbody>
-                        </table>
-                    </div>
-                    <div class="col-md-12 notes"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary waves-effect" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- END MODAL -->
 @endsection
 
 @section('scripts')
@@ -250,7 +187,7 @@
 
     function getpdd(){
         $('#pres').hide();
-        $('#pres').html("<h4 class='float-left'>Previous Records</h4>");
+        $('#pres').html("<h4 class='float-left'>Previous Records:  </h4>");
         $('.appdet').hide();
         var token = '{{ Session::token() }}';
         var id = parseInt($('.appid').val());
@@ -260,17 +197,64 @@
             url: url,
             data:{id : id, _token : token},
             success: function (res) {
+                $('#vaccines').empty();
+                //console.log(res);
                 $('.patttid').text(res.id);
                 $('.ownername').text(res.name);
                 $('.name').text(res.ownername);
                 $('.species').text(res.species);
                 $('.age').text(res.age);
-                $('.color').text(res.color);
+                $('.feeding_pattern').text(res.feeding_pattern);
                 $('.breed').text(res.breed);
-                $('.date').text(res.date);
+                let d = new Date(res.date.date);
+                let fd = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+                $('.date').text(fd);
+                $('#vaccines').append("<h4>Vaccination Details:</h4>");
+                res.vaccines.forEach(function (va){
+                $('#vaccines').append("<div class='form-check form-check-inline'><input name='vaccines[]' class='form-check-input' type='checkbox' value='" + va.id + "'id='vac" + va.id + "'> <label class='form-check-label' for='vac" + va.id + "'>" + va.name + "</label></div>");
+                });
+                //console.log(res.vaccinations);
+                res.vaccinations.forEach(function (v) {
+                    //console.log(v.expiry);
+                    let id = '#vac' + v.vaccine_id;
+                    $(id).prop('checked', true);
+                    $(id).attr("disabled", true);
+                    let date = new Date(v.expiry);
+                    let fdate = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+                    let today = new Date();
+                    let next_month = new Date();
+                    next_month.setDate(today.getDate() + 30);
+                    //console.log(next_month);
+
+                    if(date > next_month){
+                        $(id).parent().children('label').attr('style', 'color: green;font-weight:bold');
+                        $(id).parent().children('label').append(' expires on ' + fdate);
+                    } else if(date > today){
+                        $(id).parent().children('label').attr('style', 'color: orange;font-weight:bold');
+                        $(id).parent().children('label').append(' expiring on ' + fdate);
+                    }else {
+                        $(id).parent().children('label').attr('style', 'color: red;font-weight:bold');
+                        $(id).parent().children('label').append(' expired on ' + fdate);
+                        $(id).prop('checked', false);
+                        $(id).attr("disabled", false);
+                    }
+
+                });
                 $('.appdet').show();
+                let i = 0;
                 res.pre.forEach(function (preapp) {
-                    $("<span>&nbsp;</span><span class='btn btn-dark btn-xs apppre'>" + preapp.id +"</span>").appendTo('#pres');
+                    if(preapp.status == 'Completed'){
+                        let link = '/prescriptions/' + preapp.id + '/print';
+                        function easyPopup() {
+                            window.open(link,'popup','width=1300,height=700,location=0,scrollbars=no,resizable=no');
+                            return false;
+                        }
+                        $("<span>&nbsp;</span><a class='btn btn-outline-secondary btn-xs apppre' target='popup'>" + preapp.id +"</a>").appendTo('#pres');
+                        i++;
+                    }
+                    if(i==0){
+                        $('#pres').html("<center><h4 class='btn-danger'>No Previous Records Found</h4></center>");
+                    }
                 });
                 $('#pres').show();
             }
@@ -278,47 +262,17 @@
     }
 
     $(document).on('click','.apppre',function () {
-        var id = $(this).text();
-        var token = '{{ Session::token() }}';
-        var url = '/getped';
+        var appid = $(this).text();
+        var url = '/getpreid/'+appid;
         $.ajax({
-            method: 'POST',
             url: url,
-            data: {id: id, _token: token},
             success: function (d) {
-                $('.modal-title').text("Prescription #" + d.pres);
-                $('.sym').empty();
-                d.symptoms.forEach(function (s) {
-                    $("<tr><td class='text-left'>" + s.name +"</td></tr>").appendTo('.sym');
-                });
-                $('.dia').empty();
-                d.diagnoses.forEach(function (s) {
-                    $("<tr><td class='text-left'>" + s.name +"</td></tr>").appendTo('.dia');
-                });
-                $('.med').empty();
-
-                d.medicinedets.forEach(function (s) {
-                    var id = s.medicine_id;
-                    var token = '{{ Session::token() }}';
-                    var url = '/getmn/' +id ;
-                    $.ajax({
-                        method: 'GET',
-                        url: url,
-                        /*data:{id : id, _token : token},*/
-                        success: function (res) {
-                           var medname = res.name;
-                            $("<tr><td class='text-left'>" + medname +"</td><td>"+s.timing+"</td><td class='text-right'>"+s.duration+"</td></tr>").appendTo('.med');
-                        }
-                    });
-                });
-                $('.notes').empty();
-                $('.notes').append('Notes - <span>'+ d.notes +'</span>');
-                $('#pre').modal();
-            },
-            error: function(){
-                alert('No prescription found');
+                console.log(d);
+                let link = '/prescriptions/' + d.preid + '/print';
+                window.open(link, 'popup', 'width=1300,height=700,location=0,scrollbars=no,resizable=no');
+                return false;
             }
-        });
+        })
     });
 
 </script>

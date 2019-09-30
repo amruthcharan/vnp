@@ -6,10 +6,12 @@ use App\Http\Requests\PatientRequest;
 use App\Owner;
 use App\Patient;
 use App\Species;
+use App\Vaccine;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PatientController extends Controller
 {
@@ -21,8 +23,18 @@ class PatientController extends Controller
     public function index()
     {
         //
-        $patients = Patient::all();
-        return view('patients.index', compact('patients'));
+        $patients = Patient::all()->load(['vaccinations' => function($q){
+            return $q->select(DB::raw('*, max(expiry) as expiry'))
+                ->orderBy('vaccine_id', 'asc')
+                ->orderBy('expiry', 'desc')
+                ->groupBy('vaccine_id')
+                ->get()->toArray();
+        }]);
+        $vaccines = Vaccine::all();
+
+
+        //return $patients;
+        return view('patients.index', compact(['patients','vaccines']));
     }
 
     /**
@@ -76,7 +88,9 @@ class PatientController extends Controller
      */
     public function show($id)
     {
-        $patient = Patient::findOrFail($id);
+        $patient = Patient::findOrFail($id)->load('vaccinations');
+        //return $patient;
+        //return $patient->vaccinations;
         return view('patients.show', compact('patient'));
     }
 

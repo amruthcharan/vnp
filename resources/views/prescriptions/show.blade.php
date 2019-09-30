@@ -42,14 +42,23 @@
                             </address>
                         </div>
                         <div class="float-right text-right">
-                            <p class=""><b>Prescription Date :</b> <i class="fa fa-calendar"></i> {{$prescription->updated_at}}</p>
+                            <p class=""><b>Prescription Date :</b> <i class="fa fa-calendar"></i> {{$prescription->updated_at->format('d-m-Y')}}</p>
                             <address>
                                 <h4>Prescription is For,</h4>
-                                <p class="m-l-30">{{$prescription->appointment->patient->name}}
+                                <p class="m-l-30">{{$prescription->appointment->patient->name ? $prescription->appointment->patient->name : ''}}<span id="patttid" style="display:none">{{$prescription->appointment->patient_id}}</span>
                                     <br/> {{$prescription->appointment->patient->address}},
                                     </p>
                             </address>
                         </div>
+                    </div>
+                    <div class="col-md-12" id="vaccines">
+                        <h4>Vaccination Details:</h4>
+                        @foreach($vaccines as $v)
+                            <div class='form-check form-check-inline'>
+                                <input name='vaccines[]' class='form-check-input' type='checkbox' style="display: none" checked disabled="true" value='{{$v->id}}' id='vac{{$v->id}}'>
+                                <label class='form-check-label' style="display: none" for='vac{{$v->id}}'>{{$v->name}}</label>
+                            </div>
+                        @endforeach
                     </div>
                     <div class="col-md-3">
                         <h4 class="m-t-20">Symptoms:</h4>
@@ -138,6 +147,7 @@
                             </table>
                         </div>
                     </div>
+
                     <div class="col-md-12">
                         <hr>
                         <div class="float-left text-left">
@@ -153,5 +163,43 @@
     </div>
 @endsection
 @section('scripts')
+    <script>
+        $(document).ready(function() {
+            id = $('#patttid').text();
+            var url = '/getvac/' + id;
+            $.ajax({
+                url: url,
+                success: function (res) {
+                    //console.log(res);
+                    res.forEach(function (v) {
+                        //console.log(v.expiry);
+                        let id = '#vac' + v.vaccine_id;
+                        let date = new Date(v.expiry);
+                        let fdate = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+                        let today = new Date();
+                        let next_month = new Date();
+                        next_month.setDate(today.getDate() + 30);
+                        //console.log(next_month);
+
+                        if (date > next_month) {
+                            $(id).parent().children('label').attr('style', 'color: green;font-weight:bold');
+                            $(id).attr('style', 'display: inline');
+                            $(id).parent().children('label').append(' expires on ' + fdate);
+                        } else if (date > today) {
+                            $(id).parent().children('label').attr('style', 'color: orange;font-weight:bold');
+                            $(id).attr('style', 'display: inline');
+                            $(id).parent().children('label').append(' expiring on ' + fdate);
+                        } else {
+                            $(id).parent().children('label').attr('style', 'color: red;font-weight:bold');
+                            $(id).attr('style', 'display: inline');
+                            $(id).parent().children('label').append(' expired on ' + fdate);
+                        }
+
+                    });
+                }
+            });
+        });
+    </script>
     <script src="{{asset('assets/libs/print/print.min.js')}}"></script>
+
 @endsection

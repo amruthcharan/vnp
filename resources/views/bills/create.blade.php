@@ -57,11 +57,6 @@
                             <td>:</td>
                             <td class="text-left breed"></td>
                         </tr>
-                        <tr>
-                            <td class="text-left">Color</td>
-                            <td>:</td>
-                            <td class="text-left color"></td>
-                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -118,6 +113,8 @@
         $(document).ready(function() {
             $('.select22').select2();
             $('.appdet').hide();
+            total = 0;
+            displayTotal(total);
         });
         var dumpVal = 0;
         var tot = parseInt($('.grandtotal').val());
@@ -243,7 +240,6 @@
                     $('.name').text(res.ownername);
                     $('.species').text(res.species);
                     $('.age').text(res.age);
-                    $('.color').text(res.color);
                     $('.breed').text(res.breed);
                     $('.appdet').show();
                 }
