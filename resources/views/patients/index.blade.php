@@ -44,9 +44,11 @@
                                 <th>ID</th>
                                 <th>Name</th>
                                 <th>Age</th>
-                                <th>Owner Details</th>
+                                <th>Owner Name</th>
+                                <th>Species</th>
                                 <th>Breed</th>
                                 <th>Gender</th>
+                                <th>Feeding Pattern</th>
                                 <th>Created On</th>
                                 @foreach($vaccines as $vac)
                                     <th>{{$vac->name}}</th>
@@ -62,8 +64,10 @@
                                         <td>{{$patient->name}}</td>
                                         <td>{{$patient->age ? $patient->age->format('d-m-Y') : ''}}</td>
                                         <td>{{$patient->ownername ? $patient->ownername : ""}}</td>
+                                        <td>{{$patient->species ? $patient->species->name : ""}}</td>
                                         <td>{{$patient->breed ? $patient->breed : ""}}</td>
                                         <td>{{$patient->gender ? $patient->gender : ""}}</td>
+                                        <td>{{$patient->feeding_pattern ? $patient->feeding_pattern : ""}}</td>
                                         <td>{{$patient->created_at ? $patient->created_at->format('d-m-Y') : ''}}</td>
                                         @foreach($vaccines as $vac)
                                             @php $j = true; @endphp
@@ -101,10 +105,52 @@
 
 @section('scripts')
     <script>
-        $('#owners').DataTable({
-            "order": [0,'desc']
+        var Table = $('#owners').DataTable({
+            "order": [0,'desc'],
         });
-        $('[data-toggle="tooltip"]').tooltip();
+        yadcf.init(Table , [{
+            column_number: 4,
+            select_type: 'select2',
+            select_type_options: {
+
+                placeholder: '',
+                allowClear: true  // show 'x' (remove) next to selection inside the select itself
+            },
+            column_data_type: "html",
+            html_data_type: "text",
+            filter_reset_button_text: false // hide yadcf reset button
+        }, {
+            column_number: 5,
+            select_type: 'select2',
+            select_type_options: {
+                placeholder: '',
+                allowClear: true  // show 'x' (remove) next to selection inside the select itself
+            },
+            column_data_type: "html",
+            html_data_type: "text",
+            filter_reset_button_text: false // hide yadcf reset button
+        }, {
+            column_number: 6,
+            select_type: 'select2',
+            select_type_options: {
+
+                placeholder: '',
+                allowClear: true  // show 'x' (remove) next to selection inside the select itself
+            },
+            column_data_type: "html",
+            html_data_type: "text",
+            filter_reset_button_text: false // hide yadcf reset button
+        }, {
+            column_number: 7,
+            select_type: 'select2',
+            select_type_options: {
+                placeholder: '',
+                allowClear: true  // show 'x' (remove) next to selection inside the select itself
+            },
+            column_data_type: "html",
+            html_data_type: "text",
+            filter_reset_button_text: false // hide yadcf reset button
+        }]);
 
         @if(Session::has('message'))
         var type = "{{ Session::get('alert-type') }}";

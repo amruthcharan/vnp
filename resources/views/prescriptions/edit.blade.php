@@ -101,10 +101,22 @@
                     <div id="vaccines">
                         <h4>Vaccination Details:</h4>
                         @foreach($vaccines as $v)
-                            <div class='form-check form-check-inline'>
-                                <input name='vaccines[]' class='form-check-input' type='checkbox' value='{{$v->id}}' id='vac{{$v->id}}'>
-                                <label class='form-check-label' for='vac{{$v->id}}'>{{$v->name}}</label>
+                            <div class='row'>
+                                <div class='col-md-1 check' style='padding-top:10px;'>
+                                    <input type='checkbox' name='vaccines_id[]' class='form-check' id='{{$v->id}}' value='{{$v->id}}'>
+                                </div>
+                                <div class='col-3'>
+                                    <input class='form-control' value="{{$v->name}}" id="name{{$v->id}}" type='text' readonly>
+                                    <label class='form-check-label' for="vac{{$v->id}}">No data Found</label>
+                                </div>
+                                <div class='col-4'>
+                                    <input id="date{{$v->id}}" type='date' name='dates[]' class='form-control datee' disabled>
+                                </div>
+                                <div class='col-4'>
+                                    <input name='expiry[]' id="exp{{$v->id}}" type='date' class='form-control expiryy' disabled>
+                                </div>
                             </div>
+                            <br>
                         @endforeach
                     </div>
 
@@ -180,32 +192,32 @@
             $.ajax({
                 url: url,
                 success: function (res) {
-                    //console.log(res);
+                    //console.log(res.vaccinations);
                     res.forEach(function (v) {
-                        //console.log(v.expiry);
-                        let id = '#vac' + v.vaccine_id;
-                        $(id).prop('checked', true);
-                        $(id).attr("disabled", true);
-                        let date = new Date(v.expiry);
-                        let fdate = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+                        let id = '#name' + v.vaccine_id;
+                        //let vid = '#vac' + v.vaccine_id;
+                        let did = '#date' + v.vaccine_id;
+                        let eid = '#exp' + v.vaccine_id;
+                        let expiry = new Date(v.expiry);
+                        let date = new Date(v.date);
+                        let fexpiry = expiry.getDate() + "-" + (expiry.getMonth() + 1) + "-" + expiry.getFullYear();
                         let today = new Date();
                         let next_month = new Date();
                         next_month.setDate(today.getDate() + 30);
                         //console.log(next_month);
-
-                        if(date > next_month){
+                        $(did).val(date.toISOString().split('T')[0]);
+                        $(eid).val(expiry.toISOString().split('T')[0]);
+                        if (expiry > next_month) {
                             $(id).parent().children('label').attr('style', 'color: green;font-weight:bold');
-                            $(id).parent().children('label').append(' expires on ' + fdate);
-                        } else if(date > today){
-                            $(id).parent().children('label').attr('style', 'color: orange;font-weight:bold');
-                            $(id).parent().children('label').append(' expiring on ' + fdate);
-                        }else {
-                            $(id).parent().children('label').attr('style', 'color: red;font-weight:bold');
-                            $(id).parent().children('label').append(' expired on ' + fdate);
-                            $(id).prop('checked', false);
-                            $(id).attr("disabled", false);
-                        }
+                            $(id).parent().children('label').text(' expires on ' + fexpiry);
 
+                        } else if (expiry > today) {
+                            $(id).parent().children('label').attr('style', 'color: orange;font-weight:bold');
+                            $(id).parent().children('label').text(' expiring on ' + fexpiry);
+                        } else {
+                            $(id).parent().children('label').attr('style', 'color: red;font-weight:bold');
+                            $(id).parent().children('label').text(' expired on ' + fexpiry);
+                        }
                     });
                 }
             });
@@ -239,6 +251,22 @@
         }
         $(document).on('click', '.remove', function (){
             $(this).closest('.row').remove();
+        });
+
+        $(document).delegate('.check','click', function () {
+            if($(this).find('.form-check').prop("checked")){
+                $(this).closest('.row').find('.datee').prop("disabled",false);
+                $(this).closest('.row').find('.datee').prop("required",true);
+                $(this).closest('.row').find('.datee').val("");
+                $(this).closest('.row').find('.expiryy').prop("disabled",false);
+                $(this).closest('.row').find('.expiryy').prop("required",true);
+                $(this).closest('.row').find('.expiryy').val("");
+            } else {
+                $(this).closest('.row').find('.datee').prop("disabled",true);
+                $(this).closest('.row').find('.expiryy').prop("disabled",true);
+            }
+
+            //console.log(varr);
         });
     </script>
 

@@ -9,3 +9,4 @@
 <link rel="stylesheet" type="text/css" href="{{asset('assets/libs/print/print.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('dist/css/jquery-ui.min.css')}}">
 <link rel="stylesheet" type="text/css" href="{{asset('dist/css/st.css')}}">
+<link rel="stylesheet" type="text/css" href="{{asset('dist/css/jquery.dataTables.yadcf.css')}}">

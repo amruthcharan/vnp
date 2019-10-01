@@ -86,6 +86,10 @@
                         {!! Form::label('date', '* Date:') !!}
                         {!! Form::date('date', $vaccination->date, ['class'=>'form-control']) !!}
                     </div>
+                    <div class="form-group">
+                        {!! Form::label('expiry', '* Date:') !!}
+                        {!! Form::date('expiry', $vaccination->expiry, ['class'=>'form-control']) !!}
+                    </div>
                     <div class="border-top">
                         <div class="card-body">
                             {!! Form::submit('Update Vaccination', ['class'=>'btn btn-dribbble btn-block']) !!}

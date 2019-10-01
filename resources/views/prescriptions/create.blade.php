@@ -100,7 +100,9 @@
                         <div id="pres"></div>
                         {{--Previous Vaccination details--}}
                         <br>
-                        <div id="vaccines"></div>
+                        <div id="vaccines">
+
+                        </div>
                         <div id="medicine">
                             <br>
                             <h3 class="float-left">Medicines</h3>
@@ -119,7 +121,7 @@
                         </div>
                         <div class="border-top">
                             <div class="card-body">
-                                {!! Form::submit('Add Prescription', ['class'=>'btn btn-primary btn-block']) !!}
+                                {!! Form::submit('Submit', ['class'=>'btn btn-primary btn-block']) !!}
                             </div>
                         </div>
                     {!! Form::close() !!}
@@ -211,51 +213,53 @@
                 $('.date').text(fd);
                 $('#vaccines').append("<h4>Vaccination Details:</h4>");
                 res.vaccines.forEach(function (va){
-                $('#vaccines').append("<div class='form-check form-check-inline'><input name='vaccines[]' class='form-check-input' type='checkbox' value='" + va.id + "'id='vac" + va.id + "'> <label class='form-check-label' for='vac" + va.id + "'>" + va.name + "</label></div>");
+                    //$('#vaccines').append("<div class='form-check form-check-inline'><input name='vaccines[]' class='form-check-input' type='checkbox' value='" + va.id + "'id='vac" + va.id + "'> <label class='form-check-label' for='vac" + va.id + "'>" + va.name + "</label></div>");
+                    $('#vaccines').append("<div class='row'><div class='col-md-1 check' style='padding-top:10px;'><input type='checkbox' name='vaccines_id[]' class='form-check' id='vac" + va.id + "' value='" + va.id + "'></div><div class='col-3'><input class='form-control' value=' " + va.name + " ' id='name" + va.id + "' type='text' readonly> <label class='form-check-label' for='vac" + va.id + "'>No data Found</label></div><div class='col-4'><input id='date" + va.id + "' type='date' name='dates[]' class='form-control datee' disabled></div><div class='col-4'><input name='expiry[]' id='exp" + va.id + "' type='date' class='form-control expiryy' disabled></div></div><br>");
                 });
                 //console.log(res.vaccinations);
                 res.vaccinations.forEach(function (v) {
-                    //console.log(v.expiry);
-                    let id = '#vac' + v.vaccine_id;
-                    $(id).prop('checked', true);
-                    $(id).attr("disabled", true);
-                    let date = new Date(v.expiry);
-                    let fdate = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
+                    let id = '#name' + v.vaccine_id;
+                    //let vid = '#vac' + v.vaccine_id;
+                    let did = '#date' + v.vaccine_id;
+                    let eid = '#exp' + v.vaccine_id;
+                    let expiry = new Date(v.expiry);
+                    let date = new Date(v.date);
+                    let fexpiry = expiry.getDate() + "-" + (expiry.getMonth() + 1) + "-" + expiry.getFullYear();
                     let today = new Date();
                     let next_month = new Date();
                     next_month.setDate(today.getDate() + 30);
                     //console.log(next_month);
-
-                    if(date > next_month){
+                    $(did).val(date.toISOString().split('T')[0]);
+                    $(eid).val(expiry.toISOString().split('T')[0]);
+                    if(expiry > next_month){
                         $(id).parent().children('label').attr('style', 'color: green;font-weight:bold');
-                        $(id).parent().children('label').append(' expires on ' + fdate);
-                    } else if(date > today){
+                        $(id).parent().children('label').text(' expires on ' + fexpiry);
+
+                    } else if(expiry > today){
                         $(id).parent().children('label').attr('style', 'color: orange;font-weight:bold');
-                        $(id).parent().children('label').append(' expiring on ' + fdate);
+                        $(id).parent().children('label').text(' expiring on ' + fexpiry);
                     }else {
                         $(id).parent().children('label').attr('style', 'color: red;font-weight:bold');
-                        $(id).parent().children('label').append(' expired on ' + fdate);
-                        $(id).prop('checked', false);
-                        $(id).attr("disabled", false);
+                        $(id).parent().children('label').text(' expired on ' + fexpiry);
                     }
 
                 });
                 $('.appdet').show();
-                let i = 0;
+                let ij = 0;
                 res.pre.forEach(function (preapp) {
                     if(preapp.status == 'Completed'){
+                        ij++;
                         let link = '/prescriptions/' + preapp.id + '/print';
                         function easyPopup() {
                             window.open(link,'popup','width=1300,height=700,location=0,scrollbars=no,resizable=no');
                             return false;
                         }
                         $("<span>&nbsp;</span><a class='btn btn-outline-secondary btn-xs apppre' target='popup'>" + preapp.id +"</a>").appendTo('#pres');
-                        i++;
-                    }
-                    if(i==0){
-                        $('#pres').html("<center><h4 class='btn-danger'>No Previous Records Found</h4></center>");
                     }
                 });
+                if(ij==0){
+                    $('#pres').html("<center><h4 class='btn-danger'>No Previous Records Found</h4></center>");
+                }
                 $('#pres').show();
             }
         });
@@ -273,6 +277,22 @@
                 return false;
             }
         })
+    });
+
+    $(document).delegate('.check','click', function () {
+        if($(this).find('.form-check').prop("checked")){
+            $(this).closest('.row').find('.datee').prop("disabled",false);
+            $(this).closest('.row').find('.datee').prop("required",true);
+            $(this).closest('.row').find('.datee').val("");
+            $(this).closest('.row').find('.expiryy').prop("disabled",false);
+            $(this).closest('.row').find('.expiryy').prop("required",true);
+            $(this).closest('.row').find('.expiryy').val("");
+        } else {
+            $(this).closest('.row').find('.datee').prop("disabled",true);
+            $(this).closest('.row').find('.expiryy').prop("disabled",true);
+        }
+
+        //console.log(varr);
     });
 
 </script>

@@ -23,6 +23,7 @@
 <script src="{{asset('assets/extra-libs/multicheck/datatable-checkbox-init.js')}}"></script>
 <script src="{{asset('assets/extra-libs/multicheck/jquery.multicheck.js')}}"></script>
 <script src="{{asset('assets/extra-libs/DataTables/datatables.min.js')}}"></script>
+<script src="{{asset('dist/js/jquery.dataTables.yadcf.js')}}"></script>
 <script src="{{asset('assets/libs/select2/dist/js/select2.min.js')}}"></script>
 <script src="{{asset('assets/libs/toastr/build/toastr.min.js')}}"></script>
 <script src="{{asset('assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>

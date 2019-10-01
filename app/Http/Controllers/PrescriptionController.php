@@ -66,6 +66,7 @@ class PrescriptionController extends Controller
         $is_symptoms = false;
         $is_daignoses = false;
 
+
         $symptoms= $request->symptoms;
         if($symptoms <> "") {
             for ($i = 0; $i < count($symptoms); $i++) {
@@ -153,21 +154,19 @@ class PrescriptionController extends Controller
             }
         }
 
-        $t = Carbon::today();
-        $vaccines= $request->vaccines;
+        $vaccines = $request->vaccines_id;
+        $expiry = $request->expiry;
+        $dates = $request->dates;
         if($vaccines <> "") {
             for ($i = 0; $i < count($vaccines); $i++) {
                 $va = Vaccine::find($vaccines[$i]);
-                $e = Carbon::today()->addMonths($va->validity);
                 $vac = array(
                     'vaccine_id' => $vaccines[$i],
                     'patient_id' => $prescription->appointment()->get()->all()[0]->patient_id,
-                    'date' => $t,
-                    'expiry' => $e,
+                    'date' => $dates[$i],
+                    'expiry' => $expiry[$i],
                 );
-
                 $vacc = Vaccination::create($vac);
-                //return $vacc;
             }
         }
 
@@ -219,6 +218,9 @@ class PrescriptionController extends Controller
         //return $request->all();
         $is_symptoms = false;
         $is_daignoses = false;
+
+
+        $vaccines = $request->vaccines_id;
 
 
         $prescription = Prescription::find($id);
@@ -316,21 +318,19 @@ class PrescriptionController extends Controller
             }
         }
 
-        $t = Carbon::today();
-        $vaccines= $request->vaccines;
+        $vaccines = $request->vaccines_id;
+        $expiry = $request->expiry;
+        $dates = $request->dates;
         if($vaccines <> "") {
             for ($i = 0; $i < count($vaccines); $i++) {
                 $va = Vaccine::find($vaccines[$i]);
-                $e = Carbon::today()->addMonths($va->validity);
                 $vac = array(
                     'vaccine_id' => $vaccines[$i],
                     'patient_id' => $prescription->appointment()->get()->all()[0]->patient_id,
-                    'date' => $t,
-                    'expiry' => $e,
+                    'date' => $dates[$i],
+                    'expiry' => $expiry[$i],
                 );
-
                 $vacc = Vaccination::create($vac);
-                //return $vacc;
             }
         }
 

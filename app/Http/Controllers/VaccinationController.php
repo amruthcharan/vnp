@@ -44,11 +44,9 @@ class VaccinationController extends Controller
     public function store(Request $request)
     {
         $input = $request->all();
-        $date = Carbon::parse($input['date']);
-        $v = Vaccine::find($input['vaccine_id']);
-        $input['expiry'] = $date->addMonths($v->validity);
-        Vaccination::create($input);
-        return redirect('/vaccinations');
+        $v = Vaccination::create($input);
+
+        return redirect(route('patient.show',$v->patient_id));
     }
 
     /**
@@ -86,11 +84,8 @@ class VaccinationController extends Controller
     {
         $input = $request->all();
         $vaccination = Vaccination::find($id);
-        $date = Carbon::parse($input['date']);
-        $v = Vaccine::find($input['vaccine_id']);
-        $input['expiry'] = $date->addMonths($v->validity);
         $vaccination->update($input);
-        return redirect('/vaccinations');
+        return redirect(route('patients.show',$vaccination->patient_id));
     }
 
     /**

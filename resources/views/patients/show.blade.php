@@ -130,7 +130,7 @@
                                         <td>{{$v->vaccine->name}}</td>
                                         <td class="text-left">{{$v->date->format('d-m-Y')}}</td>
                                         <td class="text-left">{{$v->expiry->format('d-m-Y')}}</td>
-                                        <td class="text-left"><a href="{{route('patients.edit',$v->id)}}" class="btn btn-primary btn-xs">Edit</a></td>
+                                        <td class="text-left"><a href="{{route('vaccinations.edit',$v->id)}}" class="btn btn-primary btn-xs">Edit</a></td>
                                     </tr>
                                     </tbody>
                                 @endforeach

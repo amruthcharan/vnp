@@ -85,6 +85,10 @@
                             {!! Form::label('date', '* Date:') !!}
                             {!! Form::date('date', null, ['class'=>'form-control']) !!}
                         </div>
+                        <div class="form-group">
+                            {!! Form::label('expiry', '* Date:') !!}
+                            {!! Form::date('expiry', null, ['class'=>'form-control']) !!}
+                        </div>
                         <div class="border-top">
                             <div class="card-body">
                                 {!! Form::submit('Add Vaccine', ['class'=>'btn btn-primary btn-block']) !!}
