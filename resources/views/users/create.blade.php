@@ -56,7 +56,7 @@
                         </div>
                         <div class="border-top">
                             <div class="card-body">
-                                {!! Form::submit('Register User', ['class'=>'btn btn-primary btn-block']) !!}
+                                {!! Form::submit('Register User', ['class'=>'btn btn-primary btn-block gensymp']) !!}
                             </div>
                         </div>
                     {!! Form::close() !!}
@@ -70,6 +70,9 @@
 <script>
     $(document).ready(function() {
         $('.select22').select2();
+    });
+    $(document).on('click', '.gensymp', function(){
+        $(".preloader").show();
     });
 </script>
 

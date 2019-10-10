@@ -94,7 +94,7 @@
         <div class="col-md-12">
             <div class="border-top">
                 <div class="card-body">
-                    {!! Form::submit('Register Patient', ['class'=>'btn btn-primary btn-block']) !!}
+                    {!! Form::submit('Register Patient', ['class'=>'btn btn-primary btn-block genpat']) !!}
                 </div>
             </div>
             {!! Form::close() !!}
@@ -104,6 +104,9 @@
 
 @section('scripts')
 <script>
+    $(document).on('click', '.genpat', function(){
+        $(".preloader").show();
+    });
     $(document).ready(function() {
         $('.select22').select2();
     });

@@ -51,8 +51,12 @@
                                 <p class="m-l-30"><b>Name</b> - {{$bill->patient->name}}
                                     <br/> {{$bill->patient->address}},
                                     <br/> <b>Breed</b> - {{$bill->patient->breed}},
-                                    <br/> <b>Invoice Prepared by {{$bill->created_by}}</b>.
-                                    </p>
+                                    <br/> <b>Invoice Prepared by {{$bill->created_by}}</b>
+                                </p>
+                                @if($package)
+                                    <p style="font-weight: bold; color:{{$package->expiry > \Carbon\Carbon::today() ? 'green' : 'red'}}">{{$package->package->name}} Package {{$package->expiry > \Carbon\Carbon::today() ? 'is Active' : 'Expired'}}</p>
+                                @endif
+
                             </address>
                         </div>
                     </div>

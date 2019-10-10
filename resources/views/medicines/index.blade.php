@@ -41,7 +41,7 @@
                                 {!! Form::text('name', null, ['class'=>'form-control']) !!}
                             </div>
                             <div class="card-body">
-                                {!! Form::submit('Add', ['class'=>'btn btn-primary']) !!}
+                                {!! Form::submit('Add', ['class'=>'btn btn-primary gensymp']) !!}
                             </div>
                         </div>
                     </div>
@@ -75,4 +75,11 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script>
+        $(document).on('click', '.gensymp', function(){
+            $(".preloader").show();
+        });
+    </script>
 @endsection

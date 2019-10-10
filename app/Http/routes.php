@@ -17,7 +17,9 @@
 
 use App\Appointment;
 use App\Bill;
+use App\HealthPackage;
 use App\Medicine;
+use App\Package;
 use App\Patient;
 use App\Prescription;
 use App\Vaccination;
@@ -53,6 +55,9 @@ Route::group(['middleware'=>'auth'], function (){
     //Vaccination Routes
     Route::resource('/vaccinations', 'VaccinationController');
 
+    //Health Package Routes
+    Route::resource('/healthpackages', 'HealthPackageController');
+
     Route::get('/prescriptions/{id}/print', function ($id){
         $prescription = Prescription::findOrFail($id);
         $vaccines = Vaccine::all();
@@ -73,17 +78,85 @@ Route::group(['middleware'=>'auth'], function (){
     //vaccines routes
     Route::resource('/vaccines', 'VaccineController');
 
+    //Packages Routes
+    Route::resource('/packages', 'PackageController');
+
     //billing routes
     Route::resource('/bills', 'BillingController');
     Route::get('/bills/{id}/print', function ($id){
         $bill = Bill::findOrFail($id);
-        return view('bills.print', compact('bill'));
+        $package = HealthPackage::with('package')->where('patient_id',$bill->patient_id)->orderBy('expiry', 'desc')->first();
+        return view('bills.print', compact(['bill', 'package']));
     });
 
     //notifications route
     Route::get('/notifications', function (){
         return view('errors.503');
     });
+
+
+
+
+
+
+    Route::get('/eightreports', function (){
+        $start = Input::get('start');
+        $end = Input::get('end');
+        $out = 0; $in = 0; $other = 0; $on = 0; $invoice=0;
+        if(isset($start) and isset($end)){
+            $a = Appointment::all()->filter(function ($bill){
+                $start = Input::get('start');
+                $end = Input::get('end');
+                return $bill->created_at->format('Y-m-d') > $start and $bill->created_at->format('Y-m-d') <= $end;
+            })->count();
+            $b = Bill::all()->filter(function ($bill){
+                $start = Input::get('start');
+                $end = Input::get('end');
+                return $bill->created_at->format('Y-m-d') > $start and $bill->created_at->format('Y-m-d') <= $end;
+            });
+            $total = Bill::all()->filter(function ($bill){
+                $start = Input::get('start');
+                $end = Input::get('end');
+                return $bill->created_at->format('Y-m-d') > $start and $bill->created_at->format('Y-m-d') <= $end;
+            })->sum('nettotal');
+            foreach ($b as $bill) {
+                if($bill->type == 'outpatient') {
+                    $out++;
+                } else if($bill->type == 'inpatient') {
+                    $in++;
+                } else if($bill->type == 'boarding') {
+                    $on++;
+                } else if($bill->type == 'others') {
+                    $other++;
+                } else {
+                    $out++;
+                }
+                $invoice++;
+            }
+        }
+        $c = array([
+            'apps' => $a,
+            'bills' => $invoice,
+            'cases' => $invoice,
+            'total' => $total,
+            'in' => $in,
+            'out' => $out,
+            'on' => $on,
+            'other' => $other,
+        ]);
+        $res =  json_encode($c);
+        return Response::json($res);
+    });
+
+
+
+
+
+
+
+
+
+
 
     //Reports route
     Route::get('/reports', function (){
@@ -114,6 +187,7 @@ Route::group(['middleware'=>'auth'], function (){
                         $end = Input::get('end');
                         return $patient->created_at->format('Y-m-d') > $start and $patient->created_at->format('Y-m-d') <= $end;
                     })->load('species');
+                    //return $d;
                     break;
                 case 'appointments':
                     $d = Appointment::all()->filter(function ($app){
@@ -238,10 +312,23 @@ Route::group(['middleware'=>'auth'], function (){
         return Response::json($res);
     });
 
+    Route::post('/addpkg', function (\Illuminate\Http\Request $request){
+       $input = $request->all();
+       $input['date'] = Carbon::today()->toDateString();
+        $p = Package::find($input['package_id']);
+        $t = new Carbon($input['date']);
+        $input['expiry'] = $t->addMonths($p->validity);
+       $pkg = HealthPackage::create($input)->load('package');
+       return Response::json($pkg);
+    });
+
+
+
     Route::post('/getpd', function (\Illuminate\Http\Request $request){
         $input = $request->all();
         $id = $input['id'];
         $patient = \App\Patient::findOrFail($id);
+        $package = HealthPackage::with('package')->where('patient_id',$id)->orderBy('expiry', 'desc')->first();
 
         $res = array(
             'status' => 'success',
@@ -252,6 +339,7 @@ Route::group(['middleware'=>'auth'], function (){
             'age' => $patient->age ? $patient->age->format('d-m-Y') : '',
             'breed' => $patient->breed ? $patient->breed : '',
             'color' => $patient->color ? $patient->color : '',
+            'package' => $package
         );
         return Response::json($res);
     });

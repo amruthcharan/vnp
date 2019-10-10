@@ -26,13 +26,9 @@ class Patient extends Model
         return $this->hasMany('App\Vaccination');
     }
 
-    public function vaccinationstatus(){
-        $vaccinations =  $this->vaccination();
-        if($vaccinations == []){
-            return true;
-        } else {
-            return false;
-        }
+    public function package(){
+        return $this->hasMany('App\HealthPackage');
     }
+
 
 }

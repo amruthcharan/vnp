@@ -221,11 +221,12 @@
                     $.each(d, function (k,v) {
                         count++;
                         remaining = JSON.parse(v);
-                        console.log(remaining);
+                        //console.log(remaining);
                     });
-                    toastr.success(count + " SMS sent! Remaining balance is: " + remaining.remainingcredits);
+                    let remain = remaining.remainingcredits ? remaining.remainingcredits : 0;
+                    toastr.success(count + " SMS sent! Remaining balance is: " + remain);
                     console.log(count);
-                    console.log(remaining.remainingcredits);
+                    console.log(remain);
                 },
                 error:function (e) {
                     console.log(JSON.stringify(e));

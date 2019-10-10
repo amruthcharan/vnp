@@ -77,7 +77,7 @@
                                 {!! Form::number('validity', null, ['class'=>'form-control']) !!}
                             </div>
                             <div class="card-body">
-                                {!! Form::submit('Add New Vaccine', ['class'=>'btn btn-primary btn-block']) !!}
+                                {!! Form::submit('Add New Vaccine', ['class'=>'btn btn-primary btn-block gensymp']) !!}
                             </div>
                         </div>
                     </div>
@@ -85,4 +85,11 @@
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    <script>
+        $(document).on('click', '.gensymp', function(){
+            $(".preloader").show();
+        });
+    </script>
 @endsection

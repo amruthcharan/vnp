@@ -42,6 +42,11 @@
                         <table class="table table-hover">
                             <tbody>
                             <tr>
+                                <td class="text-left">Patient id</td>
+                                <td>:</td>
+                                <td class="text-left">{{$patient->id}}</td>
+                            </tr>
+                            <tr>
                                 <td class="text-left">Owner Name</td>
                                 <td>:</td>
                                 <td class="text-left">{{$patient->ownername}}</td>
@@ -60,6 +65,18 @@
                                 <td class="text-left">Address</td>
                                 <td>:</td>
                                 <td class="text-left">{{$patient->address}}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-left">Health Package</td>
+                                <td>:</td>
+                                @if($package)
+                                <td class="text-left" style="color:{{$package->expiry > \Carbon\Carbon::today() ? 'green' : 'red'}}"><b>{{$package->package->name}} Package </b><br>Expires on {{$package->expiry->format('d-m-Y')}}
+                                    <a href="{{route('healthpackages.edit', $package->id)}}"><i class="ti-pencil-alt"></i></a></td>
+                                @else
+                                    <td>
+                                        <a href="{{route('healthpackages.create','patid='.$patient->id)}}" class="btnn btn-cyan btn-sm"> Add Package</a>
+                                    </td>
+                                @endif
                             </tr>
                             </tbody>
                         </table>

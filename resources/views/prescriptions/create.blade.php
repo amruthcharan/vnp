@@ -121,7 +121,7 @@
                         </div>
                         <div class="border-top">
                             <div class="card-body">
-                                {!! Form::submit('Submit', ['class'=>'btn btn-primary btn-block']) !!}
+                                {!! Form::submit('Submit', ['class'=>'btn btn-primary btn-block genpre']) !!}
                             </div>
                         </div>
                     {!! Form::close() !!}
@@ -133,6 +133,9 @@
 
 @section('scripts')
 <script>
+    $(document).on('click', '.genpre', function(){
+        $(".preloader").show();
+    });
     $(document).ready(function() {
         $('.select22').select2();
         $('.appdet').hide();
@@ -211,7 +214,7 @@
                 let d = new Date(res.date.date);
                 let fd = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
                 $('.date').text(fd);
-                $('#vaccines').append("<h4>Vaccination Details:</h4>");
+                $('#vaccines').append("<h4>Vaccination Details:</h4> <div class='row'><div class='col-md-1'></div><div class='col-md-3'>Vaccine Name:</div><div class='col-md-4'>Vaccination Date:</div><div class='col-md-4'>Expiry:</div></div>");
                 res.vaccines.forEach(function (va){
                     //$('#vaccines').append("<div class='form-check form-check-inline'><input name='vaccines[]' class='form-check-input' type='checkbox' value='" + va.id + "'id='vac" + va.id + "'> <label class='form-check-label' for='vac" + va.id + "'>" + va.name + "</label></div>");
                     $('#vaccines').append("<div class='row'><div class='col-md-1 check' style='padding-top:10px;'><input type='checkbox' name='vaccines_id[]' class='form-check' id='vac" + va.id + "' value='" + va.id + "'></div><div class='col-3'><input class='form-control' value=' " + va.name + " ' id='name" + va.id + "' type='text' readonly> <label class='form-check-label' for='vac" + va.id + "'>No data Found</label></div><div class='col-4'><input id='date" + va.id + "' type='date' name='dates[]' class='form-control datee' disabled></div><div class='col-4'><input name='expiry[]' id='exp" + va.id + "' type='date' class='form-control expiryy' disabled></div></div><br>");

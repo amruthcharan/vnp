@@ -7,7 +7,7 @@
             <div id="loginform">
 
                 <div class="text-center">
-                    <span class="db"><img src="{{asset('assets/images/logo.png')}}" alt="logo" /></span>
+                    <span class="db"><img src="{{asset('assets/images/vnplogo.jpg')}}" alt="logo" width="150px;" /></span>
                 </div>
                 <div class="text-center">
                     <span class="db" style="color: #fff !important;"><h3>Login</h3></span>

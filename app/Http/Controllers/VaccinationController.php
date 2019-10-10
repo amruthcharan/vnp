@@ -5,10 +5,7 @@ namespace App\Http\Controllers;
 use App\Patient;
 use App\Vaccination;
 use App\Vaccine;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-
-use App\Http\Requests;
 
 class VaccinationController extends Controller
 {
@@ -46,7 +43,7 @@ class VaccinationController extends Controller
         $input = $request->all();
         $v = Vaccination::create($input);
 
-        return redirect(route('patient.show',$v->patient_id));
+        return redirect(route('patients.show',$v->patient_id));
     }
 
     /**

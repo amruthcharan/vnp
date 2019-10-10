@@ -57,6 +57,11 @@
                             <td>:</td>
                             <td class="text-left breed"></td>
                         </tr>
+                        <tr>
+                            <td class="text-left">Health Package</td>
+                            <td>:</td>
+                            <td class="package"></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -72,6 +77,16 @@
                             {!! Form::label('patient_id', '* Patient ID:') !!}
                             {!! Form::select('patient_id', $patients , app('request')->input('patid') ? app('request')->input('patid') : null , ['class'=>'form-control patid select22']) !!}
                         </div>
+                        <div>
+                            <h4 class="float-lg-left">Health Package:&nbsp;</h4>
+                            <span class="package"></span>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            {!! Form::label('type', '* Patient Type:') !!}
+                            {!! Form::select('type', ['outpatient'=>'Out Patient', 'inpatient'=>'In Patient','boarding'=>'Boarding', 'others'=>'Others'] , null , ['class'=>'form-control']) !!}
+                        </div>
+
                         <div id="component">
                             <h3 class="float-left">Components</h3>
                             <a onclick="addcomponent()" class="btn btn-primary float-right"><i class="fa fa-plus"></i></a>
@@ -102,6 +117,31 @@
                             </div>
                         </div>
                     {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal  -->
+    <div class="modal fade none-border" id="pkgmodal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Package</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <td>Package Name</td>
+                    <td>:</td>
+                    <td>
+                        <select name="pkgid" id="pkgid" class="form-control">
+                            @foreach($packages as $p)
+                                <option value="{{$p->id}}">{{$p->name}}</option>
+                            @endforeach
+                        </select>
+                        <br>
+                        <button class="btn btn-secondary btn-block" onclick="addPkg();">Add Package</button>
+                    </td>
                 </div>
             </div>
         </div>
@@ -241,9 +281,41 @@
                     $('.species').text(res.species);
                     $('.age').text(res.age);
                     $('.breed').text(res.breed);
+                    package = isExpired(res.package);
+                    $('.package').html(res.package ? "<span style='color:" + package+"'><b>"+res.package.package.name+" Package</b> Expires on " + moment(Date.parse(res.package.expiry)).format('DD-MMM-YYYY')+"</span>": "<span>No package found!</span> <a class='btn btn-xs btn-outline-secondary' onclick='openModal();'>Add Package</a>");
                     $('.appdet').show();
                 }
             });
+        }
+
+        function isExpired(p) {
+            if(p != null){
+                e = moment(p.expiry);
+                color = e>moment() ? 'green' : 'red';
+                return color;
+            } else {
+                return false;
+            }
+        }
+        function openModal() {
+            $('#pkgmodal').modal();
+        }
+
+        function addPkg() {
+            ptid = $('.patid').val();
+            pkgid = $('#pkgid').val();
+            var url = '/addpkg' ;
+            var token = '{{ Session::token() }}';
+            $.ajax({
+                method: 'POST',
+                url: url,
+                data: {package_id: pkgid, patient_id: ptid, _token: token},
+                success: function (res) {
+                    console.log(res);
+                    $('.package').html(res ? "<span style='color:green'><b>"+res.package.name+" Package</b> Expires on " + moment(Date.parse(res.expiry)).format('DD-MMM-YYYY')+"</span>": "<span>No package found!</span> <a class='btn btn-xs btn-outline-secondary' onclick='openModal();'>Add Package</a>");
+                }
+            });
+            $('#pkgmodal').modal('hide');
         }
 
     </script>

@@ -35,7 +35,27 @@
                     {!! Form::open(['method'=>'PATCH', 'action' => ['BillingController@update',$bill->id]]) !!}
                     <div class="form-group">
                         {!! Form::label('patient_id', '* Patient ID:') !!}
-                        {!! Form::select('patient_id', $patients , $bill->patient_id , ['class'=>'form-control', 'disabled'=>'disabled']) !!}
+                        {!! Form::text('patient_id' , $bill->patient_id , ['class'=>'form-control patid', 'disabled'=>'disabled']) !!}
+                    </div>
+                    <div>
+                        <h4 class="float-lg-left">Health Package:&nbsp;</h4>
+                        <span class="package">
+                            @if($package)
+                                @php
+                                $color = $package->expiry > \Carbon\Carbon::today() ? 'green' : 'red';
+                                $date = $package->expiry > \Carbon\Carbon::today() ? "expires on " . $package->expiry->format('d-m-Y'): "expired on " . $package->expiry->format('d-m-Y');
+                                @endphp
+                                <span class="package" style="color:{{$color}}"><b>{{$package->package->name . " Package - ". $date}}</b></span>
+                            @else
+                                No Package Found!
+                                <a class="btn btn-outline-secondary btn-xs" onclick="openModal();">Add Package</a>
+                            @endif
+                        </span>
+                    </div>
+                    <br>
+                    <div class="form-group">
+                        {!! Form::label('type', '* Patient Type:') !!}
+                        {!! Form::select('type', ['outpatient'=>'Out Patient', 'inpatient'=>'In Patient','boarding'=>'Boarding', 'others'=>'Others'] , null , ['class'=>'form-control']) !!}
                     </div>
                     <div id="component">
                         <h3 class="float-left">Components</h3>
@@ -86,6 +106,30 @@
                         </div>
                     </div>
                     {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal  -->
+    <div class="modal fade none-border" id="pkgmodal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Package</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <td>Package Name</td>
+                    <td>:</td>
+                    <td>
+                        <select name="pkgid" id="pkgid" class="form-control">
+                            @foreach($packages as $p)
+                                <option value="{{$p->id}}">{{$p->name}}</option>
+                            @endforeach
+                        </select>
+                        <br>
+                        <button class="btn btn-secondary btn-block" onclick="addPkg();">Add Package</button>
+                    </td>
                 </div>
             </div>
         </div>
@@ -183,6 +227,27 @@
             total = calcTotalAfterDiscount(tot);
             displayTotal(total);
         });
+
+        function addPkg() {
+            ptid = $('.patid').val();
+            pkgid = $('#pkgid').val();
+            var url = '/addpkg' ;
+            var token = '{{ Session::token() }}';
+            $.ajax({
+                method: 'POST',
+                url: url,
+                data: {package_id: pkgid, patient_id: ptid, _token: token},
+                success: function (res) {
+                    console.log(res);
+                    $('.package').html(res ? "<span style='color:green'><b>"+res.package.name+" Package</b> Expires on " + moment(Date.parse(res.expiry)).format('DD-MMM-YYYY')+"</span>": "<span>No package found!</span> <a class='btn btn-xs btn-outline-secondary' onclick='openModal();'>Add Package</a>");
+                }
+            });
+            $('#pkgmodal').modal('hide');
+        }
+
+        function openModal() {
+            $('#pkgmodal').modal();
+        }
     </script>
 
 @endsection

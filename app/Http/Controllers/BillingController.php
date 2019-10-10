@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Bill;
 use App\BillComponents;
+use App\HealthPackage;
 use App\Http\Requests\BilingRequest;
+use App\Package;
 use App\Patient;
 use Illuminate\Http\Request;
 
@@ -35,7 +37,8 @@ class BillingController extends Controller
     {
         //
         $patients = Patient::lists('id','id');
-        return view('bills.create',compact('patients'));
+        $packages = Package::all();
+        return view('bills.create',compact(['patients', 'packages']));
     }
 
     /**
@@ -75,8 +78,8 @@ class BillingController extends Controller
     {
         //
         $bill = Bill::findOrFail($id);
-        //return $bill->billcomponents;
-        return view('bills.show',compact('bill'));
+        $package = HealthPackage::with('package')->where('patient_id',$bill->patient_id)->orderBy('expiry', 'desc')->first();
+        return view('bills.show',compact(['bill', 'package']));
     }
 
     /**
@@ -88,9 +91,10 @@ class BillingController extends Controller
     public function edit($id)
     {
         //
-        $bill = Bill::findOrFail($id);
-        $patients = Patient::lists('id','id');
-        return view('bills.edit', compact(['bill','patients']));
+        $bill = Bill::findOrFail($id)->load('patient');
+        $packages = Package::all();
+        $package = HealthPackage::with('package')->where('patient_id',$bill->patient_id)->orderBy('expiry', 'desc')->first();
+        return view('bills.edit', compact(['bill','package', 'packages']));
     }
 
     /**

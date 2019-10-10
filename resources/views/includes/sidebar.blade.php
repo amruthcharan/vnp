@@ -29,6 +29,7 @@
                         <li class="sidebar-item"><a href="{{route('diagnoses.index')}}" class="sidebar-link"><i class="mdi mdi-bulletin-board"></i><span class="hide-menu"> Diagnosis List </span></a></li>
                         <li class="sidebar-item"><a href="{{route('medicines.index')}}" class="sidebar-link"><i class="mdi mdi-medical-bag"></i><span class="hide-menu"> Medicines List </span></a></li>
                         <li class="sidebar-item"><a href="{{route('vaccines.index')}}" class="sidebar-link"><i class="mdi mdi-package-variant-closed"></i><span class="hide-menu"> Vaccines List </span></a></li>
+                        <li class="sidebar-item"><a href="{{route('packages.index')}}" class="sidebar-link"><i class="mdi mdi-package-variant-closed"></i><span class="hide-menu"> Packages List </span></a></li>
                     </ul>
                 </li>
                 <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-repeat"></i><span class="hide-menu">Reports </span></a>

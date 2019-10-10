@@ -12,7 +12,7 @@
             <a class="navbar-brand" href="{{url('/')}}">
                 <!-- Logo -->
                 <b class="logo-icon p-l-10">
-                    <img src="{{asset('assets/images/logo.png')}}" alt="homepage" class="light-logo" />
+                    <img src="{{asset('assets/images/vnplogo.jpg')}}" alt="homepage" width="180px;" class="light-logo" />
                 </b>
                 <!--End Logo -->
             </a>
@@ -56,6 +56,11 @@
             <!-- Right side toggle and nav items -->
             <!-- ============================================================== -->
             <ul class="navbar-nav float-right">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="d-none d-md-block">Welcome <strong> {{Auth::user() ? Auth::user()->name: ""}}</strong>!</span>
+                    </a>
+                </li>
 
                 <!-- ============================================================== -->
                 <!-- User profile and search -->

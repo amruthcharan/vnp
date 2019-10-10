@@ -95,7 +95,7 @@
                         </div>
                         <div class="border-top">
                             <div class="card-body">
-                                {!! Form::submit('Book Appointment', ['class'=>'btn btn-primary btn-block']) !!}
+                                {!! Form::submit('Book Appointment', ['class'=>'btn btn-primary btn-block genapp']) !!}
                             </div>
                         </div>
                     {!! Form::close() !!}
@@ -107,6 +107,9 @@
 
 @section('scripts')
 <script>
+    $(document).on('click', '.genapp', function(){
+        $(".preloader").show();
+    });
     $(document).ready(function() {
 
         $('.select22').select2();

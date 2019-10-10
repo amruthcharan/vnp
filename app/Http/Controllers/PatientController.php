@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\HealthPackage;
 use App\Http\Requests\PatientRequest;
 use App\Owner;
 use App\Patient;
@@ -89,9 +90,8 @@ class PatientController extends Controller
     public function show($id)
     {
         $patient = Patient::findOrFail($id)->load('vaccinations');
-        //return $patient;
-        //return $patient->vaccinations;
-        return view('patients.show', compact('patient'));
+        $package = HealthPackage::where('patient_id',$id)->orderBy('expiry', 'desc')->first();
+        return view('patients.show', compact(['patient', 'package']));
     }
 
     /**

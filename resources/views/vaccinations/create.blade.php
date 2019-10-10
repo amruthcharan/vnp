@@ -91,7 +91,7 @@
                         </div>
                         <div class="border-top">
                             <div class="card-body">
-                                {!! Form::submit('Add Vaccine', ['class'=>'btn btn-primary btn-block']) !!}
+                                {!! Form::submit('Add Vaccine', ['class'=>'btn btn-primary btn-block gensymp']) !!}
                             </div>
                         </div>
                     {!! Form::close() !!}
@@ -147,6 +147,12 @@
             }
         });
     }
+
+    $(document).on('click', '.gensymp', function(){
+        $(".preloader").show();
+    });
+</script>
+@endsection
 
 </script>
 
