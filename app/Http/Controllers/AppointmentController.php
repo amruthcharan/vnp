@@ -35,13 +35,14 @@ class AppointmentController extends Controller
     {
         //
         $patients = Patient::lists('id','id');
-        $docs = User::all('name','id','role_id')->where('role_id',2);
-        $doctors=[];
+        $doctors = User::where('role_id',2)->lists('name','id')->all();
+        /*$doctors=[];
         foreach($docs as $doc){
             $key = $doc->id;
             $value = $doc->name;
             $doctors = $doctors + array($key=>$value);
-        }
+        }*/
+        //return $patients;
         //return $doctors;
         return view('appointments.create', compact(['patients','doctors']));
     }
@@ -71,8 +72,8 @@ class AppointmentController extends Controller
         $d = date_create($app->date);
 
         $date = date_format($d,'d/m/Y');
-
-        $message="Dear Customer, Appointment has been successfully booked for your pet, " . $app->patient->name ? $app->patient->name : '' . " on " . $date . ". Your Appointment id is " . $app->id . ". @ VetnPet Hoptial Film Nagar";
+        $name = $app->patient->name ? $app->patient->name : '';
+        $message="Dear Customer, Appointment has been successfully booked for your pet, " . $name . " on " . $date . ". Your Appointment id is " . $app->id . ". @ VetnPet Hospital Film Nagar";
 
         $sender="VetPet"; //ex:INVITE
 

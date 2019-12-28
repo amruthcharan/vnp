@@ -97,6 +97,11 @@
                             {!! Form::label('discount', 'Discount:') !!}
                             {!! Form::text('discount',null,['class'=>'form-control discount']) !!}
                         </div>
+
+                        <div class="form-group">
+                            {!! Form::label('mode', 'Payment Mode:') !!}
+                            {!! Form::text('mode', null, ['class'=>'form-control']) !!}
+                        </div>
                         <div class="form-group">
                             {!! Form::label('nettotal', 'Total:') !!}
                             {!! Form::text('nettotal',null,['class'=>'form-control total', 'readonly'=>'readonly']) !!}
@@ -104,6 +109,7 @@
                         <div class="form-group">
                             {!! Form::text('grandtotal',null,['class'=>'form-control grandtotal', 'hidden'=>'hidden']) !!}
                         </div>
+
                         @php
                             $t=date('Y-m-d');
                         @endphp
@@ -111,6 +117,7 @@
                             {!! Form::label('date', 'Date:') !!}
                             {!! Form::date('date', $t, ['class'=>'form-control', 'readonly'=>'readonly']) !!}
                         </div>
+
                         <div class="border-top">
                             <div class="card-body">
                                 {!! Form::submit('Generate Invoice', ['class'=>'btn btn-primary btn-block genbill']) !!}

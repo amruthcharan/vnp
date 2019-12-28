@@ -125,7 +125,8 @@ class PrescriptionController extends Controller
                 $password="8215427";
                 $d = date_create($appl->date);
                 $date = date_format($d,'d/m/Y');
-                $message="Dear Customer, Appointment has been successfully booked for your pet, " . $appl->patient->name . " on " . $date . " with" . $appl->doctor->name . ". Your Appointment id is " . $appl->id . ".";
+                $name = $appl->patient->name ? $appl->patient->name : '';
+                $message="Dear Customer, Appointment has been successfully booked for your pet, " . $name . " on " . $date . " with" . $appl->doctor->name . ". Your Appointment id is " . $appl->id . ".";
                 $sender="VetPet"; //ex:INVITE
                 $mobile_number=$appl->patient->mobile;
                 $url = "login.bulksmsgateway.in/sendmessage.php?user=".urlencode($username)."&password=".urlencode($password)."&mobile=".urlencode($mobile_number)."&message=".urlencode($message)."&sender=".urlencode($sender)."&type=".urlencode('3');
@@ -280,7 +281,8 @@ class PrescriptionController extends Controller
                 $password="8215427";
                 $d = date_create($appl->date);
                 $date = date_format($d,'d/m/Y');
-                $message="Dear Customer, Appointment has been successfully booked for your pet, " . $appl->patient->name . " on " . $date . " with " . $appl->doctor->name . ". Your Appointment id is " . $appl->id . ".";
+                $name = $appl->patient->name ? $appl->patient->name : '';
+                $message="Dear Customer, Appointment has been successfully booked for your pet, " . $name . " on " . $date . " with " . $appl->doctor->name . ". Your Appointment id is " . $appl->id . ".";
                 $sender="VetPet"; //ex:INVITE
                 $mobile_number=$appl->patient->mobile;
                 $url = "login.bulksmsgateway.in/sendmessage.php?user=".urlencode($username)."&password=".urlencode($password)."&mobile=".urlencode($mobile_number)."&message=".urlencode($message)."&sender=".urlencode($sender)."&type=".urlencode('3');

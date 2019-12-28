@@ -47,6 +47,7 @@
                                 <th>Owner Name</th>
                                 <th>Species</th>
                                 <th>Breed</th>
+                                <th>Mobile</th>
                                 <th>Gender</th>
                                 <th>Feeding Pattern</th>
                                 <th>Created On</th>
@@ -66,6 +67,7 @@
                                         <td>{{$patient->ownername ? $patient->ownername : ""}}</td>
                                         <td>{{$patient->species ? $patient->species->name : ""}}</td>
                                         <td>{{$patient->breed ? $patient->breed : ""}}</td>
+                                        <td>{{$patient->mobile ? $patient->mobile : ""}}</td>
                                         <td>{{$patient->gender ? $patient->gender : ""}}</td>
                                         <td>{{$patient->feeding_pattern ? $patient->feeding_pattern : ""}}</td>
                                         <td>{{$patient->created_at ? $patient->created_at->format('d-m-Y') : ''}}</td>
@@ -130,7 +132,7 @@
             html_data_type: "text",
             filter_reset_button_text: false // hide yadcf reset button
         }, {
-            column_number: 6,
+            column_number: 7,
             select_type: 'select2',
             select_type_options: {
 
@@ -141,7 +143,7 @@
             html_data_type: "text",
             filter_reset_button_text: false // hide yadcf reset button
         }, {
-            column_number: 7,
+            column_number: 8,
             select_type: 'select2',
             select_type_options: {
                 placeholder: '',

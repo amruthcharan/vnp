@@ -30,12 +30,12 @@
         <div class="col-md-9"  style="margin: 0 auto">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title" style="text-align: center">New Invoice</h4>
+                    <h4 class="card-title" style="text-align: center">Edit Invoice</h4>
                     @include('includes.formerror')
                     {!! Form::open(['method'=>'PATCH', 'action' => ['BillingController@update',$bill->id]]) !!}
                     <div class="form-group">
                         {!! Form::label('patient_id', '* Patient ID:') !!}
-                        {!! Form::text('patient_id' , $bill->patient_id , ['class'=>'form-control patid', 'disabled'=>'disabled']) !!}
+                        {!! Form::text('patient_id' , $bill->patient_id , ['class'=>'form-control patid', 'readonly'=>'readonly']) !!}
                     </div>
                     <div>
                         <h4 class="float-lg-left">Health Package:&nbsp;</h4>
@@ -90,12 +90,18 @@
                         {!! Form::text('discount',$bill->discount,['class'=>'form-control discount']) !!}
                     </div>
                     <div class="form-group">
+                        {!! Form::label('mode', 'Payment Mode:') !!}
+                        {!! Form::text('mode', $bill->mode, ['class'=>'form-control']) !!}
+                    </div>
+
+                    <div class="form-group">
                         {!! Form::label('total', 'Total:') !!}
                         {!! Form::text('nettotal',$bill->nettotal,['class'=>'form-control total', 'readonly'=>'readonly']) !!}
                     </div>
                     <div class="form-group">
                         {!! Form::text('grandtotal',$bill->grandtotal,['class'=>'form-control grandtotal', 'hidden'=>'hidden']) !!}
                     </div>
+
                     <div class="form-group">
                         {!! Form::label('date', 'Date:') !!}
                         {!! Form::date('date', $bill->date, ['class'=>'form-control', 'readonly'=>'readonly']) !!}

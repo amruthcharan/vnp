@@ -8,7 +8,7 @@ class Bill extends Model
 {
     //protected $primaryKey = "VNPI8000";
 
-    protected $fillable = ['date', 'discount','type', 'nettotal', 'grandtotal', 'patient_id', 'created_by', 'updated_by'];
+    protected $fillable = ['date', 'discount','type', 'nettotal', 'grandtotal', 'patient_id', 'created_by', 'updated_by', 'mode'];
 
     protected $dates = ['date'];
 

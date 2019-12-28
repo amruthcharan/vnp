@@ -100,6 +100,7 @@
                                 }
                             @endphp
                             <p>discount : {{$ret}}</p>
+                            <p>Payment Mode : {{$bill->mode}}</p>
                             <hr>
                             <h3><b>Total :</b> ₹ {{$bill->nettotal}}</h3>
                         </div>

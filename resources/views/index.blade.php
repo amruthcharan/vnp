@@ -218,15 +218,22 @@
             $.ajax({
                 url : "/sendreminders",
                 success:function(d){
+                    if(d.length > 0){
                     $.each(d, function (k,v) {
                         count++;
                         remaining = JSON.parse(v);
                         //console.log(remaining);
                     });
+
                     let remain = remaining.remainingcredits ? remaining.remainingcredits : 0;
                     toastr.success(count + " SMS sent! Remaining balance is: " + remain);
-                    console.log(count);
-                    console.log(remain);
+                    } else {
+                        //toastr.options.positionClass = 'toast-bottom-right';
+                        toastr.warning("No Reminders to send!");
+                    }
+
+                    //console.log(count);
+                    //console.log(remain);
                 },
                 error:function (e) {
                     console.log(JSON.stringify(e));

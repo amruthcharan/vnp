@@ -35,4 +35,9 @@ class HomeController extends Controller
         $apps = Appointment::whereDate('date','=',$t)->count();
         return view('index', compact(['user','patients','apps']));
     }
+
+    public function expire()
+    {
+        return view('errors.503');
+    }
 }
